@@ -1,0 +1,5 @@
+libsuite.a
+munit
+core
+*.o
+run

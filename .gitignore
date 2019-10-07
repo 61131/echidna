@@ -1,0 +1,12 @@
+core
+*.gcda
+*.gcno
+*.gcov
+*.o
+gcovr.txt
+grammar.c
+grammar.h
+grammar.output
+lexer.c
+libechidna.a
+echidna

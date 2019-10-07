@@ -1,0 +1,8 @@
+echidna
+libechidna.a
+grammar.c 
+grammar.h 
+grammar.log 
+grammar.output 
+lexer.c
+*.o
