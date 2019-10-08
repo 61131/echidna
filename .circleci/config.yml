@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run: make tests
       - store_artifacts:
-        - path: gcovr.txt
+          path: gcovr.txt
       
   build:
     <<: *defaults
