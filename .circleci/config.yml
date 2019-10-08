@@ -17,8 +17,9 @@ jobs:
     steps:
       - checkout
       - run: make tests
-      - store_artifacts:
-          path: gcovr.xml
+      - codecov/upload:
+          file: gcovr.xml
+          token: d84db9b8-dbbe-4fb8-8d60-a93985c1e766
       
   build:
     <<: *defaults

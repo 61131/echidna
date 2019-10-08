@@ -15,7 +15,7 @@ clean:
 tests: clean
 	make -C src libechidna.a
 	make -C tests
-#	gcovr -r . -x -o gcovr.xml 2>/dev/null || true
+	gcovr -r . -x -o gcovr.xml 2>/dev/null || true
 
 docker:
 	docker build -t echidna .circleci/images
