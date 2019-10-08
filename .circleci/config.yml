@@ -9,9 +9,6 @@ workflows:
   build-pipeline:
     jobs:
       - test
-      - build:
-          requires:
-            - test
 
 jobs:
 
