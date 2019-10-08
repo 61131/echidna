@@ -10,18 +10,10 @@
 
 static int _queue_compare(const void *A, const void *B);
 
-static void _queue_destroy_callback(void *Arg);
-
 
 static int
 _queue_compare(const void *A, const void *B) {
     return 0;
-}
-
-
-static void 
-_queue_destroy_callback(void *Arg) {
-    queue_destroy((QUEUE *) Arg);
 }
 
 
@@ -62,7 +54,7 @@ _queue_initialise(size_t Arg, QUEUE *Queue, ...) {
     Queue->Queue = NULL;
     Queue->Count = Queue->Size = 0;
     Queue->Compare = _queue_compare;
-    Queue->Destroy = _queue_destroy_callback;
+    Queue->Destroy = NULL;
     Queue->Alloc = 0;
 
     if(Arg > 1) {

@@ -13,26 +13,6 @@ struct _QUEUE_ELEMENT {
     char * Data;
 };
 
-static int
-_test_queue_compare(const void *A, const void *B) {
-    struct _QUEUE_ELEMENT *pA, *pB;
-
-    munit_assert_not_null(A);
-    pA = *(struct _QUEUE_ELEMENT **) A;
-    munit_assert_not_null(pA);
-    munit_assert_not_null(B);
-    pB = *(struct _QUEUE_ELEMENT **) B;
-    munit_assert_not_null(pB);
-
-    if(pA->Priority == pB->Priority)
-        return 0;
-    if(pA->Priority < 0)
-        return 1;
-    if(pB->Priority < 0)
-        return 0;
-    return (pA->Priority > pB->Priority);
-}
-
 
 MunitResult
 test_queue_initialise(const MunitParameter Parameters[], void *Fixture) {
@@ -74,12 +54,19 @@ test_queue_operations(const MunitParameter Parameters[], void *Fixture) {
     struct _QUEUE_ELEMENT *pItem;
     int nIndex;
 
-    queue_initialise(&sQueue, _test_queue_compare, NULL);
+    queue_initialise(&sQueue);
     munit_assert_size(queue_size(&sQueue, 2), ==, 2);
+
+    munit_assert_int(queue_push(&sQueue, NULL), ==, 0);
     munit_assert_size(sQueue.Count, ==, 0);
     munit_assert_null(queue_peek(&sQueue));
+    munit_assert_null(queue_pop(&sQueue));
+
     for(nIndex = 0; nIndex < 2; ++nIndex) {
-        munit_assert_int(queue_push(&sQueue, &sItem[nIndex]), ==, 0);
+        munit_assert_not_null(pItem = calloc(1, sizeof(struct _QUEUE_ELEMENT)));
+        pItem->Priority = sItem[nIndex].Priority;
+        pItem->Data = sItem[nIndex].Data;
+        munit_assert_int(queue_push(&sQueue, pItem), ==, 0);
         munit_assert_size(sQueue.Count, ==, (nIndex + 1));
     }
     munit_assert_size(sQueue.Count, ==, sQueue.Size);
@@ -97,14 +84,9 @@ test_queue_operations(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(pItem->Priority, ==, 0);
     munit_assert_string_equal(pItem->Data, "Apple");
     munit_assert_size(sQueue.Count, ==, 1);
-    pItem = queue_pop(&sQueue);
-    munit_assert_not_null(pItem);
-    munit_assert_int(pItem->Priority, ==, 0);
-    munit_assert_string_equal(pItem->Data, "Banana");
-    munit_assert_size(sQueue.Count, ==, 0);
-    munit_assert_size(queue_size(&sQueue), ==, 2);
+    free(pItem);
 
-    queue_destroy(&sQueue);
+    queue_destroy(&sQueue, free);
 
     return MUNIT_OK;
 }

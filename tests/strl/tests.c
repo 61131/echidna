@@ -18,6 +18,11 @@ test_strl_basic(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_size(strlcat(sBuffer, "efgh", sizeof(sBuffer)), ==, 8);
     munit_assert_string_equal(sBuffer, "abcd");
 
+    //  This is an odd scenario where the destination buffer is already full, _without_ 
+    //  a trailing '\0' character.
+    munit_assert_size(strlcpy(sBuffer, "abcd", sizeof(sBuffer)), ==, 4);
+    munit_assert_size(strlcat(sBuffer, "efgh", 4), ==, 8);
+
     munit_assert_size(strlcpy(NULL, "abc", sizeof(sBuffer)), ==, 0);
     munit_assert_size(strlcat(NULL, "abc", sizeof(sBuffer)), ==, 0);
     munit_assert_size(strlcpy(sBuffer, NULL, sizeof(sBuffer)), ==, 0);

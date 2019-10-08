@@ -10,12 +10,12 @@ clean:
 	test -L echidna && rm echidna || true
 	make -C src clean
 	make -C tests clean
-	rm -f core gcovr.txt || true
+	rm -f core gcovr.xml || true
 
 tests: clean
 	make -C src libechidna.a
 	make -C tests
-	(which gcovr >/dev/null 2>&1 && gcovr -r . > gcovr.txt) || true
+#	gcovr -r . -x -o gcovr.xml 2>/dev/null || true
 
 docker:
 	docker build -t echidna .circleci/images

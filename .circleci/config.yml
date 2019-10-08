@@ -6,14 +6,7 @@ defaults: &defaults
 
 workflows:
   version: 2
-  nightly-pipeline:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
+  build-pipeline:
     jobs:
       - test
 
@@ -25,7 +18,7 @@ jobs:
       - checkout
       - run: make tests
       - store_artifacts:
-          path: gcovr.txt
+          path: gcovr.xml
       
   build:
     <<: *defaults
