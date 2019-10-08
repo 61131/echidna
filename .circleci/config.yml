@@ -26,4 +26,3 @@ jobs:
     <<: *defaults
     steps:
       - run: make
-
