@@ -5924,6 +5924,8 @@ yyfunction_create(const char *Name, TOKEN_LIST *Parameters) {
                 case VAR_OUTPUT:    uType = TYPE_OUTPUT; }
                     assert(pToken->Type == TYPE_LIST);
                     assert(nStack < (nSize - 1));
+                    if(nStack >= (nSize - 1))
+                        goto error;
                     pStack[++nStack] = (TOKEN_LIST *) pToken;
                     token_list_reset(pStack[nStack]);
                     break;

@@ -148,19 +148,13 @@ _operator_inputs_index(const char *Name) {
 
 int
 operator_inputs(RUNTIME_CONTEXT *Context, SYMBOL *Symbol, VALUE *Value) {
-    ECHIDNA *pContext;
     FRAME *pFrame;
     LL_ITER sIter;
-    RUNTIME *pRun;
     RUNTIME_FUNCTION *pInstance;
     RUNTIME_PARAMETER *pParameter;
     uint32_t uBC, uType;
     int nIndex;
 
-    pRun = (RUNTIME *) Context->Parent;
-    assert(pRun != NULL);
-    pContext = (ECHIDNA *) Context->Parent;
-    assert(pContext != NULL);
     pFrame = frame_current(Context);
 
     nIndex = -1;

@@ -301,6 +301,8 @@ _value_cast(size_t Arg, VALUE *Value, VALUE_TYPE Type, ...) {
             log_critical("%s: %08x", __func__, Type);
             assert(0);
     }
+
+    return 0;
 }
 
 

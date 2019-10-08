@@ -24,7 +24,7 @@ OBJS:= grammar.o lexer.o block.o bytecode.o bytecode/generate.o bytecode/label.o
 # TODO: Change $(LIBRARY) to test?!
 
 ifneq ($(filter $(LIBRARY),$(MAKECMDGOALS)),)
-CFLAGS += -fprofile-arcs -ftest-coverage
+CFLAGS += -fprofile-arcs -ftest-coverage -DNDEBUG
 endif
 
 all: clean grammar.o $(SUBDIRS) $(TARGET)

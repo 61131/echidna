@@ -589,6 +589,8 @@ _bytecode_generate_value( ECHIDNA *Context, char *pConfig, char *pResource, char
             log_debug( "%s: %08x", __func__, pValue->Type & ~TYPE_IN_OUT );
             assert(0);
     }
+
+    return 0;
 }
 
 

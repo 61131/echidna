@@ -107,6 +107,8 @@ _runtime_value(RUNTIME_CONTEXT *Context, VALUE *Value) {
             log_debug("%s: %08x", __func__, Value->Type);
             assert(0);
     }
+
+    return 0;
 }
 
 
