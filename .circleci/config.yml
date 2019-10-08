@@ -1,0 +1,30 @@
+version: 2
+
+defaults: &defaults
+  docker:
+  - image: robcasey/dev:echidna
+
+workflows:
+  version: 2
+  build-pipeline:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+
+jobs:
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: make tests
+      - store_artifacts:
+        - path: gcovr.txt
+      
+  build:
+    <<: *defaults
+    steps:
+      - run: make
+
