@@ -6,7 +6,14 @@ defaults: &defaults
 
 workflows:
   version: 2
-  build-pipeline:
+  nightly-pipeline:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - test
 
