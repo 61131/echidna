@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <errno.h>
+#include <assert.h>
 
 #include <log.h>
 #include <queue.h>
@@ -23,6 +24,8 @@ _queue_destroy(size_t Arg, QUEUE *Queue, ...) {
     va_list sArg;
     void *pData;
 
+    if(Queue == NULL)
+        return;
     if(Arg > 1) {
         va_start(sArg, Queue);
         pDestroy = va_arg(sArg, _QUEUE_DESTROY);
@@ -32,10 +35,10 @@ _queue_destroy(size_t Arg, QUEUE *Queue, ...) {
         pDestroy = Queue->Destroy;
 
     while(Queue->Count > 0) {
-        if((pData = queue_pop(Queue)) != NULL) {
-            if(pDestroy)
-                pDestroy(pData);
-        }
+        pData = queue_pop(Queue);
+        assert(pData != NULL);
+        if(pDestroy)
+            pDestroy(pData);
     }
 
     free(Queue->Queue);
@@ -51,6 +54,8 @@ _queue_initialise(size_t Arg, QUEUE *Queue, ...) {
     _QUEUE_DESTROY pDestroy;
     va_list sArg;
 
+    if(Queue == NULL)
+        return;
     Queue->Queue = NULL;
     Queue->Count = Queue->Size = 0;
     Queue->Compare = _queue_compare;
@@ -95,8 +100,8 @@ _queue_push(size_t Arg, QUEUE *Queue, ...) {
     va_end(sArg);
 
     if(Queue->Count != uCount) {
-        if(Queue->Compare)
-            qsort(Queue->Queue, Queue->Count, sizeof(void *), Queue->Compare);
+        assert(Queue->Compare != NULL);
+        qsort(Queue->Queue, Queue->Count, sizeof(void *), Queue->Compare);
     }
     return nResult;
 }

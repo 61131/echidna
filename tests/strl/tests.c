@@ -22,6 +22,10 @@ test_strl_basic(const MunitParameter Parameters[], void *Fixture) {
     //  a trailing '\0' character.
     munit_assert_size(strlcpy(sBuffer, "abcd", sizeof(sBuffer)), ==, 4);
     munit_assert_size(strlcat(sBuffer, "efgh", 4), ==, 8);
+    
+    sBuffer[0] = '\0';
+    munit_assert_size(strlcpy(sBuffer, "abcd", 0), ==, 0);
+    munit_assert_size(strlcat(sBuffer, "abcd", 0), ==, 0);
 
     munit_assert_size(strlcpy(NULL, "abc", sizeof(sBuffer)), ==, 0);
     munit_assert_size(strlcat(NULL, "abc", sizeof(sBuffer)), ==, 0);

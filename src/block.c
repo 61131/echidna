@@ -13,7 +13,6 @@ size_t
 _block_end(size_t Arg, BLOCK *Block, ...) {
     va_list sArg;
 
-    assert(Block != NULL);
     if(Arg > 1) {
         va_start(sArg, Block);
         Block->End = va_arg(sArg, size_t);
@@ -43,7 +42,8 @@ void
 _block_initialise(size_t Arg, BLOCK *Block, ...) {
     va_list sArg;
 
-    assert(Block != NULL);
+    if(Block == NULL)
+        return;
     Block->Data = Block->Name = NULL;
     Block->End = Block->Size = 0;
     Block->Alloc = 0;

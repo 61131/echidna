@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include <munit/munit.h>
 
@@ -61,6 +62,9 @@ test_block_initialise(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_size(sBlock.Size, ==, 0);
     munit_assert_int(sBlock.Alloc, ==, 0);
     block_destroy(&sBlock);
+
+    block_initialise(NULL);
+    block_destroy(NULL);
 
     return MUNIT_OK;
 }
@@ -133,6 +137,11 @@ test_block_read(const MunitParameter Parameters[], void *Fixture) {
     nResult = block_read(&sBlock, 12, 16, sOutput);
     munit_assert_int(nResult, ==, 4);
 
+    errno = 0;
+    nResult = block_read(&sBlock, 32, 1, sOutput);
+    munit_assert_int(nResult, ==, -1);
+    munit_assert_int(errno, ==, ERANGE);
+
     for(nIndex = 0; nIndex < nResult; ++nIndex) 
         munit_assert_char(sOutput[nIndex], ==, ('C' + nIndex));
 
@@ -150,10 +159,11 @@ test_block_size(const MunitParameter Parameters[], void *Fixture) {
     block_initialise(&sBlock);
     munit_assert_size(sBlock.End, ==, 0);
     munit_assert_size(sBlock.Size, ==, 0);
-    munit_assert_size(block_size(&sBlock, 512), >=, 512);
-    munit_assert_size(block_size(&sBlock), >=, 512);
-    munit_assert_size(sBlock.Size, >=, 512);
+    munit_assert_size(block_size(&sBlock, 2049), >=, 2049);
+    munit_assert_size(block_size(&sBlock), >=, 2049);
+    munit_assert_size(sBlock.Size, >=, 2049);
     munit_assert_size(block_end(&sBlock), ==, 0);
+    munit_assert_size(block_size(&sBlock, 512), >=, 512);
     block_destroy(&sBlock);
 
     return MUNIT_OK;

@@ -3,7 +3,7 @@ core
 *.gcno
 *.gcov
 *.o
-gcovr.txt
+gcovr.xml
 grammar.c
 grammar.h
 grammar.output

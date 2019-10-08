@@ -14,6 +14,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     VALUE_TYPE sType[3];
     int nIndex;
 
+    value_assign(&sValue);
+    value_assign(NULL, TYPE_BOOL);
+
     //  ANY_NUM, ANY_REAL, TYPE_LREAL
     sType[0] = ANY_NUM;
     sType[1] = ANY_REAL;
@@ -28,6 +31,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
         munit_assert_double(sValue.Value.Double, ==, 0.0);
         munit_assert_null(sValue.Meta);
         value_destroy(&sValue);
+        value_assign(&sValue, sType[nIndex], 1.0);
+        munit_assert_double(sValue.Value.Double, ==, 1.0);
+        value_destroy(&sValue);
     }
 
     //  TYPE_REAL
@@ -39,6 +45,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_float(sValue.Minimum.Single, ==, FLT_MIN);
     munit_assert_float(sValue.Value.Single, ==, 0.0f);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_REAL, 1.0f);
+    munit_assert_float(sValue.Value.Single, ==, 1.0f);
     value_destroy(&sValue);
 
     //  ANY_INT, TYPE_LINT
@@ -54,6 +63,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
         munit_assert_int64(sValue.Value.S64, ==, 0);
         munit_assert_null(sValue.Meta);
         value_destroy(&sValue);
+        value_assign(&sValue, sType[nIndex], 1);
+        munit_assert_int64(sValue.Value.S64, ==, 1);
+        value_destroy(&sValue);
     }
 
     //  TYPE_DINT
@@ -66,6 +78,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int32(sValue.Value.S32, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_DINT, 1);
+    munit_assert_int32(sValue.Value.S32, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_INT
     value_assign(&sValue, TYPE_INT);
@@ -76,6 +91,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int16(sValue.Minimum.S16, ==, INT16_MIN);
     munit_assert_int16(sValue.Value.S16, ==, 0);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_INT, 1);
+    munit_assert_int16(sValue.Value.S16, ==, 1);
     value_destroy(&sValue);
 
     //  TYPE_SINT
@@ -88,6 +106,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int8(sValue.Value.S8, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_SINT, 1);
+    munit_assert_int8(sValue.Value.S8, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_ULINT
     value_assign(&sValue, TYPE_ULINT);
@@ -98,6 +119,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint64(sValue.Minimum.U64, ==, 0);
     munit_assert_uint64(sValue.Value.U64, ==, 0);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_ULINT, 1);
+    munit_assert_uint64(sValue.Value.U64, ==, 1);
     value_destroy(&sValue);
 
     //  TYPE_UDINT
@@ -110,6 +134,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint32(sValue.Value.U32, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_UDINT, 1);
+    munit_assert_uint32(sValue.Value.U32, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_UINT
     value_assign(&sValue, TYPE_UINT);
@@ -121,6 +148,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint16(sValue.Value.U16, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_UINT, 1);
+    munit_assert_uint16(sValue.Value.U16, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_USINT
     value_assign(&sValue, TYPE_USINT);
@@ -131,6 +161,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Minimum.U8, ==, 0);
     munit_assert_uint8(sValue.Value.U8, ==, 0);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_USINT, 1);
+    munit_assert_uint8(sValue.Value.U8, ==, 1);
     value_destroy(&sValue);
 
     //  ANY_BIT, TYPE_LWORD
@@ -146,6 +179,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
         munit_assert_uint64(sValue.Value.B64, ==, 0);
         munit_assert_null(sValue.Meta);
         value_destroy(&sValue);
+        value_assign(&sValue, sType[nIndex], 1);
+        munit_assert_uint64(sValue.Value.B64, ==, 1);
+        value_destroy(&sValue);
     }
 
     //  TYPE_DWORD
@@ -158,6 +194,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint32(sValue.Value.B32, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_DWORD, 1);
+    munit_assert_uint32(sValue.Value.B32, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_WORD
     value_assign(&sValue, TYPE_WORD);
@@ -168,6 +207,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint16(sValue.Minimum.B16, ==, 0);
     munit_assert_uint16(sValue.Value.B16, ==, 0);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_WORD, 1);
+    munit_assert_uint16(sValue.Value.B16, ==, 1);
     value_destroy(&sValue);
 
     //  TYPE_BYTE
@@ -180,6 +222,9 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Value.B8, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_BYTE, 1);
+    munit_assert_uint8(sValue.Value.B8, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_BOOL
     value_assign(&sValue, TYPE_BOOL);
@@ -191,16 +236,22 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Value.B1, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+    value_assign(&sValue, TYPE_BOOL, 1);
+    munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_destroy(&sValue);
 
     //  TYPE_TIME
     value_assign(&sValue, TYPE_TIME);
     munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
     munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
     munit_assert_int(sValue.Length, ==, sizeof(float));
-    munit_assert_float(sValue.Maximum.Single, ==, FLT_MAX);
-    munit_assert_float(sValue.Minimum.Single, ==, FLT_MIN);
-    munit_assert_float(sValue.Value.Single, ==, 0.0f);
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 0.0f);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_TIME, 1.0f);
+    munit_assert_float(sValue.Value.Time, ==, 1.0f);
     value_destroy(&sValue);
 
     //  TYPE_NONE
@@ -212,6 +263,25 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint64(sValue.Minimum.B64, ==, 0);
     munit_assert_uint64(sValue.Value.B64, ==, 0);
     munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
+    //  TYPE_ENUMERATED
+    //  TYPE_FUNCTION
+    //  TYPE_FUNCTION_BLOCK
+    //  TYPE_LABEL
+    //  _TYPE_PROGRAM
+    value_assign(&sValue, TYPE_LABEL);
+    munit_assert_uint32(sValue.Type, ==, TYPE_LABEL);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, 0);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_LABEL, NULL);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+    value_assign(&sValue, TYPE_LABEL, "_label");
+    munit_assert_not_null(sValue.Meta);
+    munit_assert_string_equal(sValue.Meta, "_label");
     value_destroy(&sValue);
 
     return MUNIT_OK;
@@ -230,6 +300,9 @@ test_value_initialise(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int64(sValue.Index.Upper, ==, 0);
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
+
+    value_initialise(NULL);
+    value_destroy(NULL);
 
     return MUNIT_OK;
 }
@@ -939,6 +1012,30 @@ test_value_strtotype(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
 
+    //  TRUE
+    value_initialise(&sValue);
+    munit_assert_int(value_strtotype(&sValue, "TRUE"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_BOOL);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, sizeof(uint8_t));
+    munit_assert_uint8(sValue.Maximum.B1, ==, 1);
+    munit_assert_uint8(sValue.Minimum.B1, ==, 1);
+    munit_assert_uint8(sValue.Value.B1, ==, 1);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
+    //  FALSE
+    value_initialise(&sValue);
+    munit_assert_int(value_strtotype(&sValue, "FALSE"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_BOOL);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, sizeof(uint8_t));
+    munit_assert_uint8(sValue.Maximum.B1, ==, 0);
+    munit_assert_uint8(sValue.Minimum.B1, ==, 0);
+    munit_assert_uint8(sValue.Value.B1, ==, 0);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
     //  TYPE_TIME
     value_initialise(&sValue);
     munit_assert_int(value_strtotype(&sValue, "TIME"), ==, 0);
@@ -1248,7 +1345,17 @@ test_value_typetostr(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_string_equal(value_typetostr(TYPE_WORD), "WORD");
     munit_assert_string_equal(value_typetostr(TYPE_BYTE), "BYTE");
     munit_assert_string_equal(value_typetostr(TYPE_BOOL), "BOOL");
+    munit_assert_string_equal(value_typetostr(TYPE_TIME), "TIME");
+    munit_assert_string_equal(value_typetostr(TYPE_DATE), "DATE");
+    munit_assert_string_equal(value_typetostr(TYPE_DT), "DATE_AND_TIME");
+    munit_assert_string_equal(value_typetostr(TYPE_TOD), "TIME_OF_DAY");
+    munit_assert_string_equal(value_typetostr(TYPE_FUNCTION_BLOCK), "FUNCTION_BLOCK");
+    munit_assert_string_equal(value_typetostr(TYPE_FUNCTION), "FUNCTION");
+    munit_assert_string_equal(value_typetostr(TYPE_LABEL), "LABEL");
+    munit_assert_string_equal(value_typetostr(_TYPE_PROGRAM), "PROGRAM");
     munit_assert_string_equal(value_typetostr(TYPE_NONE), "(NONE)");
+    //  TODO: Handle ANY_ types?!
+    munit_assert_string_equal(value_typetostr(ANY), "(ERROR)");
 
     return MUNIT_OK;
 }
@@ -1272,6 +1379,10 @@ test_value_typetosize(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(value_typetosize(TYPE_BYTE), ==, sizeof(uint8_t));
     munit_assert_int(value_typetosize(TYPE_BOOL), ==, sizeof(uint8_t));
     munit_assert_int(value_typetosize(TYPE_TIME), ==, sizeof(float));
+    munit_assert_int(value_typetosize(TYPE_INPUT), ==, 0);
+    munit_assert_int(value_typetosize(TYPE_IN_OUT), ==, 0);
+    munit_assert_int(value_typetosize(TYPE_OUTPUT), ==, 0);
+    munit_assert_int(value_typetosize(TYPE_LABEL), ==, sizeof(uint32_t));
 
     return MUNIT_OK;
 }

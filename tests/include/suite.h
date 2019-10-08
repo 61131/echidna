@@ -12,6 +12,7 @@ extern MunitTest Suite_Queue[];
 extern MunitTest Suite_stats[];
 extern MunitTest Suite_Strl[];
 extern MunitTest Suite_Value[];
+extern MunitTest suite_unit[];
 
 
 #endif  //  _SUITE_H

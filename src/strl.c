@@ -31,13 +31,15 @@ strlcat(char *dst, const char *src, size_t dsize)
 
     if(!dst || !src)
         return 0;
+    if(n == 0)
+        return 0;
     while(n-- != 0 && *dst != '\0')
         dst++;
     dlen = dst - odst;
     n = dsize - dlen;
 
     if(n-- == 0)
-        return(dlen + strlen(src));
+        return (dlen + strlen(src));
     while(*src != '\0') {
         if(n != 0) {
             *dst++ = *src;
@@ -59,6 +61,8 @@ strlcpy(char *dst, const char *src, size_t dsize)
 
     if(!dst || !src)
         return 0;
+    if(nleft == 0)
+        return 0;
     if(nleft != 0) {
         while(--nleft != 0) {
             if((*dst++ = *src++) == '\0')
@@ -67,8 +71,7 @@ strlcpy(char *dst, const char *src, size_t dsize)
     }
 
     if(nleft == 0) {
-        if(dsize != 0)
-            *dst = '\0';
+        *dst = '\0';
         while(*src++);
     }
 

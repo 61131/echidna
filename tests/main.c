@@ -10,6 +10,7 @@ static MunitSuite sSuites[] = {
     { "sha256/", Suite_Digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "stats/", Suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "strl/", Suite_Strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "unit/", suite_unit, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "value/", Suite_Value, NULL, 1, MUNIT_SUITE_OPTION_NONE },
 
     { NULL, NULL, NULL, 0, MUNIT_SUITE_OPTION_NONE }
