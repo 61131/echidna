@@ -6,6 +6,7 @@
 
 
 extern MunitTest Suite_Block[];
+extern MunitTest suite_cast[];
 extern MunitTest Suite_Digest[];
 extern MunitTest Suite_List[];
 extern MunitTest Suite_Queue[];

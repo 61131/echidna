@@ -13,8 +13,10 @@ cast_lreal(VALUE *Value) {
     uint32_t uType;
     double dVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     dVal = 0.0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -42,7 +44,10 @@ cast_lreal(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:          
+            errno = EINVAL;
+            return EINVAL;
+
         default:
             break;
     }
@@ -66,8 +71,10 @@ cast_real(VALUE *Value) {
     uint32_t uType;
     float fVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     fVal = 0.0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -95,7 +102,10 @@ cast_real(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -119,8 +129,10 @@ cast_lint(VALUE *Value) {
     uint32_t uType;
     int64_t nVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     nVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -148,7 +160,10 @@ cast_lint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -172,8 +187,10 @@ cast_dint(VALUE *Value) {
     uint32_t uType;
     int32_t nVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     nVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -201,7 +218,10 @@ cast_dint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -225,8 +245,10 @@ cast_int(VALUE *Value) {
     uint32_t uType;
     int16_t nVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     nVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -254,7 +276,10 @@ cast_int(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -278,8 +303,10 @@ cast_sint(VALUE *Value) {
     uint32_t uType;
     int8_t nVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     nVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -307,7 +334,10 @@ cast_sint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -331,8 +361,10 @@ cast_ulint(VALUE *Value) {
     uint32_t uType;
     uint64_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -360,7 +392,10 @@ cast_ulint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -384,8 +419,10 @@ cast_udint(VALUE *Value) {
     uint32_t uType;
     uint32_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -413,7 +450,10 @@ cast_udint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -437,8 +477,10 @@ cast_uint(VALUE *Value) {
     uint32_t uType;
     uint16_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -466,7 +508,10 @@ cast_uint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -490,8 +535,10 @@ cast_usint(VALUE *Value) {
     uint32_t uType;
     uint8_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -519,7 +566,10 @@ cast_usint(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -544,8 +594,10 @@ cast_lword(VALUE *Value) {
     uint32_t uType;
     uint64_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -573,7 +625,10 @@ cast_lword(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -597,8 +652,10 @@ cast_dword(VALUE *Value) {
     uint32_t uType;
     uint32_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -626,7 +683,10 @@ cast_dword(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -650,8 +710,10 @@ cast_word(VALUE *Value) {
     uint32_t uType;
     uint16_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -679,7 +741,10 @@ cast_word(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -703,8 +768,10 @@ cast_byte(VALUE *Value) {
     uint32_t uType;
     uint8_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -732,7 +799,10 @@ cast_byte(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -756,8 +826,10 @@ cast_bool(VALUE *Value) {
     uint32_t uType;
     uint8_t uVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     uVal = 0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -785,7 +857,10 @@ cast_bool(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -806,13 +881,15 @@ cast_bool(VALUE *Value) {
 
 int 
 cast_string(VALUE *Value) {
-    return EINVAL;
+    errno = EINVAL;
+    return -1;
 }
 
 
 int 
 cast_wstring(VALUE *Value) {
-    return EINVAL;
+    errno = EINVAL;
+    return -1;
 }
 
 
@@ -821,8 +898,10 @@ cast_time(VALUE *Value) {
     uint32_t uType;
     float fVal;
 
-    if(!Value)
-        return EINVAL;
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
 
     fVal = 0.0;
     if((uType = Value->Type) == TYPE_DERIVED)
@@ -850,7 +929,10 @@ cast_time(VALUE *Value) {
         case TYPE_WSTRING:      /* break; */
         case TYPE_DATE:         /* break; */
         case TYPE_DT:           /* break; */
-        case TYPE_TOD:          return EINVAL;
+        case TYPE_TOD:
+            errno = EINVAL;
+            return -1;
+
         default:
             break;
     }
@@ -871,17 +953,20 @@ cast_time(VALUE *Value) {
 
 int 
 cast_date(VALUE *Value) {
-    return EINVAL;
+    errno = EINVAL;
+    return -1;
 }
 
 
 int 
 cast_dt(VALUE *Value) {
-    return EINVAL;
+    errno = EINVAL;
+    return -1;
 }
 
 
 int 
 cast_tod(VALUE *Value) {
-    return EINVAL;
+    errno = EINVAL;
+    return -1;
 }

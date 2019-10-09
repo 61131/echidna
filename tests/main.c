@@ -5,6 +5,7 @@
 
 static MunitSuite sSuites[] = {
     { "block/", Suite_Block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "cast/", suite_cast, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "ll/", Suite_List, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "queue/", Suite_Queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "sha256/", Suite_Digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
