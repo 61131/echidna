@@ -147,19 +147,21 @@ _tree_rotate2( TREE_NODE *pNode, int nDirection ) {
 
 
 void 
-_tree_destroy( size_t uArg, TREE *pTree, ... ) {
+_tree_destroy(size_t Arg, TREE *Tree, ...) {
     _TREE_DESTROY pDestroy;
     TREE_NODE *pN, *pNode;
     va_list sArg;
 
-    pDestroy = pTree->Destroy;
-    if(uArg > 1) {
-        va_start(sArg, pTree);
+    if(Tree == NULL)
+        return;
+    pDestroy = Tree->Destroy;
+    if(Arg > 1) {
+        va_start(sArg, Tree);
         pDestroy = va_arg(sArg, _TREE_DESTROY);
         va_end(sArg);
     }
 
-    pNode = pTree->Root;
+    pNode = Tree->Root;
     pN = NULL;
     while(pNode) {
         if( pNode->Node[0] == NULL ) {
@@ -175,24 +177,26 @@ _tree_destroy( size_t uArg, TREE *pTree, ... ) {
         pNode = pN;
     }
 
-    pTree->Root = NULL;
+    Tree->Root = NULL;
 }
 
 
 void
-_tree_initialise( size_t uArg, TREE *pTree, ... ) {
+_tree_initialise(size_t Arg, TREE *Tree, ...) {
     va_list sArg;
 
-    pTree->Compare = _tree_compare;
-    pTree->Destroy = NULL;
-    pTree->Root = NULL;
-    pTree->Alloc = pTree->Size = 0;
+    if(Tree == NULL)
+        return;
+    Tree->Compare = _tree_compare;
+    Tree->Destroy = NULL;
+    Tree->Root = NULL;
+    Tree->Alloc = Tree->Size = 0;
 
-    va_start(sArg, pTree);
-    if(uArg > 1)
-        pTree->Compare = va_arg(sArg, _TREE_COMPARE);
-    if(uArg > 2)
-        pTree->Destroy = va_arg(sArg, _TREE_DESTROY);
+    va_start(sArg, Tree);
+    if(Arg > 1)
+        Tree->Compare = va_arg(sArg, _TREE_COMPARE);
+    if(Arg > 2)
+        Tree->Destroy = va_arg(sArg, _TREE_DESTROY);
     va_end(sArg);
 }
 
@@ -340,15 +344,15 @@ tree_iterate_reset( TREE_ITER *pIter, TREE *pTree ) {
 
 
 TREE *
-tree_new( void ) {
+tree_new(void) {
     TREE *pTree;
 
     errno = 0;
-    if( ( pTree = ( TREE * ) calloc( 1, sizeof( *pTree ) ) ) == NULL ) {
-        log_critical( "Failed to allocate memory: %s", strerror( errno ) );
+    if((pTree = calloc(1, sizeof(*pTree))) == NULL) {
+        log_critical("Failed to allocate memory: %s", strerror(errno));
         return NULL;
     }
-    tree_initialise( pTree );
+    tree_initialise(pTree);
     pTree->Alloc = 1;
     return pTree;
 }

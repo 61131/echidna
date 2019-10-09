@@ -3,7 +3,7 @@
 #include <tests.h>
 
 
-MunitTest Suite_List[] = {
+MunitTest suite_list[] = {
     { "copy", test_ll_copy, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "delete", test_ll_delete, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "initialise", test_ll_initialise, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },

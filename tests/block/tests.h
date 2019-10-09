@@ -7,6 +7,8 @@
 
 MunitResult test_block_append(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_block_dump(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_block_end(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_block_initialise(const MunitParameter Parameters[], void *Fixture);

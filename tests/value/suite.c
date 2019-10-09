@@ -3,7 +3,8 @@
 #include <tests.h>
 
 
-MunitTest Suite_Value[] = {
+MunitTest suite_value[] = {
+
     { "assign", test_value_assign, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "cast", test_value_cast, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "initialise", test_value_initialise, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },

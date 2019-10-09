@@ -25,6 +25,7 @@ test_queue_initialise(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sQueue.Alloc, ==, 0);
     queue_destroy(&sQueue);
 
+    queue_initialise(NULL);
     queue_destroy(NULL);
 
     return MUNIT_OK;
@@ -36,6 +37,7 @@ test_queue_new(const MunitParameter Parameters[], void *Fixture) {
     QUEUE *pQueue;
 
     pQueue = queue_new();
+    munit_assert_not_null(pQueue);
     munit_assert_null(pQueue->Queue);
     munit_assert_size(pQueue->Count, ==, 0);
     munit_assert_size(pQueue->Size, ==, 0);

@@ -144,6 +144,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_LREAL, 1.0);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_REAL
@@ -253,6 +260,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_REAL, 1.0);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_LINT
@@ -362,6 +376,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_LINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_DINT
@@ -471,6 +492,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_DINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_INT
@@ -580,6 +608,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_INT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_SINT
@@ -689,6 +724,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_SINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_ULINT
@@ -798,6 +840,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_ULINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_UDINT
@@ -907,6 +956,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_UDINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_UINT
@@ -1016,6 +1072,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_UINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_USINT
@@ -1125,6 +1188,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_USINT, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_LWORD
@@ -1234,6 +1304,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_LWORD, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_DWORD
@@ -1343,6 +1420,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_DWORD, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_WORD
@@ -1452,6 +1536,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_WORD, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_BYTE
@@ -1561,6 +1652,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_BYTE, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_BOOL
@@ -1670,6 +1768,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_BOOL, 1);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     //  TYPE_TIME
@@ -1779,6 +1884,13 @@ test_value_cast(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sValue.Maximum.B1, ==, 1);
     munit_assert_uint8(sValue.Minimum.B1, ==, 0);
     munit_assert_uint8(sValue.Value.B1, ==, 1);
+    value_assign(&sValue, TYPE_TIME, 1.0);
+    munit_assert_int(value_cast(&sValue, TYPE_TIME), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TIME);
+    munit_assert_size(sValue.Length, ==, sizeof(float));
+    munit_assert_float(sValue.Maximum.Time, ==, FLT_MAX);
+    munit_assert_float(sValue.Minimum.Time, ==, FLT_MIN);
+    munit_assert_float(sValue.Value.Time, ==, 1.0);
     value_destroy(&sValue);
 
     return MUNIT_OK;

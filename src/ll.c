@@ -30,8 +30,10 @@ _ll_copy(size_t Arg, LL *List, ...) {
     void *pData;
     int nResult;
 
-    if(Arg < 2)
-        return EINVAL;
+    if(Arg < 2) {
+        errno = EINVAL;
+        return -1;
+    }
 
     va_start(sArg, List);
     while(Arg-- > 1) {
@@ -171,8 +173,10 @@ _ll_merge(size_t Arg, LL *List, ...) {
     va_list sArg;
     int nResult;
 
-    if(Arg < 2)
-        return EINVAL;
+    if(Arg < 2) {
+        errno = EINVAL;
+        return -1;
+    }
 
     if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
             (nResult != EDEADLK))

@@ -6,15 +6,17 @@
 
 
 static MunitSuite sSuites[] = {
-    { "block/", Suite_Block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+
+    { "block/", suite_block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "cast/", suite_cast, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "ll/", Suite_List, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "queue/", Suite_Queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "sha256/", Suite_Digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "stats/", Suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "strl/", Suite_Strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "ll/", suite_list, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "queue/", suite_queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "stats/", suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "strl/", suite_strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "tree/", suite_tree, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "unit/", suite_unit, NULL, 1, MUNIT_SUITE_OPTION_NONE },
-    { "value/", Suite_Value, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "value/", suite_value, NULL, 1, MUNIT_SUITE_OPTION_NONE },
 
     { NULL, NULL, NULL, 0, MUNIT_SUITE_OPTION_NONE }
 };

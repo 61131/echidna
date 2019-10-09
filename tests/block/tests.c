@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
+#include <assert.h>
 
 #include <munit/munit.h>
 
@@ -33,8 +35,27 @@ test_block_append(const MunitParameter Parameters[], void *Fixture) {
 
 
 MunitResult
+test_block_dump(const MunitParameter Parameters[], void *Fixture) {
+    BLOCK sBlock;
+    int nDup, nFd;
+
+    block_initialise(&sBlock);
+    munit_assert_size(block_end(&sBlock, 256), ==, 256);
+    munit_assert_int(nFd = fileno(stdout), !=, -1);
+    munit_assert_int(nDup = dup(nFd), !=, -1);
+    close(nFd);
+    block_dump(&sBlock);
+    munit_assert_int(dup2(nDup, nFd), !=, -1);
+    close(nDup);
+
+    return MUNIT_OK;
+}
+
+
+MunitResult
 test_block_end(const MunitParameter Parameters[], void *Fixture) {
     BLOCK sBlock;
+    size_t uSize;
 
     memset(&sBlock, 0, sizeof(sBlock));
     block_initialise(&sBlock);
@@ -45,7 +66,8 @@ test_block_end(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_size(sBlock.End, ==, 512);
     munit_assert_size(block_size(&sBlock), >=, 512);
     //  Test automatic block re-size
-    munit_assert_size(block_end(&sBlock, 1024), ==, 1024);
+    uSize = block_size(&sBlock) + 1;
+    munit_assert_size(block_end(&sBlock, uSize), ==, uSize);
     block_destroy(&sBlock);
 
     return MUNIT_OK;

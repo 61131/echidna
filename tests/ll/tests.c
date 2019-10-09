@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
+#include <errno.h>
 
 #include <munit/munit.h>
 
@@ -49,17 +50,21 @@ _test_ll_validate(LL *List) {
 
 MunitResult
 test_ll_copy(const MunitParameter Parameters[], void *Fixture) {
-    LL sList1, sList2;
+    LL sCopy, sList;
 
-    _test_ll_populate(&sList1, 0);
-    _test_ll_validate(&sList1);
-    munit_assert_int(ll_initialise(&sList2, NULL), ==, 0);
-    munit_assert_size(sList2.Size, ==, 0);
-    munit_assert_int(ll_copy(&sList2, &sList1), ==, 0);
-    munit_assert_size(sList1.Size, ==, sList2.Size);
-    _test_ll_validate(&sList2);
-    ll_destroy(&sList2);
-    ll_destroy(&sList1);
+    errno = 0;
+    munit_assert_int(ll_copy(NULL), ==, -1);
+    munit_assert_int(errno, ==, EINVAL);
+
+    _test_ll_populate(&sList, 0);
+    _test_ll_validate(&sList);
+    munit_assert_int(ll_initialise(&sCopy, NULL), ==, 0);
+    munit_assert_size(sCopy.Size, ==, 0);
+    munit_assert_int(ll_copy(&sCopy, &sList, NULL), ==, 0);
+    munit_assert_size(sCopy.Size, ==, sList.Size);
+    _test_ll_validate(&sCopy);
+    ll_destroy(&sCopy);
+    ll_destroy(&sList);
 
     return MUNIT_OK;
 }
@@ -202,17 +207,31 @@ test_ll_iterate_last(const MunitParameter Parameters[], void *Fixture) {
 
 MunitResult
 test_ll_merge(const MunitParameter Parameters[], void *Fixture) {
-    LL sList1, sList2;
+    LL sMerge, sList1, sList2;
+    char *pStr;
     size_t uSize;
+    int nIndex;
+
+    errno = 0;
+    munit_assert_int(ll_merge(NULL), ==, -1);
+    munit_assert_int(errno, ==, EINVAL);
 
     _test_ll_populate(&sList1, 0);
-    munit_assert_int(ll_initialise(&sList2, NULL), ==, 0);
-    munit_assert_size(sList2.Size, ==, 0);
-    uSize = sList1.Size;
-    munit_assert_int(ll_merge(&sList2, &sList1), ==, 0);
+    _test_ll_populate(&sList2, 0);
+    munit_assert_int(ll_initialise(&sMerge, NULL), ==, 0);
+    munit_assert_size(sMerge.Size, ==, 0);
+    uSize = sList1.Size + sList2.Size;
+    munit_assert_int(ll_merge(&sMerge, &sList1, &sList2), ==, 0);
     munit_assert_size(sList1.Size, ==, 0);
-    munit_assert_size(sList2.Size, ==, uSize);
-    _test_ll_validate(&sList2);
+    munit_assert_size(sList2.Size, ==, 0);
+    munit_assert_size(sMerge.Size, ==, uSize);
+
+    nIndex = 0;
+    ll_reset(&sMerge);
+    while((pStr = ll_iterate(&sMerge)) != NULL)
+        munit_assert_string_equal(pStr, _Str[(nIndex++ % 5)]);
+    ll_destroy(&sMerge);
+
     ll_destroy(&sList2);
     ll_destroy(&sList1);
 
