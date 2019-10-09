@@ -291,7 +291,7 @@ _frame_push(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
         if(Arg > 1)
             pFrame->POU = va_arg(sArg, void *); //  UNIT *
         if(Arg > 2)
-            pFrame->PC = va_arg(sArg, uint32_t);
+            pFrame->PC = (uint32_t) va_arg(sArg, int);
         if(Arg > 3) {
 
             /*

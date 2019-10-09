@@ -15,7 +15,7 @@ _block_end(size_t Arg, BLOCK *Block, ...) {
 
     if(Arg > 1) {
         va_start(sArg, Block);
-        Block->End = va_arg(sArg, size_t);
+        Block->End = (size_t) va_arg(sArg, int);
 
         /*
             The following allows the specification of the block end to additionally perform 
@@ -91,7 +91,7 @@ _block_size(size_t Arg, BLOCK *Block, ...) {
     assert(Block != NULL);
     if(Arg > 1) {
         va_start(sArg, Block);
-        uSize = va_arg(sArg, size_t);
+        uSize = (size_t) va_arg(sArg, int);
         va_end(sArg);
 
         if(uSize > Block->Size) {

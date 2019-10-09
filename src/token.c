@@ -38,9 +38,9 @@ _token_cast(size_t Arg, TOKEN *Token, uint32_t Id, ...) {
     
     va_start(sArg, Id);
     if(Arg > 2)
-        Token->Line = va_arg(sArg, uint32_t);
+        Token->Line = (uint32_t) va_arg(sArg, int);
     if(Arg > 3)
-        Token->Column = va_arg(sArg, uint32_t);
+        Token->Column = (uint32_t) va_arg(sArg, int);
     va_end(sArg);
 
     return Token;
@@ -89,9 +89,9 @@ _token_list_cast(size_t Arg, TOKEN_LIST *List, uint32_t Id, ...) {
     uLine = uColumn = 0;
     va_start(sArg, Id);
     if(Arg > 2)
-        uLine = va_arg(sArg, uint32_t);
+        uLine = (uint32_t) va_arg(sArg, int);
     if(Arg > 3) 
-        uColumn = va_arg(sArg, uint32_t);
+        uColumn = (uint32_t) va_arg(sArg, int);
     va_end(sArg);
 
     switch(Arg) {
@@ -157,9 +157,11 @@ _token_list_new(size_t Arg, ...) {
     }   
     token_list_initialise(pList);
     va_start(sArg, Arg);
-    pList->Token.Id = va_arg(sArg, uint32_t);
-    pList->Token.Line = (Arg > 1) ? va_arg(sArg, uint32_t) : 0;
-    pList->Token.Column = (Arg > 2) ? va_arg(sArg, uint32_t) : 0;
+    pList->Token.Id = (uint32_t) va_arg(sArg, int);
+    if(Arg > 1)
+        pList->Token.Line = (uint32_t) va_arg(sArg, int);
+    if(Arg > 2)
+        pList->Token.Column = (uint32_t) va_arg(sArg, int);
     if(Arg > 3) {
         pStr = va_arg(sArg, char *);
         pList->Token.Name = (pStr != NULL) ? strdup(pStr) : NULL;
@@ -188,9 +190,11 @@ _token_new(size_t Arg, ...) {
     }
     token_initialise(pToken);
     va_start(sArg, Arg);
-    pToken->Id = va_arg(sArg, uint32_t);
-    pToken->Line = (Arg > 1 ) ? va_arg(sArg, uint32_t) : 0;
-    pToken->Column = (Arg > 2 ) ? va_arg(sArg, uint32_t) : 0;
+    pToken->Id = (uint32_t) va_arg(sArg, int);
+    if(Arg > 1)
+        pToken->Line = (uint32_t) va_arg(sArg, int);
+    if(Arg > 2)
+        pToken->Column = (uint32_t) va_arg(sArg, int);
     if(Arg > 3) {
         pStr = va_arg(sArg, char*);
         pToken->Name = (pStr != NULL) ? strdup(pStr) : NULL;

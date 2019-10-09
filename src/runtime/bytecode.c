@@ -120,7 +120,7 @@ _runtime_debug(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
     pValue = NULL;
     if(Arg > 1) {
         va_start(sArg, Context);
-        uPC = va_arg(sArg, uint32_t);
+        uPC = (uint32_t) va_arg(sArg, int);
         if(Arg > 2)
             pValue = va_arg(sArg, VALUE *);
         va_end(sArg);

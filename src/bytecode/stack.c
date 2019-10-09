@@ -58,7 +58,7 @@ _bytecode_stack_initialise(size_t Arg, BYTECODE_STACK *Stack, TOKEN_LIST *List, 
         value_assign(&Stack->CR, uType);
 
         if(Arg > 3) 
-            Stack->BC = va_arg(sArg, uint32_t);
+            Stack->BC = (uint32_t) va_arg(sArg, int);
         if(Arg > 4) 
             Stack->Position = va_arg(sArg, int);
         va_end(sArg);

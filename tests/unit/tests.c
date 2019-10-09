@@ -43,6 +43,7 @@ test_unit_initialise(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint8(sUnit.Alloc, ==, 0);
     unit_destroy(&sUnit);
 
+    unit_initialise(&sUnit, NULL, NULL, NULL, NULL);
     unit_destroy(NULL);
 
     return MUNIT_OK;

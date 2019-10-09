@@ -117,7 +117,7 @@ _queue_size(size_t Arg, QUEUE *Queue, ... ) {
 
     for(;;) {
         va_start( sArg, Queue );
-        if((uSize = va_arg(sArg, size_t)) > Queue->Size) {
+        if((uSize = (size_t) va_arg(sArg, int)) > Queue->Size) {
             errno = 0;
             if((Queue->Queue = realloc(Queue->Queue, uSize * sizeof(void *))) == NULL) {
                 log_critical("Failed to allocate memory: %s", strerror(errno));

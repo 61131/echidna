@@ -35,7 +35,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.Double = DBL_MAX;
                 pValue->Minimum.Double = DBL_MIN;
                 if(Arg > 2)
-                    pValue->Value.Double = va_arg(sArg, double);
+                    pValue->Value.Double = (double) va_arg(sArg, double);
                 else
                     pValue->Value.Double = 0.0;
                 break;
@@ -57,7 +57,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.S64 = INT64_MAX;
                 pValue->Minimum.S64 = INT64_MIN;
                 if(Arg > 2)
-                    pValue->Value.S64 = va_arg(sArg, int64_t);
+                    pValue->Value.S64 = (int64_t) va_arg(sArg, int);
                 else
                     pValue->Value.S64 = 0LL;
                 break;
@@ -67,7 +67,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.S32 = INT32_MAX;
                 pValue->Minimum.S32 = INT32_MIN;
                 if(Arg > 2)
-                    pValue->Value.S32 = va_arg(sArg, int32_t);
+                    pValue->Value.S32 = (int32_t) va_arg(sArg, int);
                 else 
                     pValue->Value.S32 = 0L;
                 break;
@@ -78,7 +78,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.S16 = INT16_MIN;
                 //  warning: 'int16_t {aka short int}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.S16 = va_arg(sArg, int);
+                    pValue->Value.S16 = (int16_t) va_arg(sArg, int);
                 else
                     pValue->Value.S16 = 0;
                 break;
@@ -89,7 +89,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.S8 = INT8_MIN;
                 //  warning: 'int8_t {aka signed char}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.S8 = va_arg(sArg, int);
+                    pValue->Value.S8 = (int8_t) va_arg(sArg, int);
                 else 
                     pValue->Value.S8 = 0;
                 break;
@@ -99,7 +99,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.U64 = UINT64_MAX;
                 pValue->Minimum.U64 = 0;
                 if(Arg > 2)
-                    pValue->Value.U64 = va_arg(sArg, uint64_t);
+                    pValue->Value.U64 = (uint64_t) va_arg(sArg, int);
                 else
                     pValue->Value.U64 = 0ULL;
                 break;
@@ -109,7 +109,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.U32 = UINT32_MAX;
                 pValue->Minimum.U32 = 0;
                 if(Arg > 2)
-                    pValue->Value.U32 = va_arg(sArg, uint32_t);
+                    pValue->Value.U32 = (uint32_t) va_arg(sArg, int);
                 else
                     pValue->Value.U32 = 0UL;
                 break;
@@ -120,7 +120,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.U16 = 0;
                 //  warning: 'uint16_t {aka short unsigned int}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.U16 = va_arg(sArg, int);
+                    pValue->Value.U16 = (uint16_t) va_arg(sArg, int);
                 else
                     pValue->Value.U16 = 0U;
                 break;
@@ -131,7 +131,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.U8 = 0;
                 //  warning: 'uint8_t {aka unsigned char}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.U8 = va_arg(sArg, int);
+                    pValue->Value.U8 = (uint8_t) va_arg(sArg, int);
                 else
                     pValue->Value.U8 = 0U;
                 break;
@@ -142,7 +142,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.B64 = UINT64_MAX;
                 pValue->Minimum.B64 = 0;
                 if(Arg > 2)
-                    pValue->Value.B64 = va_arg(sArg, uint64_t);
+                    pValue->Value.B64 = (uint64_t) va_arg(sArg, int);
                 else
                     pValue->Value.B64 = 0ULL;
                 break;
@@ -152,7 +152,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Maximum.B32 = UINT32_MAX;
                 pValue->Minimum.B32 = 0;
                 if(Arg > 2)
-                    pValue->Value.B32 = va_arg(sArg, uint32_t);
+                    pValue->Value.B32 = (uint32_t) va_arg(sArg, int);
                 else
                     pValue->Value.B32 = 0UL;
                 break;
@@ -163,7 +163,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.B16 = 0;
                 //  warning: 'uint16_t {aka short unsigned int}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.B16 = va_arg(sArg, int);
+                    pValue->Value.B16 = (uint16_t) va_arg(sArg, int);
                 else
                     pValue->Value.B16 = 0U;
                 break;
@@ -174,7 +174,7 @@ _value_assign(size_t Arg, ...) {
                 pValue->Minimum.B8 = 0;
                 //  warning: 'uint8_t {aka unsigned char}' is promoted to 'int' when passed through '...'
                 if(Arg > 2)
-                    pValue->Value.B8 = va_arg(sArg, int);
+                    pValue->Value.B8 = (uint8_t) va_arg(sArg, int);
                 else
                     pValue->Value.B8 = 0U;
                 break;
@@ -187,7 +187,7 @@ _value_assign(size_t Arg, ...) {
                 //  error: 'typeof' applied to a bit-field
                 //  warning: 'uint8_t {aka unsigned char}' is promoted to 'int' when passed through '...'
                 if(Arg > 2) {
-                    pValue->Value.B1 = va_arg(sArg, int);
+                    pValue->Value.B1 = (uint8_t) va_arg(sArg, int);
                     pValue->Value.B1 &= 1;
                 }
                 else
@@ -230,6 +230,7 @@ _value_assign(size_t Arg, ...) {
             default:
                 log_error("Unhandled type: %08x [%s:%u]", uType, __FILE__, __LINE__);
                 assert(0);
+                break;
         }
 
         pValue->Type = pValue->Cast = uType;
@@ -515,9 +516,8 @@ value_strtotype(VALUE *Value, char *Str) {
         Value->Minimum.Time = FLT_MIN;
         Value->Value.Time = 0.0f;
     }
-    else {
-        /* return -1; */
-    }
+    else
+        return -1;
 
     return 0;
 }

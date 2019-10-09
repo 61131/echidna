@@ -63,11 +63,9 @@ strlcpy(char *dst, const char *src, size_t dsize)
         return 0;
     if(nleft == 0)
         return 0;
-    if(nleft != 0) {
-        while(--nleft != 0) {
-            if((*dst++ = *src++) == '\0')
-                break;
-        }
+    while(--nleft != 0) {
+        if((*dst++ = *src++) == '\0')
+            break;
     }
 
     if(nleft == 0) {

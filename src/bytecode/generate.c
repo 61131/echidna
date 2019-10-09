@@ -487,7 +487,7 @@ _bytecode_generate_label(size_t Arg, TREE *Scope, char *Name, ...) {
         }
 
         va_start(sArg, Name);
-        pLabel->Position[pLabel->Count++] = (uint32_t) va_arg(sArg, uint32_t);
+        pLabel->Position[pLabel->Count++] = (uint32_t) va_arg(sArg, int);
         va_end(sArg);
     }
     return pLabel;
