@@ -219,14 +219,13 @@ _value_assign(size_t Arg, ...) {
                 break;
 
             case TYPE_NONE:
-                pValue->Length = 0;
-                pValue->Value.B64 = 0;
-                pValue->Maximum.B64 = 0;
-                pValue->Minimum.B64 = 0;
                 break;
 
             case TYPE_STRING:
             case TYPE_WSTRING:
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
             default:
                 log_error("Unhandled type: %08x [%s:%u]", uType, __FILE__, __LINE__);
                 assert(0);
@@ -245,8 +244,10 @@ _value_cast(size_t Arg, VALUE *Value, VALUE_TYPE Type, ...) {
     VALUE *pCopy;
     va_list sArg;
 
-    if(!Value)
-        return -EINVAL;
+    if(Value == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
     
     /*
         This arrangement allows for values to be copied and cast within a single 
@@ -312,7 +313,7 @@ _value_destroy(size_t Arg, VALUE *Value, ...) {
     void (*pDestroy)(void *);
     va_list sArg;
 
-    if(!Value)
+    if(Value == NULL)
         return;
 
     va_start(sArg, Value);
@@ -337,13 +338,15 @@ _value_destroy(size_t Arg, VALUE *Value, ...) {
 
 int 
 value_allocate(VALUE *Value, VALUE_TYPE Type, size_t Length) {
-    if(!Value)
-        return -EINVAL;
+    if(Value == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
 
     errno = 0;
     if((Value->Value.Pointer = calloc(Length, sizeof(char))) == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
-        return errno;
+        return -1;
     }
     Value->Type = Type;
     Value->Length = Length;
@@ -367,7 +370,7 @@ value_copy(VALUE *Dest, VALUE *Src) {
 
 void
 value_initialise(VALUE *Value) {
-    if(!Value)
+    if(Value == NULL)
         return;
     Value->Type = TYPE_NONE;
     Value->Flags = FLAG_NONE;
@@ -528,8 +531,10 @@ value_strtoval(VALUE *Value, VALUE_TYPE Type, char *Str /*, uint8_t Base = 10 */
     char *pStart;
     int nBase, nLength;
 
-    if(!Value)
+    if(Value == NULL) {
+        errno = EINVAL;
         return -1;
+    }
     Value->Length = 0;
     Value->Type = Value->Cast = TYPE_NONE;
 
@@ -731,6 +736,7 @@ value_strtoval(VALUE *Value, VALUE_TYPE Type, char *Str /*, uint8_t Base = 10 */
         case TYPE_DT:
         case TYPE_TOD:
         default:
+            errno = EINVAL;
             return -1;
     }
 

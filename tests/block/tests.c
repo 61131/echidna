@@ -44,6 +44,8 @@ test_block_end(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_size(block_end(&sBlock), ==, 512);
     munit_assert_size(sBlock.End, ==, 512);
     munit_assert_size(block_size(&sBlock), >=, 512);
+    //  Test automatic block re-size
+    munit_assert_size(block_end(&sBlock, 1024), ==, 1024);
     block_destroy(&sBlock);
 
     return MUNIT_OK;

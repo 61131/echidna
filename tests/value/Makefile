@@ -13,7 +13,7 @@ INCLUDES:= $(subst !,.,$(INCLUDE_TEMPLATE)) \
 	$(subst !,$(SRCDIR),$(INCLUDE_TEMPLATE)) 
 
 TARGET:= libsuite.a
-OBJS:= cast.o istype.o tests.o suite.o
+OBJS:= assign.o cast.o istype.o tests.o suite.o
 
 all: clean $(TARGET)
 

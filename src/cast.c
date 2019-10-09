@@ -46,7 +46,7 @@ cast_lreal(VALUE *Value) {
         case TYPE_DT:           /* break; */
         case TYPE_TOD:          
             errno = EINVAL;
-            return EINVAL;
+            return -1;
 
         default:
             break;

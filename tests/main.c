@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include <log.h>
+
 #include <suite.h>
 
 
@@ -22,5 +24,6 @@ static const MunitSuite sSuite = { "", NULL, sSuites, 1, MUNIT_SUITE_OPTION_NONE
 
 int
 main(int Count, char **Arg) {
+    log_level = LOG_CRIT;
     return munit_suite_main(&sSuite, NULL, Count, Arg);
 }
