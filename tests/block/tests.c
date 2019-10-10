@@ -40,10 +40,12 @@ test_block_dump(const MunitParameter Parameters[], void *Fixture) {
     int nDup, nFd;
 
     block_initialise(&sBlock);
-    munit_assert_size(block_end(&sBlock, 256), ==, 256);
+    munit_assert_size(block_end(&sBlock, 257), ==, 257);
     munit_assert_int(nFd = fileno(stdout), !=, -1);
     munit_assert_int(nDup = dup(nFd), !=, -1);
     close(nFd);
+    block_dump(&sBlock);
+    munit_assert_not_null(block_name(&sBlock, "Test name"));
     block_dump(&sBlock);
     munit_assert_int(dup2(nDup, nFd), !=, -1);
     close(nDup);

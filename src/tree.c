@@ -6,70 +6,70 @@
 #include <tree.h>
 
 
-static int _tree_compare( void *pA, void *pB );
+static int _tree_compare(void *A, void *B);
 
-static void * _tree_iterate( TREE_ITER *pIter, int nDirection );
+static void * _tree_iterate(TREE_ITER *It, int Direction);
 
-static void * _tree_iterate_start( TREE_ITER *pIter, TREE *pTree, int nDirection );
+static void * _tree_iterate_start(TREE_ITER *It, TREE *Tree, int Direction);
 
-static void _tree_node_destroy( size_t uArg, TREE_NODE *pNode, ... );
+static void _tree_node_destroy(size_t Arg, TREE_NODE *Node, ...);
 
-static TREE_NODE * _tree_node_new( void );
+static TREE_NODE * _tree_node_new(void);
 
-static int _tree_direction( TREE_NODE *pNode );
+static int _tree_direction(TREE_NODE *Node);
 
-static TREE_NODE * _tree_rotate1( TREE_NODE *pNode, int nDirection );
+static TREE_NODE * _tree_rotate1(TREE_NODE *Node, int Direction);
 
-static TREE_NODE * _tree_rotate2( TREE_NODE *pNode, int nDirection );
+static TREE_NODE * _tree_rotate2(TREE_NODE *Node, int Direction);
 
 
 static int
-_tree_compare( void *pA, void *pB ) {
-    return ( pA > pB ) - ( pA < pB );
+_tree_compare(void *A, void *B) {
+    return (A > B) - (A < B);
 }
 
 
 static void *
-_tree_iterate( TREE_ITER *pIter, int nDirection ) {
+_tree_iterate(TREE_ITER *Iter, int Direction) {
     TREE_NODE *pNode;
 
-    if( pIter->Node->Node[ nDirection ] != NULL ) {
-        pIter->Path[ pIter->Top++ ] = pIter->Node;
-        pIter->Node = pIter->Node->Node[ nDirection ];
-        while( pIter->Node->Node[ ! nDirection ] != NULL ) {
-            pIter->Path[ pIter->Top++ ] = pIter->Node;
-            pIter->Node = pIter->Node->Node[ ! nDirection ];
+    if(Iter->Node->Node[Direction] != NULL) {
+        Iter->Path[Iter->Top++] = Iter->Node;
+        Iter->Node = Iter->Node->Node[Direction];
+        while(Iter->Node->Node[!Direction] != NULL) {
+            Iter->Path[Iter->Top++] = Iter->Node;
+            Iter->Node = Iter->Node->Node[!Direction];
         }
     }
     else {
         pNode = NULL;
         do {
-            if( pIter->Top == 0 ) {
-                pIter->Node = NULL;
+            if(Iter->Top == 0) {
+                Iter->Node = NULL;
                 break;
             }
-            pNode = pIter->Node;
-            pIter->Node = pIter->Path[ --pIter->Top ];
+            pNode = Iter->Node;
+            Iter->Node = Iter->Path[--Iter->Top];
         }
-        while( pNode == pIter->Node->Node[ nDirection ] );
+        while(pNode == Iter->Node->Node[Direction]);
     }
-    return ( pIter->Node != NULL ) ? pIter->Node->Data : NULL;
+    return (Iter->Node != NULL) ? Iter->Node->Data : NULL;
 }
 
 
 static void *
-_tree_iterate_start( TREE_ITER *pIter, TREE *pTree, int nDirection ) {
-    pIter->Tree = pTree;
-    pIter->Node = pTree->Root;
-    pIter->Top = 0;
+_tree_iterate_start(TREE_ITER *Iter, TREE *Tree, int Direction) {
+    Iter->Tree = Tree;
+    Iter->Node = Tree->Root;
+    Iter->Top = 0;
 
-    if( pIter->Node != NULL ) {
-        while( pIter->Node->Node[ nDirection ] != NULL ) {
-            pIter->Path[ pIter->Top++ ] = pIter->Node;
-            pIter->Node = pIter->Node->Node[ nDirection ];
+    if(Iter->Node != NULL) {
+        while(Iter->Node->Node[Direction] != NULL) {
+            Iter->Path[Iter->Top++] = Iter->Node;
+            Iter->Node = Iter->Node->Node[Direction];
         }
     }
-    return ( pIter->Node != NULL ) ? pIter->Node->Data : NULL;
+    return (Iter->Node != NULL) ? Iter->Node->Data : NULL;
 }
 
 
@@ -91,12 +91,12 @@ _tree_node_destroy( size_t uArg, TREE_NODE *pNode, ... ) {
 
 
 static TREE_NODE *
-_tree_node_new( void ) {
+_tree_node_new(void) {
     TREE_NODE *pNode;
 
     errno = 0;
-    if( ( pNode = ( TREE_NODE * ) calloc( 1, sizeof( *pNode ) ) ) == NULL ) {
-        log_critical( "Failed to allocate memory: %s", strerror( errno ) );
+    if((pNode = calloc(1, sizeof(*pNode))) == NULL) {
+        log_critical("Failed to allocate memory: %s", strerror(errno));
         return NULL;
     }
     pNode->Direction = 1;
@@ -108,23 +108,23 @@ _tree_node_new( void ) {
 
 
 static int 
-_tree_direction( TREE_NODE *pNode ) {
-    return ( pNode ) ? pNode->Direction : 0;
+_tree_direction(TREE_NODE *Node) {
+    return (Node != NULL) ? Node->Direction : 0;
 }
 
 
 static TREE_NODE * 
-_tree_rotate1( TREE_NODE *pNode, int nDirection ) {
+_tree_rotate1(TREE_NODE *Node, int Direction) {
     TREE_NODE *pResult;
     int nInverse;
 
     pResult = NULL;
-    nInverse = ( nDirection == 0 );
-    if( pNode != NULL  ) {
-        pResult = pNode->Node[ nInverse ];
-        pNode->Node[ nInverse ] = pResult->Node[ nDirection ];
-        pResult->Node[ nDirection ] = pNode;
-        pNode->Direction = 1;
+    nInverse = (Direction == 0);
+    if(Node != NULL) {
+        pResult = Node->Node[nInverse];
+        Node->Node[nInverse] = pResult->Node[Direction];
+        pResult->Node[Direction] = Node;
+        Node->Direction = 1;
         pResult->Direction = 0;
     }
     return pResult;
@@ -132,15 +132,15 @@ _tree_rotate1( TREE_NODE *pNode, int nDirection ) {
 
 
 static TREE_NODE *
-_tree_rotate2( TREE_NODE *pNode, int nDirection ) {
+_tree_rotate2(TREE_NODE *Node, int Direction) {
     TREE_NODE *pResult;
     int nInverse;
 
     pResult = NULL;
-    nInverse = ( nDirection == 0 );
-    if( pNode != NULL ) {
-        pNode->Node[ nInverse ] = _tree_rotate1( pNode->Node[ nInverse ], nInverse );
-        pResult = _tree_rotate1( pNode, nDirection );
+    nInverse = (Direction == 0);
+    if(Node != NULL) {
+        Node->Node[nInverse] = _tree_rotate1(Node->Node[nInverse], nInverse);
+        pResult = _tree_rotate1(Node, Direction);
     }
     return pResult;
 }
@@ -202,142 +202,143 @@ _tree_initialise(size_t Arg, TREE *Tree, ...) {
 
 
 int 
-_tree_insert( size_t uArg, TREE *pTree, ... ) {
+_tree_insert(size_t Arg, TREE *Tree, ... ) {
     TREE_NODE *pN1, *pN2, *pN3, *pN4, *pNode;
     TREE_NODE sRoot;
     va_list sArg;
     int nIndex1, nIndex2, nLast, nResult;
 
     nResult = -1;
-    va_start( sArg, pTree );
-    for( ; uArg > 1; --uArg ) {
-        if( ( pNode = _tree_node_new() ) == NULL ) {
-            nResult = errno;
+    va_start(sArg, Tree);
+    for(; Arg > 1; --Arg) {
+        if((pNode = _tree_node_new()) == NULL) {
+            nResult = -1;
             break;
         }
-        pNode->Data = ( void * ) va_arg( sArg, void * );
+        pNode->Data = va_arg(sArg, void *);
 
-        if( tree_search( pTree, pNode->Data ) != NULL ) {
-            nResult = EEXIST;
+        if(tree_search(Tree, pNode->Data) != NULL) {
+            errno = EEXIST;
+            nResult = -1;
             break;
         }
 
-        if( pTree->Root == NULL ) {
-            pTree->Root = pNode;
+        if(Tree->Root == NULL) {
+            Tree->Root = pNode;
             nResult = 0;
         }
         else {
-            ( void ) memset( &sRoot, 0, sizeof( sRoot ) );
+            memset(&sRoot, 0, sizeof(sRoot));
             nIndex1 = nLast = 0;
 
             pN2 = &sRoot;
             pN1 = pN3 = NULL;
-            pN4 = pN2->Node[1] = pTree->Root;
+            pN4 = pN2->Node[1] = Tree->Root;
 
-            while( 1 ) {
-                if( pN4 == NULL ) {
-                    if( pN3 != NULL )
-                        pN3->Node[ nIndex1 ] = pN4 = pNode;
+            while(1) {
+                if(pN4 == NULL) {
+                    if(pN3 != NULL)
+                        pN3->Node[nIndex1] = pN4 = pNode;
                 }
-                else if( _tree_direction( pN4->Node[0] ) && 
-                        _tree_direction( pN4->Node[1] ) ) {
+                else if(_tree_direction(pN4->Node[0]) && 
+                        _tree_direction(pN4->Node[1])) {
                     pN4->Direction = 1;
                     pN4->Node[0]->Direction = 0;
                     pN4->Node[1]->Direction = 0;
                 }
 
-                if( _tree_direction( pN4 ) &&
-                        _tree_direction( pN3 ) ) {
-                    nIndex2 = ( pN2->Node[1] == pN1 );
-                    if( pN4 == pN3->Node[ nLast ] ) 
-                        pN2->Node[ nIndex2 ] = _tree_rotate1( pN1, ( nLast == 0 ) );
+                if(_tree_direction(pN4) &&
+                        _tree_direction(pN3)) {
+                    nIndex2 = (pN2->Node[1] == pN1);
+                    if(pN4 == pN3->Node[nLast]) 
+                        pN2->Node[nIndex2] = _tree_rotate1(pN1, (nLast == 0));
                     else
-                        pN2->Node[ nIndex2 ] = _tree_rotate2( pN1, ( nLast == 0 ) );
+                        pN2->Node[nIndex2] = _tree_rotate2(pN1, (nLast == 0));
                 }
-                if( pTree->Compare( pN4->Data, pNode->Data ) == 0 )
+                if(Tree->Compare(pN4->Data, pNode->Data) == 0)
                     break;
 
                 nLast = nIndex1;
-                nIndex1 = ( pTree->Compare( pN4->Data, pNode->Data ) < 0 );
-                if( pN1 != NULL )
+                nIndex1 = (Tree->Compare(pN4->Data, pNode->Data) < 0);
+                if(pN1 != NULL)
                     pN2 = pN1;
                 pN1 = pN3, pN3 = pN4;
-                pN4 = pN4->Node[ nIndex1 ];
+                pN4 = pN4->Node[nIndex1];
             }
-            pTree->Root = sRoot.Node[1];
+            Tree->Root = sRoot.Node[1];
         }
-        pTree->Root->Direction = 0;
-        ++pTree->Size;
+        Tree->Root->Direction = 0;
+        ++Tree->Size;
 
         nResult = 0;
     }
-    va_end( sArg );
+    va_end(sArg);
     return nResult;
 }
 
 
 void *
-tree_iterate( TREE_ITER *pIter ) {
+tree_iterate(TREE_ITER *Iter) {
     TREE_NODE *pNode;
 
-    if( pIter->Node == NULL )
+    if(Iter->Node == NULL)
         return NULL;
-    pNode = pIter->Node;
-    _tree_iterate( pIter, 1 );
+    pNode = Iter->Node;
+    _tree_iterate(Iter, 1);
     return pNode->Data;
 }
 
 
 void *
-tree_iterate_first( TREE_ITER *pIter, TREE *pTree ) {
-    return _tree_iterate_start( pIter, pTree, 0 );
+tree_iterate_first(TREE_ITER *Iter, TREE *Tree) {
+    return _tree_iterate_start(Iter, Tree, 0);
 }
 
 
 void *
-tree_iterate_last( TREE_ITER *pIter, TREE *pTree ) {
-    return _tree_iterate_start( pIter, pTree, 1 );
+tree_iterate_last(TREE_ITER *Iter, TREE *Tree) {
+    return _tree_iterate_start(Iter, Tree, 1);
 }
 
 
 void *
-tree_iterate_next( TREE_ITER *pIter ) {
-    return _tree_iterate( pIter, 1 );
+tree_iterate_next(TREE_ITER *Iter) {
+    return _tree_iterate(Iter, 1);
 }
 
 
 TREE_ITER *
-tree_iterate_new( TREE *pTree ) {
+tree_iterate_new(TREE *Tree) {
     TREE_ITER *pIter;
 
     errno = 0;
-    if( ( pIter = ( TREE_ITER * ) calloc( 1, sizeof( *pIter ) ) ) == NULL ) {
-        log_critical( "Failed to allocate memory: %s", strerror( errno ) );
+    if((pIter = calloc(1, sizeof(*pIter))) == NULL) {
+        log_critical("Failed to allocate memory: %s", strerror(errno));
         return NULL;
     }
-    pIter->Tree = pTree;
-    pIter->Node = pTree->Root;
+    pIter->Tree = Tree;
+    pIter->Node = Tree->Root;
     pIter->Top = 0;
     return pIter;
 }
 
 
 void *
-tree_iterate_previous( TREE_ITER *pIter ) {
-    return _tree_iterate( pIter, 0 );
+tree_iterate_previous(TREE_ITER *Iter) {
+    return _tree_iterate(Iter, 0);
 }
 
 
 void
-tree_iterate_reset( TREE_ITER *pIter, TREE *pTree ) {
-    pIter->Tree = pTree;
-    pIter->Node = pTree->Root;
-    pIter->Top = 0;
+tree_iterate_reset(TREE_ITER *Iter, TREE *Tree) {
+    Iter->Tree = Tree;
+    Iter->Node = Tree->Root;
+    Iter->Top = 0;
 
-    if( pIter->Node != NULL ) {
-        while( pIter->Node->Node[0] != NULL ) {
-            pIter->Path[ pIter->Top++ ] = pIter->Node;
-            pIter->Node = pIter->Node->Node[0];
+    if(Iter->Node != NULL) {
+        while(Iter->Node->Node[0] != NULL) {
+            Iter->Path[Iter->Top++] = Iter->Node;
+            Iter->Node = Iter->Node->Node[0];
         }
     }
 }
@@ -359,87 +360,89 @@ tree_new(void) {
 
 
 int 
-tree_remove( TREE *pTree, void *pData ) {
+tree_remove(TREE *Tree, void *Data) {
     TREE_NODE sHead, sNode;
     TREE_NODE *pN1, *pN2, *pN3, *pN4, *pN5;
     int nDirection, nLast, nResult;
     void *pValue;
 
-    ( void ) memset( &sHead, 0, sizeof( sHead ) );
+    memset(&sHead, 0, sizeof(sHead));
     nDirection = 1;
-    sNode.Data = pData;
+    sNode.Data = Data;
     pN1 = &sHead;
     pN2 = pN3 = pN4 = NULL;
-    pN1->Node[1] = pTree->Root;
+    pN1->Node[1] = Tree->Root;
 
-    while( pN1->Node[ nDirection ] != NULL ) {
+    while(pN1->Node[nDirection] != NULL) {
         nLast = nDirection;
         pN3 = pN2, pN2 = pN1;
-        pN1 = pN1->Node[ nDirection ];
-        if( ( nResult = pTree->Compare( pN1->Data, sNode.Data ) ) == 0 )
+        pN1 = pN1->Node[nDirection];
+        if((nResult = Tree->Compare(pN1->Data, sNode.Data)) == 0)
             pN4 = pN1;
-        nDirection = ( nResult < 0 );
+        nDirection = (nResult < 0);
 
-        if( ! _tree_direction( pN1 ) &&
-                ! _tree_direction( pN1->Node[ nDirection ] ) ) {
-            if( _tree_direction( pN1->Node[ ! nDirection ] ) ) {
-                pN2 = pN2->Node[ nLast ] = _tree_rotate1( pN1, nDirection );
+        if(!_tree_direction(pN1) &&
+                ! _tree_direction(pN1->Node[nDirection])) {
+            if(_tree_direction(pN1->Node[!nDirection])) {
+                pN2 = pN2->Node[nLast] = _tree_rotate1(pN1, nDirection);
             }
-            else if( ! _tree_direction( pN1->Node[ ! nDirection ] ) ) {
-                if( ( pN5 = pN2->Node[ ! nLast ] ) != NULL ) {
-                    if( ! _tree_direction( pN5->Node[ ! nLast ] ) &&
-                            ! _tree_direction( pN5->Node[ nLast ] ) ) {
+            else if(!_tree_direction(pN1->Node[!nDirection])) {
+                if((pN5 = pN2->Node[!nLast]) != NULL) {
+                    if(!_tree_direction(pN5->Node[!nLast]) &&
+                            !_tree_direction(pN5->Node[nLast])) {
                         pN2->Direction = 0;
                         pN1->Direction = pN5->Direction = 1;
                     }
                     else {
-                        nResult = ( pN3->Node[1] == pN2 );
-                        if( _tree_direction( pN5->Node[ nLast ] ) ) {
-                            pN3->Node[ nResult ] = _tree_rotate2( pN2, nLast );
+                        nResult = (pN3->Node[1] == pN2);
+                        if(_tree_direction(pN5->Node[nLast])) {
+                            pN3->Node[nResult] = _tree_rotate2(pN2, nLast);
                         }
-                        else if( _tree_direction( pN5->Node[ ! nLast ] ) ) {
-                            pN3->Node[ nResult ] = _tree_rotate1( pN2, nLast );
+                        else if(_tree_direction(pN5->Node[!nLast])) {
+                            pN3->Node[nResult] = _tree_rotate1(pN2, nLast);
                         }
 
-                        pN1->Direction = pN3->Node[ nResult ]->Direction = 1;
-                        pN3->Node[ nResult ]->Node[0]->Direction = 0;
-                        pN3->Node[ nResult ]->Node[1]->Direction = 0;
+                        pN1->Direction = pN3->Node[nResult]->Direction = 1;
+                        pN3->Node[nResult]->Node[0]->Direction = 0;
+                        pN3->Node[nResult]->Node[1]->Direction = 0;
                     }
                 }
             }
         }
     }
 
-    if( ! pN4 )
-        return -ENOENT;
+    if(!pN4) {
+        errno = ENOENT;
+        return -1;
+    }
 
     pValue = pN4->Data;
     pN4->Data = pN1->Data;
     pN1->Data = pValue;
-    pN2->Node[ pN2->Node[1] == pN1 ] = pN1->Node[ pN1->Node[0] == NULL ];
-    tree_node_destroy( pN1 );
+    pN2->Node[pN2->Node[1] == pN1] = pN1->Node[pN1->Node[0] == NULL];
+    tree_node_destroy(pN1);
     pN1 = NULL;
 
-    pTree->Root = sHead.Node[1];
-    if( pTree->Root != NULL ) 
-        pTree->Root->Direction = 0;
-    --pTree->Size;
+    Tree->Root = sHead.Node[1];
+    if(Tree->Root != NULL) 
+        Tree->Root->Direction = 0;
+    --Tree->Size;
     return 0;
 }
 
 
 void * 
-tree_search( TREE *pTree, void *pData ) {
+tree_search(TREE *Tree, void *Data) {
     TREE_NODE *pIter, sNode;
     int nIndex;
 
-    sNode.Data = pData;
-    for( pIter = pTree->Root; pIter != NULL; ) {
-        if( ( nIndex = pTree->Compare( pIter->Data, sNode.Data ) ) == 0 )
+    sNode.Data = Data;
+    for(pIter = Tree->Root; pIter != NULL;) {
+        if((nIndex = Tree->Compare(pIter->Data, sNode.Data)) == 0)
             break;
-        pIter = pIter->Node[ nIndex < 0 ];
+        pIter = pIter->Node[nIndex < 0];
     }
-    return ( pIter != NULL ) ? pIter->Data : NULL;
+    return (pIter != NULL) ? pIter->Data : NULL;
 }
 
 

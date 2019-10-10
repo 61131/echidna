@@ -239,7 +239,7 @@ ll_insert_head(LL *List, void *Data) {
         return nResult;
         
     if((pElement = _ll_new_element(List)) == NULL) {
-        nResult = errno;
+        nResult = -1;
         goto error;
     }
     pElement->Data = Data;
@@ -272,7 +272,7 @@ ll_insert_tail(LL *List, void *Data) {
         return nResult;
         
     if((pElement = _ll_new_element(List)) == NULL) {
-        nResult = errno;
+        nResult = -1;
         goto error;
     }
     pElement->Data = Data;

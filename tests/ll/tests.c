@@ -181,6 +181,7 @@ test_ll_iterate_first(const MunitParameter Parameters[], void *Fixture) {
     _test_ll_populate(&sList, 0);
     munit_assert_not_null(pStr = ll_iterate_first(&sIt, &sList));
     munit_assert_string_equal(pStr, "Apple");
+    while(ll_iterate_next(&sIt) != NULL);
     ll_destroy(&sList);
 
     return MUNIT_OK;
@@ -199,6 +200,7 @@ test_ll_iterate_last(const MunitParameter Parameters[], void *Fixture) {
     _test_ll_populate(&sList, 0);
     munit_assert_not_null(pStr = ll_iterate_last(&sIt, &sList));
     munit_assert_string_equal(pStr, "Watermelon");
+    while(ll_iterate_previous(&sIt) != NULL);
     ll_destroy(&sList);
 
     return MUNIT_OK;
@@ -221,7 +223,7 @@ test_ll_merge(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(ll_initialise(&sMerge, NULL), ==, 0);
     munit_assert_size(sMerge.Size, ==, 0);
     uSize = sList1.Size + sList2.Size;
-    munit_assert_int(ll_merge(&sMerge, &sList1, &sList2), ==, 0);
+    munit_assert_int(ll_merge(&sMerge, &sList1, &sList2, NULL), ==, 0);
     munit_assert_size(sList1.Size, ==, 0);
     munit_assert_size(sList2.Size, ==, 0);
     munit_assert_size(sMerge.Size, ==, uSize);
