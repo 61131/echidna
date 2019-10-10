@@ -1,6 +1,6 @@
 # echidna - IEC 61131-3 compiler and virtual machine
 
-LIBS_SUBDIR:= block cast echidna ll queue sha256 stats strl tree unit value
+LIBS_SUBDIR:= block cast echidna ll queue sha256 standard/arithmetic stats strl tree unit value
 
 .PHONY: $(LIBS_SUBDIR)
 

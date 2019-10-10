@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include <echidna.h>
 #include <log.h>
 
 #include <suite.h>
@@ -13,6 +14,7 @@ static MunitSuite sSuites[] = {
     { "ll/", suite_list, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "queue/", suite_queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_arithmetic, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "stats/", suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "strl/", suite_strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "tree/", suite_tree, NULL, 1, MUNIT_SUITE_OPTION_NONE },
@@ -23,6 +25,28 @@ static MunitSuite sSuites[] = {
 };
 
 static const MunitSuite sSuite = { "", NULL, sSuites, 1, MUNIT_SUITE_OPTION_NONE };
+
+
+void *
+suite_setup(const MunitParameter Parameters[], void *Data) {
+    ECHIDNA *pContext;
+
+    pContext = calloc(1, sizeof(*pContext));
+    munit_assert_not_null(pContext);
+    munit_assert_int(echidna_initialise(pContext), ==, 0);
+    return pContext;
+}
+
+
+void
+suite_teardown(void *Data) {
+    ECHIDNA *pContext;
+
+    munit_assert_not_null(Data);
+    pContext = (ECHIDNA *) Data;
+    echidna_destroy(pContext);
+    free(pContext);
+}
 
 
 int

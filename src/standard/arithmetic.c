@@ -108,7 +108,7 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             case TYPE_REAL:
-                if(fabs(sIn.Value.Double) < FLT_EPSILON)
+                if(fabs(sIn.Value.Single) < FLT_EPSILON)
                     goto error;
                 sValue.Value.Single /= sIn.Value.Single;
                 break;
@@ -315,7 +315,7 @@ standard_mod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
 error:
     log_error("Invalid modulus by zero operation");
-    return ERROR_DIVIDE_ZERO;
+    return ERROR_MODULUS_ZERO;
 }
 
 
