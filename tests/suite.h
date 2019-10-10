@@ -8,6 +8,7 @@
 extern MunitTest suite_block[];
 extern MunitTest suite_cast[];
 extern MunitTest suite_digest[];
+extern MunitTest suite_echidna[];
 extern MunitTest suite_list[];
 extern MunitTest suite_queue[];
 extern MunitTest suite_stats[];

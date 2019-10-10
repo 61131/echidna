@@ -9,6 +9,7 @@ static MunitSuite sSuites[] = {
 
     { "block/", suite_block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "cast/", suite_cast, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "echidna/", suite_echidna, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "ll/", suite_list, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "queue/", suite_queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
