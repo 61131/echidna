@@ -129,7 +129,7 @@ test_arithmetic_div(const MunitParameter Parameters[], void *Fixture) {
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_div(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, ANY_NUM);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    munit_assert_int(standard_div(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
 
     //  TYPE_LREAL
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
@@ -348,7 +348,7 @@ test_arithmetic_mod(const MunitParameter Parameters[], void *Fixture) {
     _test_arithmetic_modulus(&sParameters, TYPE_NONE);
     munit_assert_int(standard_mod(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, ANY_INT);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    munit_assert_int(standard_mod(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
 
     //  TYPE_LINT
     _test_arithmetic_modulus(&sParameters, TYPE_LINT);
@@ -450,7 +450,7 @@ test_arithmetic_mul(const MunitParameter Parameters[], void *Fixture) {
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, ANY_NUM);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
     munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
@@ -511,7 +511,7 @@ test_arithmetic_sub(const MunitParameter Parameters[], void *Fixture) {
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, ANY_NUM);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
     munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);

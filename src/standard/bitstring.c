@@ -22,15 +22,16 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
     VALUE sCount, sValue;
     uint64_t uCount, uValue;
     size_t uParameter;
-    int nResult;
 
     Result->Type = TYPE_NONE;
+    value_initialise(&sCount);
+    value_initialise(&sValue);
 
     uParameter = 0;
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if( pParameter->Name ) {
-            if( strcasecmp(pParameter->Name, "IN") == 0) {
+        if(pParameter->Name) {
+            if(strcasecmp(pParameter->Name, "IN") == 0) {
                 if((pParameter->Value.Type & ANY_BIT) == 0)
                     return ERROR_PARAMETER_TYPE;
                 value_copy(&sValue, &pParameter->Value);
@@ -62,8 +63,8 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
         }
     }
 
-    if((nResult = cast_ulint(&sCount)) != 0)
-        return nResult;
+    if(cast_ulint(&sCount) != 0)
+        return ERROR_PARAMETER_TYPE;
     uCount = sCount.Value.U64;
 
     switch(sValue.Type & ~ANY_INTERNAL) {
@@ -189,13 +190,21 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
 
     switch(sValue.Type & ~ANY_INTERNAL) {
         case TYPE_LWORD:
-            if(Op)
+            if(sCount.Value.U8 > 63) {
+                sValue.Value.B64 = 0;
+                break;
+            }
+            if(Op) 
                 sValue.Value.B64 >>= sCount.Value.U8;
             else
                 sValue.Value.B64 <<= sCount.Value.U8;
             break;
 
         case TYPE_DWORD:
+            if(sCount.Value.U8 > 31) {
+                sValue.Value.B32 = 0;
+                break;
+            }
             if(Op) 
                 sValue.Value.B32 >>= sCount.Value.U8; 
             else
@@ -203,6 +212,10 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
             break;
 
         case TYPE_WORD:
+            if(sCount.Value.U8 > 15) {
+                sValue.Value.B16 = 0;
+                break;
+            }
             if(Op)
                 sValue.Value.B16 >>= sCount.Value.U8;
             else
@@ -210,6 +223,10 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
             break;
 
         case TYPE_BYTE:
+            if(sCount.Value.U8 > 7) {
+                sValue.Value.B8 = 0;
+                break;
+            }
             if(Op)
                 sValue.Value.B8 >>= sCount.Value.U8;
             else
@@ -217,10 +234,7 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
             break;
 
         case TYPE_BOOL:
-            if(Op)
-                sValue.Value.B1 >>= sCount.Value.U8;
-            else
-                sValue.Value.B1 <<= sCount.Value.U8; 
+            sValue.Value.B1 = 0;
             break;
 
         default:
