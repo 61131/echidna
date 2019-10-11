@@ -1,6 +1,6 @@
 # echidna - IEC 61131-3 compiler and virtual machine
 
-LIBS_SUBDIR:= block cast echidna ll queue sha256 standard/arithmetic standard/bitstring stats strl tree unit value
+LIBS_SUBDIR:= block cast echidna ll queue sha256 standard/arithmetic standard/bitstring standard/bitwise standard/string stats strl tree unit value
 
 .PHONY: $(LIBS_SUBDIR)
 
@@ -34,6 +34,9 @@ munit.o: munit munit/munit.o
 
 munit:
 	git clone https://github.com/nemequ/munit.git
+
+proper: clean
+	rm -fr munit
 
 clean:
 	for SUBDIR in $(LIBS_SUBDIR); do make -C $$SUBDIR $@ ; done

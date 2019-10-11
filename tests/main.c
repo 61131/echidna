@@ -16,6 +16,8 @@ static MunitSuite sSuites[] = {
     { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_arithmetic, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_bitstring, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_bitwise, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_string, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "stats/", suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "strl/", suite_strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "tree/", suite_tree, NULL, 1, MUNIT_SUITE_OPTION_NONE },

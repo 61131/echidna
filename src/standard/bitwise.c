@@ -101,7 +101,8 @@ standard_or(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
     }
 
     value_copy(Result, &sValue);
-    return 0;}
+    return 0;
+}
 
 
 int

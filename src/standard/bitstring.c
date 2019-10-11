@@ -41,6 +41,8 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
                     return ERROR_PARAMETER_TYPE;
                 value_copy(&sCount, &pParameter->Value);
             }
+            else
+                return ERROR_PARAMETER_UNKNOWN;
         }
         else {
             //  Unnamed function parameters - ANY_BIT, ANY_INT
@@ -164,6 +166,8 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
                 if((nResult = cast_usint(&sCount)) != 0)
                     return nResult;
             }
+            else
+                return ERROR_PARAMETER_UNKNOWN;
         }
         else {
             //  Unnamed function parameters - ANY_BIT, ANY_INT

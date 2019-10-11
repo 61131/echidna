@@ -14,7 +14,7 @@
 #include <standard/bitstring.h>
 
 
-VALUE_TYPE _Type[] = {
+static VALUE_TYPE _Type[] = {
     TYPE_LWORD,
     TYPE_DWORD,
     TYPE_WORD,
@@ -40,6 +40,7 @@ test_bitstring_rol(const MunitParameter Parameters[], void *Fixture) {
 
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+
     //  TYPE_INT -> ERROR_PARAMETER_TYPE
     munit_assert_not_null(pParameter = parameter_new(NULL));
     value_assign(&pParameter->Value, TYPE_INT);
@@ -63,6 +64,37 @@ test_bitstring_rol(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pParameter->Value, TYPE_INT);
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
+    ll_destroy(&sParameters);
+
+    //  IN:TYPE_INT -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_delete(sParameters.Head);
+    //  IN:TYPE_LWORD, N:TYPE_BYTE -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_LWORD);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_BYTE);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
+    ll_delete(sParameters.Tail);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_rol(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     uValue = 1;
@@ -133,6 +165,37 @@ test_bitstring_ror(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_ror(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
     ll_destroy(&sParameters);
 
+    //  IN:TYPE_INT -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_ror(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_delete(sParameters.Head);
+    //  IN:TYPE_LWORD, N:TYPE_BYTE -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_LWORD);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_BYTE);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_ror(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
+    ll_delete(sParameters.Tail);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_ror(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_ror(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
+    ll_destroy(&sParameters);
+
     uValue = 1;
     for(nIndex = 0; nIndex < 64; ++nIndex)
         _Bit[nIndex] = (uValue << nIndex);
@@ -199,6 +262,37 @@ test_bitstring_shl(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pParameter->Value, TYPE_INT);
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
+    ll_destroy(&sParameters);
+
+    //  IN:TYPE_INT -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_delete(sParameters.Head);
+    //  IN:TYPE_LWORD, N:TYPE_BYTE -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_LWORD);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_BYTE);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
+    ll_delete(sParameters.Tail);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     uValue = 1;
@@ -268,6 +362,37 @@ test_bitstring_shr(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pParameter->Value, TYPE_INT);
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
+    ll_destroy(&sParameters);
+
+    //  IN:TYPE_INT -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_delete(sParameters.Head);
+    //  IN:TYPE_LWORD, N:TYPE_BYTE -> ERROR_PARAMETER_TYPE
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN"));
+    value_assign(&pParameter->Value, TYPE_LWORD);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_BYTE);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
+    ll_delete(sParameters.Tail);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("N"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
+    value_assign(&pParameter->Value, TYPE_INT);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     uValue = 1;
