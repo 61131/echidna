@@ -183,7 +183,6 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     VALUE_TYPE uType;
     double dValue;
     size_t uParameter;
-    int nResult;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sBase);
@@ -227,9 +226,9 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     }
 
     uType = sBase.Type;
-    if(((nResult = cast_lreal(&sBase)) != 0) ||
-            ((nResult = cast_lreal(&sExponent)) != 0))
-        return nResult;
+    if((cast_lreal(&sBase) != 0) ||
+            (cast_lreal(&sExponent) != 0))
+        return ERROR_PARAMETER_TYPE;
     dValue = pow(sBase.Value.Double, sExponent.Value.Double);
     value_assign(Result, uType, dValue);
 

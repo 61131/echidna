@@ -66,6 +66,8 @@ test_arithmetic_add(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    _test_arithmetic_populate(&sParameters, ANY_NUM);
+    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
@@ -126,6 +128,8 @@ test_arithmetic_div(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_div(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_div(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    _test_arithmetic_populate(&sParameters, ANY_NUM);
+    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
 
     //  TYPE_LREAL
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
@@ -237,11 +241,92 @@ MunitResult
 test_arithmetic_expt(const MunitParameter Parameters[], void *Fixture) {
     ECHIDNA *pContext;
     LL sParameters;
+    PARAMETER *pParameter;
+    VALUE sResult;
 
     pContext = (ECHIDNA *) Fixture;
     munit_assert_not_null(pContext);
+    value_initialise(&sResult);
 
     ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_LREAL, 2.0);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_LREAL, 2.0);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  TYPE_LREAL ** TYPE_LREAL -> 0
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
+    munit_assert_double(sResult.Value.Double, ==, 4.0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_LREAL, 2.0);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  TYPE_LREAL ** TYPE_LREAL ?? TYPE_LREAL -> ERROR_PARAMETER_COUNT
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
+    ll_destroy(&sParameters);
+
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN1"));
+    value_assign(&pParameter->Value, TYPE_LREAL, 2.0);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN2"));
+    value_assign(&pParameter->Value, TYPE_LREAL, 2.0);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  IN1:TYPE_LREAL ** IN2:TYPE_LREAL -> 0
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
+    munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
+    munit_assert_double(sResult.Value.Double, ==, 4.0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN3"));
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  IN1:TYPE_LREAL ** IN2:TYPE_LREAL  ?? IN3:TYPE_LREAL -> ERROR_PARAMETER_UNKNOWN
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
+    ll_destroy(&sParameters);
+
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_LREAL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  TYPE_LREAL ** TYPE_BOOL -> ERROR_PARAMETER_TYPE
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_delete(sParameters.Head);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_LREAL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  TYPE_BOOL ** TYPE_LREAL -> ERROR_PARAMETER_TYPE
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_destroy(&sParameters);
+
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN1"));
+    value_assign(&pParameter->Value, TYPE_LREAL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN2"));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  IN1:TYPE_LREAL ** IN2:TYPE_BOOL -> ERROR_PARAMETER_TYPE
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    ll_destroy(&sParameters);
+
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN1"));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("IN2"));
+    value_assign(&pParameter->Value, TYPE_LREAL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    //  IN1:TYPE_BOOL ** IN2:TYPE_LREAL -> ERROR_PARAMETER_TYPE
+    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     ll_destroy(&sParameters);
 
     return MUNIT_OK;
@@ -262,6 +347,8 @@ test_arithmetic_mod(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_mod(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     _test_arithmetic_modulus(&sParameters, TYPE_NONE);
     munit_assert_int(standard_mod(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    _test_arithmetic_populate(&sParameters, ANY_INT);
+    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
 
     //  TYPE_LINT
     _test_arithmetic_modulus(&sParameters, TYPE_LINT);
@@ -362,6 +449,8 @@ test_arithmetic_mul(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    _test_arithmetic_populate(&sParameters, ANY_NUM);
+    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
     munit_assert_int(standard_mul(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
@@ -421,6 +510,8 @@ test_arithmetic_sub(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     _test_arithmetic_populate(&sParameters, TYPE_NONE);
     munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    _test_arithmetic_populate(&sParameters, ANY_NUM);
+    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     _test_arithmetic_populate(&sParameters, TYPE_LREAL);
     munit_assert_int(standard_sub(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
