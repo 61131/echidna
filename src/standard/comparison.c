@@ -106,6 +106,7 @@ standard_eq(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
@@ -211,6 +212,7 @@ standard_ge(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
@@ -316,6 +318,7 @@ standard_gt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
@@ -421,6 +424,7 @@ standard_le(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
@@ -526,6 +530,7 @@ standard_lt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
@@ -631,6 +636,7 @@ standard_ne(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             default:
                 return ERROR_PARAMETER_TYPE;
         }
+        value_copy(&sValue, &sIn);
     }
 
 finish:
