@@ -59,7 +59,7 @@ _echidna_arguments(ECHIDNA *Context, int Count, char **Arg) {
         --Context->Name;
 
     opterr = 0;
-    while((nOpt = getopt(Count, Arg, "dho:rv")) != -1) {
+    while((nOpt = getopt(Count, Arg, "Vdho:rv")) != -1) {
         switch(nOpt) {
             case 'd':
                 Context->Option |= OPTION_DAEMON;
@@ -77,9 +77,13 @@ _echidna_arguments(ECHIDNA *Context, int Count, char **Arg) {
                 ++Context->Verbose;
                 break;
 
+            case 'V':
+                fprintf(stdout, "%s version %s (%s)\n", Context->Name, _STR(GIT_VERSION), _STR(TIMESTAMP));
+                if(0) {
             case 'h':
             default:
-                fprintf(stdout, "Usage: %s -o <output> -d -r file...\n", Context->Name);
+                    fprintf(stdout, "Usage: %s -o <output> -d -r file...\n", Context->Name);
+                }
                 fflush(stdout);
                 echidna_destroy(Context);
                 exit(0);

@@ -25,6 +25,8 @@ extern MunitTest suite_standard_bitwise[];
 
 extern MunitTest suite_standard_comparison[];
 
+extern MunitTest suite_standard_numeric[];
+
 extern MunitTest suite_standard_string[];
 
 extern MunitTest suite_stats[];

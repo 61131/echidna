@@ -4,6 +4,13 @@
 
 #include <munit/munit.h>
 
+#include <ll.h>
+#include <value.h>
+
+
+void _test_arithmetic_modulus(LL *Parameters, VALUE_TYPE Type);
+
+void _test_arithmetic_populate(LL *Parameters, VALUE_TYPE Type);
 
 MunitResult test_arithmetic_add(const MunitParameter Parameters[], void *Fixture);
 
