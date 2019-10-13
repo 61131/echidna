@@ -1,6 +1,6 @@
 # echidna - IEC 61131-3 compiler and virtual machine
 
-LIBS_SUBDIR:= arithmetic bitstring bitwise string 
+LIBS_SUBDIR:= arithmetic bitstring bitwise comparison numeric string 
 .PHONY: $(LIBS_SUBDIR)
 
 all: clean

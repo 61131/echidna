@@ -32,12 +32,6 @@ test_numeric_atan(const MunitParameter Parameters[], void *Fixture) {
 
 
 MunitResult 
-test_numeric_cos(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
-
-
-MunitResult 
 test_numeric_exp(const MunitParameter Parameters[], void *Fixture) {
     return MUNIT_SKIP;
 }
@@ -54,16 +48,5 @@ test_numeric_log(const MunitParameter Parameters[], void *Fixture) {
     return MUNIT_SKIP;
 }
 
-
-MunitResult 
-test_numeric_sin(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
-
-
-MunitResult 
-test_numeric_tan(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
 
 
