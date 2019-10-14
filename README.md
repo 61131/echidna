@@ -1,12 +1,18 @@
 <p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/logo.jpg?raw=true"></p>
 
-[![Codacy Badge](https://img.shields.io/codacy/grade/32bc0e41e0234262b81b82043babd41e)](https://www.codacy.com/manual/rcasey/echidna) ![Build Status](https://img.shields.io/circleci/build/github/61131/echidna/master) ![Coverage](https://img.shields.io/codecov/c/github/61131/echidna)
+[![Codacy Badge](https://img.shields.io/codacy/grade/32bc0e41e0234262b81b82043babd41e)](https://www.codacy.com/manual/rcasey/echidna) ![Build Status](https://img.shields.io/circleci/build/github/61131/echidna/master) ![Coverage](https://img.shields.io/codecov/c/github/61131/echidna) ![GitHub](https://img.shields.io/github/license/61131/echidna)
 
 ## Overview
 
-Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for programmable controllers. This compiler supports only a single language at this time, Instruction List (IL), but includes full support for all standard functions and function blocks and elements of the IEC 61131-3 configuration model.
+Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for programmable controllers. Using this project, it is possible to create programmable logic controllers for interface with industrial automation and I/O control applications. 
 
-Using this project, it is possible to create programmable logic controllers for interface with industrial automation and I/O control applications. 
+## Features
+
+-   Preemptive, high performance, multiple configuration virtual machine run-time
+-   IEC 61131-3 language compiler supporting Instruction List (IL) and Structured Text (ST)
+-   Support for all IEC 61131-3 standard functions, function blocks and configuration elements
+-   API support for custom function and function block extensions
+-   Comprehensive test suite
 
 ## Dependencies
 
