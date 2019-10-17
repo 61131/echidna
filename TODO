@@ -7,8 +7,6 @@
 - src/bytecode.c: Add support for negated output from functions
 - src/standard.c: Add support for character string functions
 - src/standard.c: Add support for time functions
-- tests/config: Expand test coverage
-- tests/grammar: Expand test coverage
 - src: Add support for TIME (partially supported), DATE and STRING data types
 - src: Determine method for system configuration beyond command line invocation?
 - src: Simplify where possible and reduce dependency on dynamically allocated memory
