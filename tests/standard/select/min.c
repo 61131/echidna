@@ -24,10 +24,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_LREAL
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LREAL, -10.0);
+    value_assign(&pValue->Value, TYPE_LREAL, 0.0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LREAL, 0.0);
+    value_assign(&pValue->Value, TYPE_LREAL, -10.0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_LREAL, 10.0);
@@ -44,10 +44,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_REAL
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_REAL, -10.0);
+    value_assign(&pValue->Value, TYPE_REAL, 0.0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_REAL, 0.0);
+    value_assign(&pValue->Value, TYPE_REAL, -10.0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_REAL, 10.0);
@@ -64,10 +64,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_LINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LINT, -10);
+    value_assign(&pValue->Value, TYPE_LINT, 0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LINT, 0);
+    value_assign(&pValue->Value, TYPE_LINT, -10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_LINT, 10);
@@ -84,10 +84,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_DINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_DINT, -10);
+    value_assign(&pValue->Value, TYPE_DINT, 0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_DINT, 0);
+    value_assign(&pValue->Value, TYPE_DINT, -10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_DINT, 10);
@@ -104,10 +104,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_INT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_INT, -10);
+    value_assign(&pValue->Value, TYPE_INT, 0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_INT, 0);
+    value_assign(&pValue->Value, TYPE_INT, -10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_INT, 10);
@@ -124,10 +124,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_SINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_SINT, -10);
+    value_assign(&pValue->Value, TYPE_SINT, 0);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_SINT, 0);
+    value_assign(&pValue->Value, TYPE_SINT, -10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_SINT, 10);
@@ -144,10 +144,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_ULINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_ULINT, 5);
+    value_assign(&pValue->Value, TYPE_ULINT, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_ULINT, 10);
+    value_assign(&pValue->Value, TYPE_ULINT, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_ULINT, 15);
@@ -164,10 +164,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_UDINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_UDINT, 5);
+    value_assign(&pValue->Value, TYPE_UDINT, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_UDINT, 10);
+    value_assign(&pValue->Value, TYPE_UDINT, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_UDINT, 15);
@@ -184,10 +184,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_UINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_UINT, 5);
+    value_assign(&pValue->Value, TYPE_UINT, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_UINT, 10);
+    value_assign(&pValue->Value, TYPE_UINT, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_UINT, 15);
@@ -204,10 +204,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_USINT
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_USINT, 5);
+    value_assign(&pValue->Value, TYPE_USINT, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_USINT, 10);
+    value_assign(&pValue->Value, TYPE_USINT, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_USINT, 15);
@@ -224,10 +224,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_LWORD
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LWORD, 5);
+    value_assign(&pValue->Value, TYPE_LWORD, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_LWORD, 10);
+    value_assign(&pValue->Value, TYPE_LWORD, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_LWORD, 15);
@@ -244,10 +244,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_DWORD
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_DWORD, 5);
+    value_assign(&pValue->Value, TYPE_DWORD, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_DWORD, 10);
+    value_assign(&pValue->Value, TYPE_DWORD, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_DWORD, 15);
@@ -264,10 +264,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_WORD
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_WORD, 5);
+    value_assign(&pValue->Value, TYPE_WORD, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_WORD, 10);
+    value_assign(&pValue->Value, TYPE_WORD, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_WORD, 15);
@@ -284,10 +284,10 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     //  TYPE_BYTE
     ll_initialise(&sParameters, parameter_destroy);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_BYTE, 5);
+    value_assign(&pValue->Value, TYPE_BYTE, 10);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
-    value_assign(&pValue->Value, TYPE_BYTE, 10);
+    value_assign(&pValue->Value, TYPE_BYTE, 5);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_not_null(pValue = parameter_new(NULL));
     value_assign(&pValue->Value, TYPE_BYTE, 15);
@@ -299,6 +299,17 @@ test_select_min(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pValue->Value, TYPE_BOOL);
     munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
     munit_assert_int(standard_min(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_MISMATCH);
+    ll_destroy(&sParameters);
+
+    //  TYPE_BOOL
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pValue = parameter_new(NULL));
+    value_assign(&pValue->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
+    munit_assert_not_null(pValue = parameter_new(NULL));
+    value_assign(&pValue->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pValue), ==, 0);
+    munit_assert_int(standard_min(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     ll_destroy(&sParameters);
 
     return MUNIT_OK;

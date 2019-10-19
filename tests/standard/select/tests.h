@@ -11,5 +11,9 @@ MunitResult test_select_max(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_select_min(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_select_mux(const MunitParameter Parameters[], void *Fixture);
+
+MunitResult test_select_select(const MunitParameter Parameters[], void *Fixture);
+
 
 #endif  //  _TESTS_H

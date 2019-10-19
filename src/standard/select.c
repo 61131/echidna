@@ -36,6 +36,8 @@ standard_limit(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
             else if((strcasecmp(pParameter->Name, "MN") == 0) ||
                     (strcasecmp(pParameter->Name, "MIN") == 0))
                 value_copy(&sMin, &pParameter->Value);
+            else
+                return ERROR_PARAMETER_UNKNOWN;
         }
         else {
             switch(uParameter++) {
@@ -381,6 +383,9 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     value_initialise(&sK);
     value_initialise(&sSelect);
     value_initialise(&sValue);
+
+    if(!Name)
+        return ERROR_INTERNAL;
 
     strcpy(sName, Name);
     if((pSelect = strchr(sName, '_')) != NULL) {

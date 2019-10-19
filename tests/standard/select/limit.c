@@ -15,7 +15,7 @@ MunitResult
 test_select_limit(const MunitParameter Parameters[], void *Fixture) {
     ECHIDNA *pContext;
     LL sParameters;
-    PARAMETER *pIn, *pMaximum, *pMinimum;
+    PARAMETER *pIn, *pMaximum, *pMinimum, *pParameter;
     VALUE sResult;
 
     pContext = (ECHIDNA *) Fixture;
@@ -358,6 +358,48 @@ test_select_limit(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_BYTE);
     munit_assert_uint8(sResult.Value.B8, ==, pMaximum->Value.Value.B8);
+    ll_destroy(&sParameters);
+
+    //  TYPE_BOOL
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pMinimum = parameter_new(NULL));
+    munit_assert_not_null(pMinimum->Name = strdup("MIN"));
+    value_assign(&pMinimum->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pMinimum), ==, 0);
+    munit_assert_not_null(pIn = parameter_new(NULL));
+    munit_assert_not_null(pIn->Name = strdup("IN"));
+    value_assign(&pIn->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pIn), ==, 0);
+    munit_assert_not_null(pMaximum = parameter_new(NULL));
+    munit_assert_not_null(pMaximum->Name = strdup("MAX"));
+    value_assign(&pMaximum->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pMaximum), ==, 0);
+    munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
+    free((char *) pMinimum->Name);
+    munit_assert_not_null(pMinimum->Name = strdup("MN"));
+    free((char *) pMaximum->Name);
+    munit_assert_not_null(pMaximum->Name = strdup("MX"));
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
+    ll_destroy(&sParameters);
+
+    ll_initialise(&sParameters, parameter_destroy);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_not_null(pParameter = parameter_new(NULL));
+    value_assign(&pParameter->Value, TYPE_BOOL);
+    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
+    munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_COUNT);
     ll_destroy(&sParameters);
 
     return MUNIT_OK;
