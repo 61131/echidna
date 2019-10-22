@@ -2,6 +2,8 @@
 #define _SUITE_H
 
 
+#include <echidna.h>
+
 #include <munit/munit.h>
 
 
@@ -12,6 +14,8 @@ extern MunitTest suite_cast[];
 extern MunitTest suite_digest[];
 
 extern MunitTest suite_echidna[];
+
+extern MunitTest suite_grammar[];
 
 extern MunitTest suite_list[];
 
@@ -45,6 +49,8 @@ extern MunitTest suite_unit[];
 void * suite_setup(const MunitParameter Parameters[], void *Data);
 
 void suite_teardown(void *Data);
+
+int test_parse(ECHIDNA *Context, char *Source);
 
 
 #endif  //  _SUITE_H

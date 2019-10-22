@@ -6,11 +6,15 @@
 #include <suite.h>
 
 
+extern int _parse_file(ECHIDNA *Context, FILE *File);
+
+
 static MunitSuite sSuites[] = {
 
     { "block/", suite_block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "cast/", suite_cast, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "echidna/", suite_echidna, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "grammar/", suite_grammar, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "ll/", suite_list, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "queue/", suite_queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
@@ -52,6 +56,21 @@ suite_teardown(void *Data) {
     pContext = (ECHIDNA *) Data;
     echidna_destroy(pContext);
     free(pContext);
+}
+
+
+int 
+test_parse(ECHIDNA *Context, char *Source) {
+    FILE *pFile;
+    int nLength, nResult;
+
+    munit_assert_not_null(Context);
+    munit_assert_not_null(Source);
+    munit_assert_int((nLength = strlen(Source)), >, 0);
+    munit_assert_not_null((pFile = fmemopen(Source, nLength, "r")));
+    nResult = _parse_file(Context, pFile);
+    fclose(pFile);
+    return nResult;
 }
 
 
