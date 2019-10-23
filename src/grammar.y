@@ -91,7 +91,6 @@ extern FILE *yyin;
 
 %token <Token> binary_integer
 %token <Token> octal_integer
-%token <Token> decimal_integer
 %token <Token> hex_integer
 %token <Token> real
 %token <Token> TRUE
@@ -102,7 +101,7 @@ extern FILE *yyin;
 %token <Token> single_byte_character_string
 %token <Token> double_byte_character_string
     
-/* B.1.2.3 Time literals */
+/* B.1.2.3 interval definitions */
 
 /* B.1.2.3.1 Duration */
 
@@ -351,7 +350,7 @@ extern FILE *yyin;
 
 %type <Token> character_string
 
-/* B.1.2.3 Time literals */
+/* B.1.2.3 interval definitions */
 
 %type <Token> time_literal
 
@@ -686,7 +685,7 @@ constant: numeric_literal
 /*  numeric_literal ::= integer_literal | real_literal
 
     integer_literal ::= [ integer_type_name '#' ]
-        ( signed_integer | binary_integer | octal_integer | decimal_integer | hex_integer)
+        ( signed_integer | binary_integer | octal_integer | hex_integer)
 
     signed_integer ::= ['+' |'-'] integer
 
@@ -698,8 +697,6 @@ constant: numeric_literal
 
     octal_integer ::= '8#' octal_digit {['_'] octal_digit}
 
-    decimal_integer ::= '10#' integer
-
     hex_integer ::= '16#' hex_digit {['_'] hex_digit}
 
     real_literal ::= [ real_type_name '#' ]
@@ -709,7 +706,7 @@ constant: numeric_literal
 
     bit_string_literal ::=
         [ ('BYTE' | 'WORD' | 'DWORD' | 'LWORD') '#' ]
-        ( unsigned_integer | binary_integer | octal_integer | decimal_integer | hex_integer)
+        ( unsigned_integer | binary_integer | octal_integer | hex_integer)
 
     boolean_literal ::=
         ( [ 'BOOL#' ] ( '1' | '0' ) )| 'TRUE' | 'FALSE' */
@@ -722,31 +719,7 @@ integer_literal: integer_type_name '#' signed_integer {
             token_destroy($integer_type_name);
             $$ = $signed_integer;
         }
-    | integer_type_name '#' binary_integer {
-            value_cast(&$binary_integer->Value, $integer_type_name->Value.Type);
-            token_destroy($integer_type_name);
-            $$ = $binary_integer;
-        }
-    | integer_type_name '#' octal_integer {
-            value_cast(&$octal_integer->Value, $integer_type_name->Value.Type);
-            token_destroy($integer_type_name);
-            $$ = $octal_integer;
-        }
-    | integer_type_name '#' decimal_integer {
-            value_cast(&$decimal_integer->Value, $integer_type_name->Value.Type);
-            token_destroy($integer_type_name);
-            $$ = $decimal_integer;
-        }
-    | integer_type_name '#' hex_integer {
-            value_cast(&$hex_integer->Value, $integer_type_name->Value.Type);
-            token_destroy($integer_type_name);
-            $$ = $hex_integer;
-        }
-    | signed_integer 
-    | binary_integer 
-    | octal_integer
-    | decimal_integer
-    | hex_integer;
+    | signed_integer; 
 
 signed_integer: '+' integer {
             $$ = $integer;
@@ -784,13 +757,6 @@ bit_string_literal: bit_string_type_name '#' integer {
             TOKEN *pToken;
             
             pToken = token_cast($octal_integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
-            token_destroy($bit_string_type_name);
-            $$ = pToken;
-        }
-    | bit_string_type_name '#' decimal_integer {
-            TOKEN *pToken;
-            
-            pToken = token_cast($decimal_integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
             token_destroy($bit_string_type_name);
             $$ = pToken;
         }
@@ -832,7 +798,7 @@ character_string: single_byte_character_string
     | double_byte_character_string;
 
         
-/* B.1.2.3 Time literals */
+/* B.1.2.3 interval definitions */
 
 /*  time_literal ::= duration | time_of_day | date | date_and_time */
 
@@ -860,13 +826,8 @@ time_literal: duration
 
     milliseconds ::= fixed_point ('ms') */
 
-duration: TIME '#' interval {
-            cast_time(&$interval->Value);
-            $$ = $interval; 
-        }
-    | _t_sharp interval {
-            cast_time(&$interval->Value);
-            $$ = $interval; 
+duration: _t_sharp interval {
+            $$ = $interval;
         };
 
 interval: days
@@ -880,7 +841,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($hours->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -898,7 +859,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -916,7 +877,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -934,7 +895,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -957,7 +918,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($hours->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -975,7 +936,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -993,7 +954,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1011,7 +972,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1035,7 +996,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1053,7 +1014,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1071,7 +1032,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1094,7 +1055,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1112,7 +1073,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1130,7 +1091,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1154,7 +1115,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1172,7 +1133,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1195,7 +1156,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1213,7 +1174,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1237,7 +1198,7 @@ seconds: fixed_point _duration_seconds milliseconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1260,7 +1221,7 @@ seconds: fixed_point _duration_seconds milliseconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Invalid format for duration literal [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
