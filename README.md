@@ -4,7 +4,7 @@
 
 ## Overview
 
-Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for programmable controllers. This project can be used to create programmable logic controllers for interface with industrial automation and I/O control applications. 
+Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for programmable controllers. This project can be used to create programmable logic controllers for interface with industrial automation, Internet-of-Things (IoT) and I/O control applications. 
 
 ## Features
 
