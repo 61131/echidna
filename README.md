@@ -6,8 +6,6 @@
 
 Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for programmable controllers. This can be used to create programmable logic controllers for interface with industrial automation and I/O control applications. 
 
-<p align="center"><a href="https://www.youtube.com/watch?v=a_vYcMlqOW0"><img src="https://github.com/61131/echidna/blob/master/media/raspberrypi.gif?raw=true"></a></p>
-
 ## Features
 
 -   Preemptive, high performance, multiple configuration virtual machine run-time
@@ -15,6 +13,12 @@ Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for
 -   Support for all IEC 61131-3 standard functions, function blocks and configuration elements
 -   API support for custom function and function block extensions
 -   Comprehensive test suite
+
+## Demonstration
+
+The following shows an Echidna application running on a Raspberry Pi 1 Model B with PiFace Digital I/O board.
+
+<p align="center"><a href="https://www.youtube.com/watch?v=a_vYcMlqOW0"><img width="50%" src="https://github.com/61131/echidna/blob/master/media/raspberrypi.gif?raw=true" /></a></p>
 
 ## Dependencies
 
