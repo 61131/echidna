@@ -21,7 +21,10 @@ LIBRARY := libechidna.a
 
 OBJS:= grammar.o lexer.o block.o bytecode.o bytecode/generate.o bytecode/label.o bytecode/stack.o cast.o config.o echidna.o file.o frame.o function.o hex.o json.o ll.o log.o operator/arithmetic.o operator/boolean.o operator/call.o operator/comparison.o operator/inputs.o operator/jump.o operator/logical.o operator/operand.o operator/parameter.o operator/return.o parameter.o parse.o protobuf/config.o protobuf/file.o protobuf/pou.o protobuf/symbol.o protobuf/value.o queue.o runtime.o runtime/bytecode.o runtime/call.o runtime/context.o runtime/error.o runtime/function.o runtime/parameter.o runtime/task.o sha256.o standard.o standard/arithmetic.o standard/bistable.o standard/bitstring.o standard/bitwise.o standard/comparison.o standard/counters.o standard/edge.o standard/numeric.o standard/select.o standard/string.o standard/timers.o standard/type.o stats.o strl.o symbol.o token.o tree.o unit.o value.o
 
-# TODO: Change $(LIBRARY) to test?!
+ifdef HARDWARE_PIFACE
+CFLAGS += -DHARDWARE_PIFACE
+OBJS += hardware/piface.o hardware.o
+endif
 
 ifneq ($(filter $(LIBRARY),$(MAKECMDGOALS)),)
 CFLAGS += -fprofile-arcs -ftest-coverage -DNDEBUG

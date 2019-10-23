@@ -21,6 +21,15 @@
 #include <hardware/piface.h>
 
 
+/*
+    This source file implements support for the PiFace Digital I/O board for the 
+    Raspberry Pi. This interface board incorporates MCP23S17 16-bit I/O expander 
+    with serial interface to provide eight digital inputs and eight digital outputs.
+    Support is implemented through the addition of two new functions, piface_read
+    and piface_write, which perform read and write operations respectively for 
+    these I/O lines.
+*/
+
 static int _piface_read(PIFACE *Context, uint8_t Reg, uint8_t *Val);
 
 static int _piface_write(PIFACE *Context, uint8_t Reg, uint8_t Val);

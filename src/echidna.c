@@ -25,6 +25,7 @@
 #include <echidna.h>
 #include <file.h>
 #include <function.h>
+#include <hardware.h>
 #include <log.h>
 #include <strl.h>
 #include <symbol.h>
@@ -312,6 +313,10 @@ _echidna_initialise(size_t Arg, ECHIDNA *Context, ...) {
     tree_initialise(&Context->POU, block_compare);
     function_initialise(&Context->Functions);
     parse_initialise(Context, &Context->Parse);
+#if defined(HARDWARE_PIFACE)
+    if((nResult = hardware_initialise(Context)) != 0)
+        return nResult;
+#endif
 
     nResult = 0;
     if(Arg > 2) {
