@@ -864,19 +864,9 @@ duration: TIME '#' interval {
             cast_time(&$interval->Value);
             $$ = $interval; 
         }
-    | TIME '#' '-' interval {
-            cast_time(&$interval->Value);
-            $interval->Value.Value.Single *= -1.0f;
-            $$ = $interval;
-        }
     | _t_sharp interval {
             cast_time(&$interval->Value);
             $$ = $interval; 
-        }
-    | _t_sharp '-' interval      {
-            cast_time(&$interval->Value);
-            $interval->Value.Value.Single *= -1.0f;
-            $$ = $interval;
         };
 
 interval: days
@@ -891,30 +881,74 @@ days: fixed_point _duration_days {
             $$ = $fixed_point;
         }
     | integer _duration_days hours {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($hours->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $hours);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $hours->Value.Value.Time;
+            $integer->Value.Value.Time += ($hours->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($hours);
             $$ = $integer;
         }
     | integer _duration_days minutes {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($minutes->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $minutes);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $minutes->Value.Value.Time;
+            $integer->Value.Value.Time += ($minutes->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($minutes);
             $$ = $integer;
         }
     | integer _duration_days seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $seconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($seconds);
             $$ = $integer;
         }
     | integer _duration_days milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $milliseconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($milliseconds);
             $$ = $integer;
         }
@@ -930,23 +964,56 @@ hours: fixed_point _duration_hours {
             $$ = $fixed_point;
         }
     | integer _duration_hours minutes {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($minutes->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $minutes);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $minutes->Value.Value.Time;
+            $integer->Value.Value.Time += ($minutes->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($minutes);
             $$ = $integer;
         }
     | integer _duration_hours seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $seconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($seconds);
             $$ = $integer;
         }
     | integer _duration_hours milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $milliseconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($milliseconds);
             $$ = $integer;
         }
@@ -962,16 +1029,38 @@ minutes: fixed_point _duration_minutes {
             $$ = $fixed_point;
         }
     | integer _duration_minutes seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $seconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($seconds);
             $$ = $integer;
         }
     | integer _duration_minutes milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $milliseconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($milliseconds);
             $$ = $integer;
         }
@@ -987,9 +1076,20 @@ seconds: fixed_point _duration_seconds {
             $$ = $fixed_point;
         }
     | integer _duration_seconds milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($integer, $milliseconds);
+                YYERROR;
+            }
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= 1000.0f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
+            $integer->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $integer->Value.Value.Time));
             token_destroy($milliseconds);
             $$ = $integer;
         }

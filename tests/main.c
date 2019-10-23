@@ -70,7 +70,7 @@ test_parse(ECHIDNA *Context, char *Source) {
     munit_assert_not_null((pFile = fmemopen(Source, nLength, "r")));
     nResult = _parse_file(Context, pFile);
     fclose(pFile);
-    return nResult;
+    return (nResult != 0) ? -1 : 0;
 }
 
 
