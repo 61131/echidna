@@ -59,6 +59,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "DINT", SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM, 0, -1 },
         { "DINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM - 1, -1 },
         { "DINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "DINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT32_MIN) - 1, -1 },
+        { "DINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT32_MAX) + 1, -1 },
 
         { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), 0 },
         { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM, 0 },
@@ -66,6 +68,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "INT", SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM, 0, -1 },
         { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM - 1, -1 },
         { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT16_MIN) - 1, -1 },
+        { "INT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT16_MAX) + 1, -1 },
 
         { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), 0 },
         { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM, 0 },
@@ -73,6 +77,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "SINT", SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM, 0, -1 },
         { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MINIMUM - 1, -1 },
         { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT8_MIN) - 1, -1 },
+        { "SINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) INT8_MAX) + 1, -1 },
 
         { "ULINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "ULINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -80,6 +86,7 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "ULINT", SUBRANGE_MAXIMUM, 1, 0, -1 },
         { "ULINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "ULINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "ULINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, -1, -1 },
 
         { "UDINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "UDINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -87,6 +94,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "UDINT", SUBRANGE_MAXIMUM, 1, 0, -1 },
         { "UDINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "UDINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "UDINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, -1, -1 },
+        { "UDINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) UINT32_MAX) + 1, -1 },
 
         { "UINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "UINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -94,6 +103,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "UINT", SUBRANGE_MAXIMUM, 1, 0, -1 },
         { "UINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "UINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "UINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, -1, -1 },
+        { "UINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) UINT16_MAX) + 1, -1 },
 
         { "USINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "USINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -101,6 +112,8 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "USINT", SUBRANGE_MAXIMUM, 1, 0, -1 },
         { "USINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "USINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
+        { "USINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, -1, -1 },
+        { "USINT", SUBRANGE_MINIMUM, SUBRANGE_MAXIMUM, ((int64_t) UINT8_MAX) + 1, -1 },
 
         { NULL },
     };

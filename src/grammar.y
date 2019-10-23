@@ -101,7 +101,7 @@ extern FILE *yyin;
 %token <Token> single_byte_character_string
 %token <Token> double_byte_character_string
     
-/* B.1.2.3 interval definitions */
+/* B.1.2.3 interval literals */
 
 /* B.1.2.3.1 Duration */
 
@@ -350,7 +350,7 @@ extern FILE *yyin;
 
 %type <Token> character_string
 
-/* B.1.2.3 interval definitions */
+/* B.1.2.3 interval literals */
 
 %type <Token> time_literal
 
@@ -798,7 +798,7 @@ character_string: single_byte_character_string
     | double_byte_character_string;
 
         
-/* B.1.2.3 interval definitions */
+/* B.1.2.3 interval literals */
 
 /*  time_literal ::= duration | time_of_day | date | date_and_time */
 
@@ -841,7 +841,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($hours->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -859,7 +859,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -877,7 +877,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -895,7 +895,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -918,7 +918,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($hours->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -936,7 +936,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -954,7 +954,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -972,7 +972,7 @@ days: fixed_point _duration_days hours {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -996,7 +996,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1014,7 +1014,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1032,7 +1032,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1055,7 +1055,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($minutes->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1073,7 +1073,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1091,7 +1091,7 @@ hours: fixed_point _duration_hours minutes {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1115,7 +1115,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1133,7 +1133,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1156,7 +1156,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($seconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1174,7 +1174,7 @@ minutes: fixed_point _duration_minutes seconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1198,7 +1198,7 @@ seconds: fixed_point _duration_seconds milliseconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1221,7 +1221,7 @@ seconds: fixed_point _duration_seconds milliseconds {
 
             pParse = &Context->Parse;
             if($milliseconds->Value.Value.Time < 0.0) {
-                log_error("%s: Negative value only permitted for leading component of interval definition [%u:%u]",
+                log_error("%s: Negative value only permitted for leading component of interval literal [%u:%u]",
                         pParse->File,
                         @1.first_line,
                         @1.first_column);
@@ -1865,7 +1865,6 @@ subrange_type_declaration: subrange_type_name ':' subrange_spec_init {
 
 subrange_spec_init: subrange_specification
     | subrange_specification _assign signed_integer {
-            /* It is an error if the value of a value of a subrange type falls outside the specified range of values. */
             PARSE *pParse;
 
             /*
@@ -2094,6 +2093,9 @@ subrange_spec_init: subrange_specification
         };
     
 subrange_specification: integer_type_name '(' subrange ')' {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
             switch($integer_type_name->Value.Type) {
                 case TYPE_LINT:
                     $integer_type_name->Value.Value.S64 = (int64_t) $subrange->Value.Value.S64;
@@ -2102,42 +2104,159 @@ subrange_specification: integer_type_name '(' subrange ')' {
                     break;
                 
                 case TYPE_DINT:
+                    if($subrange->Value.Minimum.S64 < ((int64_t) $integer_type_name->Value.Minimum.S32)) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.S32)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.S32 = (int32_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.S32 = (int32_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.S32 = (int32_t) $subrange->Value.Minimum.S64;
                     break;
 
                 case TYPE_INT:
+                    if($subrange->Value.Minimum.S64 < ((int64_t) $integer_type_name->Value.Minimum.S16)) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.S16)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.S16 = (int16_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.S16 = (int16_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.S16 = (int16_t) $subrange->Value.Minimum.S64;
                     break;
 
                 case TYPE_SINT:
+                    if($subrange->Value.Minimum.S64 < ((int64_t) $integer_type_name->Value.Minimum.S8)) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.S8)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.S8 = (int8_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.S8 = (int8_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.S8 = (int8_t) $subrange->Value.Minimum.S64;
                     break;
 
                 case TYPE_ULINT:
+                    if($subrange->Value.Minimum.S64 < 0) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.U64 = (uint64_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.U64 = (uint64_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.U64 = (uint64_t) $subrange->Value.Minimum.S64;
                     break;
                 
                 case TYPE_UDINT:
+                    if($subrange->Value.Minimum.S64 < 0) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.U32)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.U32 = (uint32_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.U32 = (uint32_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.U32 = (uint32_t) $subrange->Value.Minimum.S64;
                     break;
 
                 case TYPE_UINT:
+                    if($subrange->Value.Minimum.S64 < 0) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.U16)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.U16 = (uint16_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.U16 = (uint16_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.U16 = (uint16_t) $subrange->Value.Minimum.S64;
                     break;
 
                 case TYPE_USINT:
+                    if($subrange->Value.Minimum.S64 < 0) {
+                        log_error("%s: Minimum value (%lld) in subrange less than minimum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Minimum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
+                    if($subrange->Value.Maximum.S64 > ((int64_t) $integer_type_name->Value.Maximum.U8)) {
+                        log_error("%s: Maximum value (%lld) in subrange greater than maximum value for integer type [%u:%u]",
+                                pParse->File,
+                                (long long int) $subrange->Value.Maximum.S64,
+                                @subrange.first_line,
+                                @subrange.first_column);
+                        token_destroy($subrange);
+                        YYERROR;
+                    }
                     $integer_type_name->Value.Value.U8 = (uint8_t) $subrange->Value.Value.S64;
                     $integer_type_name->Value.Maximum.U8 = (uint8_t) $subrange->Value.Maximum.S64;
                     $integer_type_name->Value.Minimum.U8 = (uint8_t) $subrange->Value.Minimum.S64;
