@@ -29,6 +29,104 @@ struct _TEST_LITERAL {
 };
 
 
+MunitResult
+test_grammar_literals_bitstring(const MunitParameter Parameters[], void *Fixture) {
+    ECHIDNA *pContext;
+    LLE *pElement;
+    PARSE *pParse;
+    TOKEN *pToken;
+    TOKEN_LIST *pList;
+    VALUE sValue;
+    struct _TEST_LITERAL *pValue;
+    char sLine[LINE_MAX];
+    int nIndex, nType;
+
+    char * sType[] = {
+        "LWORD",
+        "DWORD",
+        "WORD",
+        "BYTE",
+
+        NULL
+    };
+
+    struct _TEST_LITERAL sValues[] = {
+
+        { "0", { .Integer = 0 } },
+        { "123_456", { .Integer = 123456 } },
+        { "2#1111_1111", { .Integer = 255 } },
+        { "2#1110_0000", { .Integer = 224 } },
+        { "8#377", { .Integer = 255 } },
+        { "8#340", { .Integer = 224 } },
+        { "16#FF", { .Integer = 255 } },
+        { "16#E0", { .Integer = 224 } },
+        { "16#ff", { .Integer = 255 } },
+        { "16#e0", { .Integer = 224 } },
+
+        { NULL, { .Integer = 0 } }
+    };
+
+    pContext = (ECHIDNA *) Fixture;
+    munit_assert_not_null(pContext);
+
+    for(nType = 0; sType[nType] != NULL; ++nType) {
+        for(nIndex = 0;; ++nIndex) {
+            pValue = &sValues[nIndex];
+            if(!pValue->Source)
+                break;
+            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s#%s; END_TYPE", 
+                    sType[nType], 
+                    sType[nType], 
+                    pValue->Source);
+            value_initialise(&sValue);
+            munit_assert_int(value_strtotype(&sValue, sType[nType]), ==, 0);
+            munit_assert_uint32(sValue.Type, !=, TYPE_NONE);
+            switch(sValue.Type) {
+                case TYPE_UINT:
+                    if(pValue->Value.Integer > UINT16_MAX)
+                        continue;
+                    break;
+
+                case TYPE_USINT:
+                    if(pValue->Value.Integer > UINT8_MAX)
+                        continue;
+                    break;
+
+                default:
+                    break;
+            }
+            fprintf(stderr, "%s\n", sLine);
+            munit_assert_int(test_parse(pContext, sLine), ==, 0);
+
+            munit_assert_not_null(pParse = &pContext->Parse);
+            munit_assert_not_null(pList = &pParse->Tokens);
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
+
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_int(pToken->Type, ==, TYPE_LIST);
+            pList = (TOKEN_LIST *) pToken;
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
+
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_not_null(pToken->Name);
+            munit_assert_string_equal(pToken->Name, "TEST");
+            munit_assert_uint32(pToken->Value.Type, ==, sValue.Type);
+            munit_assert_uint32(pToken->Value.Cast, ==, sValue.Type);
+            munit_assert_int64(pToken->Value.Value.S64, ==, pValue->Value.Integer);
+            munit_assert_null(pElement->Next);
+
+            parse_reset(pContext, pParse);
+        }
+    }
+
+    return MUNIT_OK;
+}
+
+
 MunitResult 
 test_grammar_literals_boolean(const MunitParameter Parameters[], void *Fixture) {
     ECHIDNA *pContext;
@@ -2487,14 +2585,5 @@ test_grammar_literals_time(const MunitParameter Parameters[], void *Fixture) {
 }
 
 
-MunitResult 
-test_grammar_literals_type(const MunitParameter Parameters[], void *Fixture) {
-    ECHIDNA *pContext;
-
-    pContext = (ECHIDNA *) Fixture;
-    munit_assert_not_null(pContext);
-
-    return MUNIT_OK;
-}
 
 
