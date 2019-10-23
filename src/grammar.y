@@ -890,25 +890,11 @@ days: fixed_point _duration_days {
             $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
             $$ = $fixed_point;
         }
-    | integer _duration_days '_' hours {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $hours->Value.Value.Time;
-            token_destroy($hours);
-            $$ = $integer;
-        }
     | integer _duration_days hours {
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
             $integer->Value.Value.Time += $hours->Value.Value.Time;
             token_destroy($hours);
-            $$ = $integer;
-        }
-    | integer _duration_days '_' minutes {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $minutes->Value.Value.Time;
-            token_destroy($minutes);
             $$ = $integer;
         }
     | integer _duration_days minutes {
@@ -918,25 +904,11 @@ days: fixed_point _duration_days {
             token_destroy($minutes);
             $$ = $integer;
         }
-    | integer _duration_days '_' seconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
-            token_destroy($seconds);
-            $$ = $integer;
-        }
     | integer _duration_days seconds {
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
             $integer->Value.Value.Time += $seconds->Value.Value.Time;
             token_destroy($seconds);
-            $$ = $integer;
-        }
-    | integer _duration_days '_' milliseconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
-            token_destroy($milliseconds);
             $$ = $integer;
         }
     | integer _duration_days milliseconds {
@@ -957,13 +929,6 @@ hours: fixed_point _duration_hours {
             $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
             $$ = $fixed_point;
         }
-    | integer _duration_hours '_' minutes {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $minutes->Value.Value.Time;
-            token_destroy($minutes);
-            $$ = $integer;
-        }
     | integer _duration_hours minutes {
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
@@ -971,25 +936,11 @@ hours: fixed_point _duration_hours {
             token_destroy($minutes);
             $$ = $integer;
         }
-    | integer _duration_hours '_' seconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
-            token_destroy($seconds);
-            $$ = $integer;
-        }
     | integer _duration_hours seconds {
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
             $integer->Value.Value.Time += $seconds->Value.Value.Time;
             token_destroy($seconds);
-            $$ = $integer;
-        }
-    | integer _duration_hours '_' milliseconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
-            token_destroy($milliseconds);
             $$ = $integer;
         }
     | integer _duration_hours milliseconds {
@@ -1010,25 +961,11 @@ minutes: fixed_point _duration_minutes {
             $fixed_point->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
             $$ = $fixed_point;
         }
-    | integer _duration_minutes '_' seconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
-            $integer->Value.Value.Time += $seconds->Value.Value.Time;
-            token_destroy($seconds);
-            $$ = $integer;
-        }
     | integer _duration_minutes seconds {
             cast_time(&$integer->Value);
             $integer->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
             $integer->Value.Value.Time += $seconds->Value.Value.Time;
             token_destroy($seconds);
-            $$ = $integer;
-        }
-    | integer _duration_minutes '_' milliseconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
-            token_destroy($milliseconds);
             $$ = $integer;
         }
     | integer _duration_minutes milliseconds {
@@ -1048,13 +985,6 @@ seconds: fixed_point _duration_seconds {
             cast_time(&$fixed_point->Value);
             $fixed_point->Value.Value.Time *= 1000.0f;
             $$ = $fixed_point;
-        }
-    | integer _duration_seconds '_' milliseconds {
-            cast_time(&$integer->Value);
-            $integer->Value.Value.Time *= 1000.0f;
-            $integer->Value.Value.Time += $milliseconds->Value.Value.Time;
-            token_destroy($milliseconds);
-            $$ = $integer;
         }
     | integer _duration_seconds milliseconds {
             cast_time(&$integer->Value);
