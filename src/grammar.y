@@ -875,7 +875,79 @@ interval: days
     | seconds
     | milliseconds;
     
-days: fixed_point _duration_days {
+days: fixed_point _duration_days hours {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($hours->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $hours);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
+            $fixed_point->Value.Value.Time += ($hours->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($hours);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_days minutes {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($minutes->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $minutes);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
+            $fixed_point->Value.Value.Time += ($minutes->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($minutes);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_days seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $seconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
+            $fixed_point->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($seconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_days milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $milliseconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
+            $fixed_point->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($milliseconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_days {
             cast_time(&$fixed_point->Value);
             $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60 * 24) */ 8.64e+7f;
             $$ = $fixed_point;
@@ -958,7 +1030,61 @@ days: fixed_point _duration_days {
             $$ = $integer;
         };
     
-hours: fixed_point _duration_hours {
+hours: fixed_point _duration_hours minutes {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($minutes->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $minutes);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
+            $fixed_point->Value.Value.Time += ($minutes->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($minutes);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_hours seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $seconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
+            $fixed_point->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($seconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_hours milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $milliseconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
+            $fixed_point->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($milliseconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_hours {
             cast_time(&$fixed_point->Value);
             $fixed_point->Value.Value.Time *= /* (1000 * 60 * 60) */ 3.6e+6f;
             $$ = $fixed_point;
@@ -1023,7 +1149,43 @@ hours: fixed_point _duration_hours {
             $$ = $integer;
         };
     
-minutes: fixed_point _duration_minutes {
+minutes: fixed_point _duration_minutes seconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($seconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $seconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
+            $fixed_point->Value.Value.Time += ($seconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($seconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_minutes milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $milliseconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
+            $fixed_point->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($milliseconds);
+            $$ = $fixed_point;
+        }
+    | fixed_point _duration_minutes {
             cast_time(&$fixed_point->Value);
             $fixed_point->Value.Value.Time *= /* (1000 * 60) */ 60000.0f;
             $$ = $fixed_point;
@@ -1070,7 +1232,25 @@ minutes: fixed_point _duration_minutes {
             $$ = $integer;
         };
     
-seconds: fixed_point _duration_seconds {
+seconds: fixed_point _duration_seconds milliseconds {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            if($milliseconds->Value.Value.Time < 0.0) {
+                log_error("%s: Invalid format for duration literal [%u:%u]",
+                        pParse->File,
+                        @1.first_line,
+                        @1.first_column);
+                token_destroy($fixed_point, $milliseconds);
+                YYERROR;
+            }
+            cast_time(&$fixed_point->Value);
+            $fixed_point->Value.Value.Time *= 1000.0f;
+            $fixed_point->Value.Value.Time += ($milliseconds->Value.Value.Time * copysign(1.0, $fixed_point->Value.Value.Time));
+            token_destroy($milliseconds);
+            $$ = $fixed_point;
+       }
+    | fixed_point _duration_seconds {
             cast_time(&$fixed_point->Value);
             $fixed_point->Value.Value.Time *= 1000.0f;
             $$ = $fixed_point;
