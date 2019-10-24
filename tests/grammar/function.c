@@ -71,13 +71,6 @@ test_grammar_function(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_not_null(pElement = pList->List.Head);
 
     munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
-    munit_assert_int(pToken->Id, ==, TYPE);
-    munit_assert_int(pToken->Type, ==, TYPE_LIST);
-    pList = (TOKEN_LIST *) pToken;
-    munit_assert_size(pList->List.Size, ==, 1);
-    munit_assert_not_null(pElement = pList->List.Head);
-
-    munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
     munit_assert_int(pToken->Id, ==, FUNCTION);
     munit_assert_int(pToken->Type, ==, TYPE_LIST);
     pList = (TOKEN_LIST *) pToken;
