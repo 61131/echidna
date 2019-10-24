@@ -1,8 +1,9 @@
 PROGRAM divide
-VAR test: XXXXX ; END_VAR
+VAR test: %s; END_VAR
 
 LD test
-DIV 0
+DIV %s#1
+DIV %s#0
 ST test
 
 END_PROGRAM

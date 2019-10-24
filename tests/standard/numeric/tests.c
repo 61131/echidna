@@ -32,12 +32,6 @@ test_numeric_atan(const MunitParameter Parameters[], void *Fixture) {
 
 
 MunitResult 
-test_numeric_exp(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
-
-
-MunitResult 
 test_numeric_ln(const MunitParameter Parameters[], void *Fixture) {
     return MUNIT_SKIP;
 }

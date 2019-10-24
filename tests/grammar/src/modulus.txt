@@ -1,8 +1,9 @@
 PROGRAM modulus
-VAR test: XXXXX ; END_VAR
+VAR test: %s; END_VAR
 
 LD test
-MOD 0
+MOD %s#1
+MOD %s#0
 ST test
 
 END_PROGRAM
