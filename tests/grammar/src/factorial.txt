@@ -1,0 +1,20 @@
+FUNCTION fact : UDINT
+VAR_INPUT inp: UDINT; END_VAR
+VAR_OUTPUT out: UDINT; END_VAR
+VAR local: UDINT; END_VAR
+
+LD inp
+GE 1
+JMPC nonzero
+LD 1
+RET
+nonzero: LD inp
+SUB 1
+ST local
+fact local
+MUL inp
+ST out
+RET
+
+END_FUNCTION
+

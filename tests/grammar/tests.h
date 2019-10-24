@@ -7,6 +7,8 @@
 
 MunitResult test_grammar_comments(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_grammar_function(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_grammar_literals_bitstring(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_grammar_literals_boolean(const MunitParameter Parameters[], void *Fixture);

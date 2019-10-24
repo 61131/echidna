@@ -7,6 +7,7 @@
 
 MunitTest suite_grammar[] = {
     { "comments", test_grammar_comments, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
+    { "function", test_grammar_function, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
     { "literals/bitstring", test_grammar_literals_bitstring, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
     { "literals/boolean", test_grammar_literals_boolean, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
     { "literals/integer", test_grammar_literals_integer, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },

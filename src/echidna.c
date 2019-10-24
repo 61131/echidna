@@ -388,7 +388,7 @@ echidna_compile(ECHIDNA *Context) {
     symbol_table_build(Context);
 
     for(;;) {
-//json_token_dump((TOKEN *) &Context->Parse.Tokens);
+json_token_dump((TOKEN *) &Context->Parse.Tokens);
         if((nResult = bytecode_generate(Context)) != 0) {
             log_error("Failed to generate bytecode");
             break;

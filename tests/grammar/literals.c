@@ -329,9 +329,16 @@ test_grammar_literals_real(const MunitParameter Parameters[], void *Fixture) {
     PARSE *pParse;
     TOKEN *pToken;
     TOKEN_LIST *pList;
+    VALUE sValue;
     struct _TEST_LITERAL *pValue;
     char sLine[LINE_MAX];
-    int nIndex;
+    int nIndex, nType;
+
+    char * sType[] = {
+        "LREAL",
+        "REAL",
+        NULL,
+    };
 
     struct _TEST_LITERAL sValues[] = {
 
@@ -346,42 +353,60 @@ test_grammar_literals_real(const MunitParameter Parameters[], void *Fixture) {
         { "1.234E6", { .Double = 1.234E6 } },
         { "1.234e6", { .Double = 1.234E6 } },
 
-        { NULL, { .Integer = 0 } }
+        { NULL }
     };
 
     pContext = (ECHIDNA *) Fixture;
     munit_assert_not_null(pContext);
 
-    for(nIndex = 0;; ++nIndex) {
-        pValue = &sValues[nIndex];
-        if(!pValue->Source)
-            break;
-        snprintf(sLine, sizeof(sLine), "TYPE TEST: LREAL := %s; END_TYPE", pValue->Source);
-        if(test_parse(pContext, sLine) != 0)
-            return MUNIT_FAIL;
+    for(nType = 0; sType[nType] != NULL; ++nType) {
+        for(nIndex = 0;; ++nIndex) {
+            pValue = &sValues[nIndex];
+            if(!pValue->Source)
+                break;
+            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s; END_TYPE", 
+                    sType[nType], 
+                    pValue->Source);
+            value_initialise(&sValue);
+            munit_assert_int(value_strtotype(&sValue, sType[nType]), ==, 0);
+            munit_assert_uint32(sValue.Type, !=, TYPE_NONE);
+            if(test_parse(pContext, sLine) != 0)
+                return MUNIT_FAIL;
 
-        munit_assert_not_null(pParse = &pContext->Parse);
-        munit_assert_not_null(pList = &pParse->Tokens);
-        munit_assert_size(pList->List.Size, ==, 1);
-        munit_assert_not_null(pElement = pList->List.Head);
+            munit_assert_not_null(pParse = &pContext->Parse);
+            munit_assert_not_null(pList = &pParse->Tokens);
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
 
-        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
-        munit_assert_int(pToken->Id, ==, TYPE);
-        munit_assert_int(pToken->Type, ==, TYPE_LIST);
-        pList = (TOKEN_LIST *) pToken;
-        munit_assert_size(pList->List.Size, ==, 1);
-        munit_assert_not_null(pElement = pList->List.Head);
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_int(pToken->Type, ==, TYPE_LIST);
+            pList = (TOKEN_LIST *) pToken;
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
 
-        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
-        munit_assert_int(pToken->Id, ==, TYPE);
-        munit_assert_not_null(pToken->Name);
-        munit_assert_string_equal(pToken->Name, "TEST");
-        munit_assert_uint32(pToken->Value.Type, ==, TYPE_LREAL);
-        munit_assert_uint32(pToken->Value.Cast, ==, TYPE_LREAL);
-        munit_assert_double(pToken->Value.Value.Double, ==, pValue->Value.Double);
-        munit_assert_null(pElement->Next);
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_not_null(pToken->Name);
+            munit_assert_string_equal(pToken->Name, "TEST");
+            munit_assert_uint32(pToken->Value.Type, ==, sValue.Type);
+            munit_assert_uint32(pToken->Value.Cast, ==, sValue.Type);
+            switch(pToken->Value.Type) {
+                case TYPE_LREAL:
+                    munit_assert_double(pToken->Value.Value.Double, ==, pValue->Value.Double);
+                    break;
 
-        parse_reset(pContext, pParse);
+                case TYPE_REAL:
+                    munit_assert_float(pToken->Value.Value.Single, ==, (float) pValue->Value.Double);
+                    break;
+
+                default:
+                    break;
+            }
+            munit_assert_null(pElement->Next);
+
+            parse_reset(pContext, pParse);
+        }
     }
 
     return MUNIT_OK;
