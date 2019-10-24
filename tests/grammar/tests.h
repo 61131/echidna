@@ -7,6 +7,8 @@
 
 MunitResult test_grammar_comments(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_grammar_divide(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_grammar_function(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_grammar_literals_bitstring(const MunitParameter Parameters[], void *Fixture);
@@ -18,6 +20,8 @@ MunitResult test_grammar_literals_integer(const MunitParameter Parameters[], voi
 MunitResult test_grammar_literals_real(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_grammar_literals_time(const MunitParameter Parameters[], void *Fixture);
+
+MunitResult test_grammar_modulus(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_grammar_subrange(const MunitParameter Parameters[], void *Fixture);
 

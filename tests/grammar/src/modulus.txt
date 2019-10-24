@@ -1,0 +1,9 @@
+PROGRAM modulus
+VAR test: XXXXX ; END_VAR
+
+LD test
+MOD 0
+ST test
+
+END_PROGRAM
+

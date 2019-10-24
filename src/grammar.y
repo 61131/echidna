@@ -6289,23 +6289,21 @@ yyfunction_destroy(void *Arg) {
 
 int
 yyliteralzero(TOKEN *Token) {
-    switch(Token->Id) {
-        case LREAL:             return (fabs(Token->Value.Value.Double) < DBL_EPSILON);
-        case REAL:              /* break; */
-        case real:              return (fabs(Token->Value.Value.Single) < FLT_EPSILON);
-        case LINT:              /* break; */
-        case integer:           return (Token->Value.Value.S64 == 0ll);
-        case DINT:              return (Token->Value.Value.S32 == 0);
-        case INT:               return (Token->Value.Value.S16 == 0);
-        case SINT:              return (Token->Value.Value.S8 == 0);
-        case ULINT:             return (Token->Value.Value.U64 == 0ull);
-        case UDINT:             return (Token->Value.Value.U32 == 0ul);
-        case USINT:             return (Token->Value.Value.U8 == 0u);
-        case UINT:              return (Token->Value.Value.U16 == 0u);
-        case LWORD:             return (Token->Value.Value.B64 == 0ull);
-        case DWORD:             return (Token->Value.Value.B32 == 0ul);
-        case WORD:              return (Token->Value.Value.B16 == 0u);
-        case BYTE:              return (Token->Value.Value.B8 == 0u);
+    switch(Token->Value.Type) {
+        case TYPE_LREAL:        return (fabs(Token->Value.Value.Double) < DBL_EPSILON);
+        case TYPE_REAL:         return (fabs(Token->Value.Value.Single) < FLT_EPSILON);
+        case TYPE_LINT:         return (Token->Value.Value.S64 == 0ll);
+        case TYPE_DINT:         return (Token->Value.Value.S32 == 0);
+        case TYPE_INT:          return (Token->Value.Value.S16 == 0);
+        case TYPE_SINT:         return (Token->Value.Value.S8 == 0);
+        case TYPE_ULINT:        return (Token->Value.Value.U64 == 0ull);
+        case TYPE_UDINT:        return (Token->Value.Value.U32 == 0ul);
+        case TYPE_USINT:        return (Token->Value.Value.U8 == 0u);
+        case TYPE_UINT:         return (Token->Value.Value.U16 == 0u);
+        case TYPE_LWORD:        return (Token->Value.Value.B64 == 0ull);
+        case TYPE_DWORD:        return (Token->Value.Value.B32 == 0ul);
+        case TYPE_WORD:         return (Token->Value.Value.B16 == 0u);
+        case TYPE_BYTE:         return (Token->Value.Value.B8 == 0u);
         default:
             break;
     }
