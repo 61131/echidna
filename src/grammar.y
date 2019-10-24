@@ -715,6 +715,13 @@ numeric_literal: integer_literal
     | real_literal;
 
 integer_literal: integer_type_name '#' signed_integer {
+
+            /*
+                integer_type_name '#' binary_integer        //  binary_integer -> integer (lexer.l)
+                integer_type_name '#' octal_integer         //  octal_integer -> integer (lexer.l)
+                integer_type_name '#' hex_integer           //  hex_integer -> integer (lexer.l)
+            */
+
             value_cast(&$signed_integer->Value, $integer_type_name->Value.Type);
             token_destroy($integer_type_name);
             $$ = $signed_integer;
@@ -742,28 +749,13 @@ real_literal: real_type_name '#' real {
 bit_string_literal: bit_string_type_name '#' integer {
             TOKEN *pToken;
             
+            /*
+                bit_string_type_name '#' binary_integer     //  binary_integer -> integer (lexer.l)
+                bit_string_type_name '#' octal_integer      //  octal_integer -> integer (lexer.l)
+                bit_string_type_name '#' hex_integer        //  hex_integer -> integer (lexer.l)
+            */
+
             pToken = token_cast($integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
-            token_destroy($bit_string_type_name);
-            $$ = pToken;
-        }
-    | bit_string_type_name '#' binary_integer {
-            TOKEN *pToken;
-            
-            pToken = token_cast($binary_integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
-            token_destroy($bit_string_type_name);
-            $$ = pToken;
-        }
-    | bit_string_type_name '#' octal_integer {
-            TOKEN *pToken;
-            
-            pToken = token_cast($octal_integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
-            token_destroy($bit_string_type_name);
-            $$ = pToken;
-        }
-    | bit_string_type_name '#' hex_integer {
-            TOKEN *pToken;
-            
-            pToken = token_cast($hex_integer, $bit_string_type_name->Value.Type, $bit_string_type_name->Line, $bit_string_type_name->Column);
             token_destroy($bit_string_type_name);
             $$ = pToken;
         };
