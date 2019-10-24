@@ -95,7 +95,7 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "UDINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "UDINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
         { "UDINT", -1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
-        { "UDINT", SUBRANGE_MINIMUM, ((int64_t) UINT32_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
+        { "UDINT", 1, ((int64_t) UINT32_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
 
         { "UINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "UINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -104,7 +104,7 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "UINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "UINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
         { "UINT", -1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
-        { "UINT", SUBRANGE_MINIMUM, ((int64_t) UINT16_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
+        { "UINT", 1, ((int64_t) UINT16_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
 
         { "USINT", 1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - 1) >> 2), 0 },
         { "USINT", 1, SUBRANGE_MAXIMUM, 1, 0 },
@@ -113,7 +113,7 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
         { "USINT", 1, SUBRANGE_MAXIMUM, 0, -1 },
         { "USINT", 1, SUBRANGE_MAXIMUM, SUBRANGE_MAXIMUM + 1, -1 },
         { "USINT", -1, SUBRANGE_MAXIMUM, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
-        { "USINT", SUBRANGE_MINIMUM, ((int64_t) UINT8_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
+        { "USINT", 1, ((int64_t) UINT8_MAX) + 1, ((SUBRANGE_MAXIMUM - SUBRANGE_MINIMUM) >> 2), -1 },
 
         { NULL },
     };
@@ -194,6 +194,7 @@ test_grammar_subrange(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(test_parse(pContext, "TYPE TEST: INT 0..16); END_TYPE"), ==, -1);
     munit_assert_int(test_parse(pContext, "TYPE TEST: INT (0..16; END_TYPE"), ==, -1);
     munit_assert_int(test_parse(pContext, "TYPE TEST: INT 0..16; END_TYPE"), ==, -1);
+    munit_assert_int(test_parse(pContext, "TYPE TEST INT (0..16); END_TYPE"), ==, -1);
     munit_assert_int(test_parse(pContext, "TYPE TEST: WORD (0..16); END_TYPE"), ==, -1);
 
     return MUNIT_OK;
