@@ -1,0 +1,37 @@
+PROGRAM test
+VAR i1, i2: BOOL := FALSE; END_VAR
+VAR count: ULINT := 0; END_VAR
+VAR fedge: F_TRIG; END_VAR
+VAR redge: R_TRIG; END_VAR
+
+ADD count, 1
+ST count
+
+LD count
+MOD 3
+EQ 0
+ST i1
+CAL redge(
+    CLK := i1
+)
+
+LD count
+MOD 5
+NE 0
+ST i2
+CAL fedge(
+    CLK := i2
+)
+
+LD fedge.Q
+AND redge.Q
+RETCN
+_exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (PRIORITY := 1);
+PROGRAM program1: test;
+END_CONFIGURATION
+

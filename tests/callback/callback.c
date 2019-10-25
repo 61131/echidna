@@ -27,6 +27,9 @@ test_callback_register(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(callback_register(pContext, CALLBACK_TASK_STOP, NULL, _test_callback_callback), ==, 0);
     munit_assert_int(callback_register(pContext, CALLBACK_CYCLE_START, NULL, _test_callback_callback), ==, 0);
     munit_assert_int(callback_register(pContext, CALLBACK_CYCLE_FINISH, NULL, _test_callback_callback), ==, 0);
+    munit_assert_int(callback_register(pContext, CALLBACK_CYCLE_FINISH, NULL, _test_callback_callback, pContext), ==, 0);
+
+    callback_destroy(NULL);
 
     return MUNIT_OK;
 }
