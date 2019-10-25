@@ -75,7 +75,8 @@ test_edge(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_not_null(pContext);
 
     munit_assert_int(test_parse(pContext, _Source), ==, 0);
-    pContext->Option |= OPTION_COMPILE;
+    function_table_build(&pContext->Functions);
+    pContext->Option |= (OPTION_COMPILE | OPTION_RUN);
     pContext->Output = NULL;
     munit_assert_int(echidna_compile(pContext), ==, 0);
     munit_assert_int(echidna_run(pContext), ==, 0);

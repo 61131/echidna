@@ -22,9 +22,10 @@ log_message(int Priority, const char *Format, ...) {
     if(log_level == LOG_NONE)
         return;
     if(Priority <= log_level) {
-        pFile = (log_level <= LOG_ERR) ? stderr : stdout;
+        //pFile = (log_level <= LOG_ERR) ? stderr : stdout;
+        pFile = stderr;
         va_start(sArg, Format);
-        if(isatty(fileno(pFile))) {
+        if(/* isatty(fileno(pFile)) */ 1) {
             fprintf(pFile, "%s: ", _Level[Priority]);
             vfprintf(pFile, Format, sArg);
             fprintf(pFile, "\n");
