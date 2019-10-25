@@ -106,8 +106,6 @@ _echidna_arguments(ECHIDNA *Context, int Count, char **Arg) {
                 return nResult;
         }
 
-        function_table_build(&Context->Functions);
-        
         if((Context->Option & OPTION_COMPILE) != 0) {
             if((nResult = echidna_compile(Context)) != 0) 
                 break;
@@ -426,11 +424,12 @@ echidna_compile(ECHIDNA *Context) {
 
     if((Context->Option & OPTION_COMPILE) == 0)
         return 0;
-    //  TODO: Resolve function/symbol table build from bytecode without compile
-    symbol_table_build(Context);
-
     for(;;) {
+        function_table_build(&Context->Functions);
+        symbol_table_build(Context);
+        
 //json_token_dump((TOKEN *) &Context->Parse.Tokens);
+//json_symbol_dump(Context);
         if((nResult = bytecode_generate(Context)) != 0) {
             log_error("Failed to generate bytecode");
             break;
@@ -498,6 +497,8 @@ echidna_run(ECHIDNA *Context) {
 
     if((nResult = _echidna_daemon(Context)) != 0)
         return nResult;
+
+    function_table_build(&Context->Functions);
     if((nResult = _echidna_runtime(Context)) != 0) 
         return nResult;
 

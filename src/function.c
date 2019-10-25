@@ -299,7 +299,8 @@ function_table_build(FUNCTIONS *Context) {
     size_t uField, uIndex;
 
     assert(Context != NULL);
-    if(Context->Count <= 0)
+    if((Context->Count <= 0) ||
+            (Context->Lock > 0))
         return;
 
     for(uIndex = 0; uIndex < Context->Count; ++uIndex)

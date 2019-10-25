@@ -6,9 +6,34 @@
 
 #include <echidna.h>
 #include <ll.h>
+#include <macros.h>
 #include <runtime.h>
+#include <symbol.h>
 
 #include <suite.h>
+
+
+struct _TEST_VALUES {
+
+    uint8_t Falling;
+
+    uint8_t Rising;
+};
+
+
+/*
+    This unit test is intended to exercise the edge detection function blocks defined 
+    in the IEC 61131-3 standard. Due to the complexity required to appropriately mock, 
+    these function blocks are exercised through the execution of IEC 61131-3 Instruction 
+    List (IL) code. To verify intended execution, this test installs a callback hook 
+    which allows the state of function block outputs to be compared against expected 
+    values upon the completion of each cycle of execution.
+
+    The IL code implements a "fizz buzz"-style test where a rising edge is asserted on
+    cycle counts which are a multiple of three and a falling edge is asserted on cycle 
+    counts which are a multiple of five. The code will exit where both of these 
+    conditions is true (cycle 15).
+*/
 
 //  xxd -i src/edge.txt
 
@@ -66,6 +91,58 @@ static char _Source[] = {
     0x41, 0x54, 0x49, 0x4f, 0x4e, 0x0a, 0x00
 };
 
+static int _Cycle = 0;
+
+static struct _TEST_VALUES _Values[] = {
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 1 },
+    { 0, 0 },
+    { 1, 0 },
+    { 0, 1 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 1 },
+    { 1, 0 },
+    { 0, 0 },
+    { 0, 1 },
+    { 0, 0 },
+    { 0, 0 },
+    { 1, 1 },
+};
+
+
+static void
+_test_edge_callback(ECHIDNA *Context, void *Arg, void *User) {
+    RUNTIME *pRun;
+    RUNTIME_CONTEXT *pContext;
+    SYMBOL *pSymbol;
+    VALUE sValue;
+    struct _TEST_VALUES *pValue;
+
+    /* Arg == &RUNTIME_CONTEXT.Stats */
+    munit_assert_not_null(Arg);
+    munit_assert_not_null(pContext = container_of(Arg, RUNTIME_CONTEXT, Stats));
+    munit_assert_not_null(pRun = (RUNTIME *) pContext->Parent);
+    munit_assert_int(_Cycle, >=, 0);
+    munit_assert_int(_Cycle, <, 15);
+
+    pValue = &_Values[_Cycle];
+    munit_assert_not_null(pSymbol = symbol_search(Context, "config1", "__Single", "program1", "fedge.Q"));
+    value_copy(&sValue, &pSymbol->Value);
+    memcpy((char *) &sValue.Value.Pointer, &pRun->Memory[pSymbol->Offset], sValue.Length);
+    munit_assert_uint32(sValue.Type, ==, TYPE_BOOL);
+    munit_assert_uint8(sValue.Value.B1, ==, pValue->Falling);
+
+    munit_assert_not_null(pSymbol = symbol_search(Context, "config1", "__Single", "program1", "redge.Q"));
+    value_copy(&sValue, &pSymbol->Value);
+    memcpy((char *) &sValue.Value.Pointer, &pRun->Memory[pSymbol->Offset], sValue.Length);
+    munit_assert_uint32(sValue.Type, ==, TYPE_BOOL);
+    munit_assert_uint8(sValue.Value.B1, ==, pValue->Rising);
+
+    ++_Cycle;
+}
+
 
 MunitResult 
 test_edge(const MunitParameter Parameters[], void *Fixture) {
@@ -75,11 +152,13 @@ test_edge(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_not_null(pContext);
 
     munit_assert_int(test_parse(pContext, _Source), ==, 0);
-    function_table_build(&pContext->Functions);
     pContext->Option |= (OPTION_COMPILE | OPTION_RUN);
     pContext->Output = NULL;
     munit_assert_int(echidna_compile(pContext), ==, 0);
+    munit_assert_int(echidna_callback(pContext, CALLBACK_CYCLE_FINISH, NULL, _test_edge_callback), ==, 0);
+    _Cycle = 0;
     munit_assert_int(echidna_run(pContext), ==, 0);
+    munit_assert_int(_Cycle, ==, 15);
 
     return MUNIT_OK;
 }
