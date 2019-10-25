@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <assert.h>
 
+#include <callback.h>
 #include <echidna.h>
 #include <frame.h>
 #include <ll.h>

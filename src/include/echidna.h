@@ -2,6 +2,7 @@
 #define _ECHIDNA_H
 
 
+#include <callback.h>
 #include <function.h>
 #include <ll.h>
 #include <macros.h>
@@ -10,6 +11,8 @@
 #include <symbol.h>
 #include <tree.h>
 
+
+#define echidna_callback(...)   _echidna_callback(_NARG(__VA_ARGS__), __VA_ARGS__)
 
 #define echidna_initialise(...) _echidna_initialise(_NARG(__VA_ARGS__), __VA_ARGS__)
 
@@ -36,6 +39,8 @@ typedef struct _ECHIDNA {
 
     uint8_t Verbose;
 
+    LL Callbacks;
+
     LL Config;
 
     TREE POU;
@@ -60,6 +65,8 @@ typedef struct _ECHIDNA {
 }
 ECHIDNA;
 
+
+int _echidna_callback(size_t Arg, ECHIDNA *Context, CALLBACK_TYPE Type, ...);
 
 int _echidna_initialise(size_t Arg, ECHIDNA *Context, ...);
 

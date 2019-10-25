@@ -296,6 +296,47 @@ _echidna_runtime(ECHIDNA *Context) {
 
 
 int
+_echidna_callback(size_t Arg, ECHIDNA *Context, CALLBACK_TYPE Type, ...) {
+    CALLBACK_CALLBACK pCallback;
+    va_list sArg;
+    char *pName;
+    void *pUser;
+    int nResult;
+
+    errno = EINVAL;
+    nResult = -1;
+
+    for(;;) {
+        if(Arg < 4)
+            break;
+
+        va_start(sArg, Type);
+        switch(Type) {
+            case CALLBACK_CYCLE_START:
+            case CALLBACK_CYCLE_FINISH:
+            case CALLBACK_TASK_START:
+            case CALLBACK_TASK_STOP:
+                pName = va_arg(sArg, char *);
+                if((pCallback = va_arg(sArg, CALLBACK_CALLBACK)) == NULL)
+                    break;
+                pUser = (Arg > 4) ? va_arg(sArg, void *) : NULL;
+
+                errno = 0;
+                nResult = callback_register(Context, Type, pName, pCallback, pUser);
+                break;
+
+            default:
+                break;
+        }
+
+        va_end(sArg);
+        break;
+    }
+    return nResult;
+}
+
+
+int
 _echidna_initialise(size_t Arg, ECHIDNA *Context, ...) {
     va_list sArg;
     char **pArg;
@@ -309,6 +350,7 @@ _echidna_initialise(size_t Arg, ECHIDNA *Context, ...) {
     Context->Symbols.Symbol = NULL;
     Context->Symbols.Count = 0;
 
+    ll_initialise(&Context->Callbacks, callback_destroy);
     ll_initialise(&Context->Config);
     tree_initialise(&Context->POU, block_compare);
     function_initialise(&Context->Functions);
@@ -388,7 +430,7 @@ echidna_compile(ECHIDNA *Context) {
     symbol_table_build(Context);
 
     for(;;) {
-json_token_dump((TOKEN *) &Context->Parse.Tokens);
+//json_token_dump((TOKEN *) &Context->Parse.Tokens);
         if((nResult = bytecode_generate(Context)) != 0) {
             log_error("Failed to generate bytecode");
             break;
@@ -417,6 +459,7 @@ echidna_destroy(ECHIDNA *Context) {
     parse_destroy(&Context->Parse);
     tree_destroy(&Context->POU, unit_destroy);
     ll_destroy(&Context->Config, _echidna_destroy_configuration);
+    ll_destroy(&Context->Callbacks);
     function_destroy(&Context->Functions);
 }
 

@@ -12,6 +12,7 @@ extern int _parse_file(ECHIDNA *Context, FILE *File);
 static MunitSuite sSuites[] = {
 
     { "block/", suite_block, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "callback/", suite_callback, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "cast/", suite_cast, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "echidna/", suite_echidna, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "grammar/", suite_grammar, NULL, 1, MUNIT_SUITE_OPTION_NONE },

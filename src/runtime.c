@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include <bytecode.h>
+#include <callback.h>
 #include <echidna.h>
 #include <frame.h>
 #include <json.h>
@@ -241,10 +242,12 @@ runtime_execute( RUNTIME *pRun ) {
         switch( pContext->State ) {
             case STATE_IDLE:
                 /* assert( pContext->State.Depth == 1 ); */
-                if( ( pPOU = ll_iterate_first( &pContext->Next, &pContext->POU ) ) == NULL ) {
+                if((pPOU = ll_iterate_first(&pContext->Next, &pContext->POU)) == NULL) {
                     pContext->State = STATE_ERROR;
                     continue;
                 }
+
+                callback_execute(pEch, CALLBACK_CYCLE_START, pContext);
                 frame_initialise(&pContext->Stack.Frame[0], pPOU);
                 pContext->State = STATE_RUN;
                 pContext->Stats.ExecutionStart = ev_time();
@@ -265,16 +268,18 @@ runtime_execute( RUNTIME *pRun ) {
                         if( pContext->Stats.Execution > pContext->Stats.Maximum )
                             pContext->Stats.Maximum = pContext->Stats.Execution;
 
-                        if( pEch->Verbose > 0 ) {
-                            block_dump( &sSymbol );
-                            log_debug( "Cycle: %llu, Over: %llu, Lat: %.3f ms, Exec: %.3f ms, Time: %.3f",
+                        callback_execute(pEch, CALLBACK_CYCLE_FINISH, pContext);
+
+                        if(pEch->Verbose > 0) {
+                            block_dump(&sSymbol);
+                            log_debug("Cycle: %llu, Over: %llu, Lat: %.3f ms, Exec: %.3f ms, Time: %.3f",
                                     pContext->Stats.Cycle,
                                     pContext->Stats.Overrun,
                                     pContext->Stats.Latency * 1000.0,
                                     pContext->Stats.Execution * 1000.0,
-                                    ( dTime - pContext->Stats.Start ) * 1000.0 );
+                                    (dTime - pContext->Stats.Start) * 1000.0);
                         }
-                        runtime_task_limit( pRun, pContext );
+                        runtime_task_limit(pRun, pContext);
 
                         pContext = NULL;
                         break;

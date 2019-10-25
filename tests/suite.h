@@ -9,6 +9,8 @@
 
 extern MunitTest suite_block[];
 
+extern MunitTest suite_callback[];
+
 extern MunitTest suite_cast[];
 
 extern MunitTest suite_digest[];
