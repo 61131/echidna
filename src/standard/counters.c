@@ -97,6 +97,22 @@ _standard_ctd(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
                 value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S32 <= 0));
                 break;
 
+            case TYPE_INT:
+                if(sFields[CTD_CD].Value.B1) {
+                    if(sFields[CTD_CV].Value.S16 > sFields[CTD_PV].Minimum.S16)
+                        --sFields[CTD_CV].Value.S16;
+                }
+                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S16 <= 0));
+                break;
+
+            case TYPE_SINT:
+                if(sFields[CTD_CD].Value.B1) {
+                    if(sFields[CTD_CV].Value.S8 > sFields[CTD_PV].Minimum.S8)
+                        --sFields[CTD_CV].Value.S8;
+                }
+                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S8 <= 0));
+                break;
+
             case TYPE_ULINT:
                 if(sFields[CTD_CD].Value.B1) {
                     if(sFields[CTD_CV].Value.U64 > sFields[CTD_PV].Minimum.U64)
@@ -111,6 +127,22 @@ _standard_ctd(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
                         --sFields[CTD_CV].Value.U32;
                 }
                 value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U32 <= 0));
+                break;
+
+            case TYPE_UINT:
+                if(sFields[CTD_CD].Value.B1) {
+                    if(sFields[CTD_CV].Value.U16 > sFields[CTD_PV].Minimum.U16)
+                        --sFields[CTD_CV].Value.U16;
+                }
+                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U16 <= 0));
+                break;
+
+            case TYPE_USINT:
+                if(sFields[CTD_CD].Value.B1) {
+                    if(sFields[CTD_CV].Value.U8 > sFields[CTD_PV].Minimum.U8)
+                        --sFields[CTD_CV].Value.U8;
+                }
+                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U8 <= 0));
                 break;
 
             default:
@@ -174,6 +206,22 @@ _standard_ctu(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
                 value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S32 >= sFields[CTU_PV].Value.S32));
                 break;
 
+            case TYPE_INT:
+                if(sFields[CTU_CU].Value.B1) {
+                    if(sFields[CTU_CV].Value.S16 < sFields[CTU_PV].Maximum.S16)
+                        ++sFields[CTU_CV].Value.S16;
+                }
+                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S16 >= sFields[CTU_PV].Value.S16));
+                break;
+
+            case TYPE_SINT:
+                if(sFields[CTU_CU].Value.B1) {
+                    if(sFields[CTU_CV].Value.S8 < sFields[CTU_PV].Maximum.S8)
+                        ++sFields[CTU_CV].Value.S8;
+                }
+                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S8 >= sFields[CTU_PV].Value.S8));
+                break;
+
             case TYPE_ULINT:
                 if(sFields[CTU_CU].Value.B1) {
                     if(sFields[CTU_CV].Value.U64 < sFields[CTU_PV].Maximum.U64)
@@ -188,6 +236,22 @@ _standard_ctu(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
                         ++sFields[CTU_CV].Value.U32;
                 }
                 value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U32 >= sFields[CTU_PV].Value.U32));
+                break;
+
+            case TYPE_UINT:
+                if(sFields[CTU_CU].Value.B1) {
+                    if(sFields[CTU_CV].Value.U16 < sFields[CTU_PV].Maximum.U16)
+                        ++sFields[CTU_CV].Value.U16;
+                }
+                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U16 >= sFields[CTU_PV].Value.U16));
+                break;
+
+            case TYPE_USINT:
+                if(sFields[CTU_CU].Value.B1) {
+                    if(sFields[CTU_CV].Value.U8 < sFields[CTU_PV].Maximum.U8)
+                        ++sFields[CTU_CV].Value.U8;
+                }
+                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U8 >= sFields[CTU_PV].Value.U8));
                 break;
 
             default:

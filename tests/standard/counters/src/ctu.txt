@@ -1,0 +1,37 @@
+PROGRAM test
+VAR input, reset: BOOL := FALSE; END_VAR
+VAR count: %s := 0; END_VAR
+VAR maximum: %s := 5; END_VAR
+VAR fb: CTU; END_VAR
+
+ADD count, 1
+ST count
+
+LD count
+MOD 2
+EQ 0
+ST input
+
+LD count
+MOD 15
+EQ 0
+ST reset
+
+CAL fb(
+    CU := input,
+    R := reset,
+    PV := maximum
+)
+
+LD count
+EQ 20
+RETCN
+_exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (INTERVAL := t#10ms, PRIORITY := 1);
+PROGRAM program1 WITH task1: test;
+END_CONFIGURATION
+

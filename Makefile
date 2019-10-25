@@ -2,7 +2,7 @@
 
 .PHONY: src tests
 
-all: clean 
+all: clean
 	make -C src
 	test -x src/echidna && ln -s src/echidna echidna
 

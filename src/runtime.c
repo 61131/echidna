@@ -151,16 +151,17 @@ _runtime_destroy(size_t Arg, ...) {
 
         ll_destroy(&pRun->Context, runtime_context_destroy);
         queue_destroy(&pRun->Queue, NULL);
+//        ev_ref(pRun->Loop);
+//        ev_signal_stop(pRun->Loop, &pRun->Signal);
         ev_loop_destroy(pRun->Loop);
-        free(pRun->Memory);
 
+        free(pRun->Memory);
         if(pRun->Alloc)
             free(pRun);
     }
     va_end(sArg);
 }
 
-//  TODO: Split into runtime_execute/runtime_execute_single
 
 int
 runtime_execute( RUNTIME *pRun ) {
@@ -329,9 +330,11 @@ runtime_initialise(RUNTIME *Run) {
     if((Run->Loop = ev_loop_new(EVFLAG_NOENV)) == NULL)
         return -EFAULT;
     nSignal = (pContext->Option & OPTION_DAEMON) ? SIGTERM : SIGINT;
-    ev_signal_init(&Run->Signal, _runtime_signal, nSignal);
-    ev_signal_start(Run->Loop, &Run->Signal);
-    ev_unref(Run->Loop);
+    if((pContext->Option & OPTION_NOSIGNAL) == 0) {
+        ev_signal_init(&Run->Signal, _runtime_signal, nSignal);
+        ev_signal_start(Run->Loop, &Run->Signal);
+        ev_unref(Run->Loop);
+    }
     ev_set_io_collect_interval(Run->Loop, 0.1);
 
     ll_initialise(&Run->Context);

@@ -24,7 +24,8 @@ enum {
     OPTION_DAEMON               = (1<<1),
     OPTION_COMPILE              = (1<<2),
     OPTION_NOFILE               = (1<<3),
-    OPTION_RUN                  = (1<<4),
+    OPTION_NOSIGNAL             = (1<<4),
+    OPTION_RUN                  = (1<<5),
 };
 
 typedef struct _ECHIDNA {

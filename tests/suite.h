@@ -31,6 +31,8 @@ extern MunitTest suite_standard_bitwise[];
 
 extern MunitTest suite_standard_comparison[];
 
+extern MunitTest suite_standard_counters[];
+
 extern MunitTest suite_standard_edge[];
 
 extern MunitTest suite_standard_numeric[];
