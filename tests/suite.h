@@ -21,6 +21,8 @@ extern MunitTest suite_grammar[];
 
 extern MunitTest suite_list[];
 
+extern MunitTest suite_operator[];
+
 extern MunitTest suite_queue[];
 
 extern MunitTest suite_standard_arithmetic[];

@@ -229,7 +229,6 @@ test_counters_ctu(const MunitParameter Parameters[], void *Fixture) {
 MunitResult
 test_counters_ctutype(const MunitParameter Parameters[], void *Fixture) {
     ECHIDNA *pContext;
-    PARSE *pParse;
     char sBuffer[1024];
     const char *pType;
     int nIndex, nType;

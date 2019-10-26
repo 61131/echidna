@@ -17,6 +17,7 @@ static MunitSuite sSuites[] = {
     { "echidna/", suite_echidna, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "grammar/", suite_grammar, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "ll/", suite_list, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "operator/", suite_operator, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "queue/", suite_queue, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "sha256/", suite_digest, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_arithmetic, NULL, 1, MUNIT_SUITE_OPTION_NONE },
