@@ -187,76 +187,90 @@ _standard_ctu(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
 
     if(sFields[CTU_R].Value.B1) 
         value_assign(&sFields[CTU_CV], sFields[CTU_CV].Type, 0);
-    else {
-        switch(sFields[CTU_PV].Type) {
-            case TYPE_LINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.S64 < sFields[CTU_PV].Maximum.S64) {
-                        ++sFields[CTU_CV].Value.S64;
-                    }
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S64 >= sFields[CTU_PV].Value.S64));
-                break;
 
-            case TYPE_DINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.S32 < sFields[CTU_PV].Maximum.S32)
-                        ++sFields[CTU_CV].Value.S32;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S32 >= sFields[CTU_PV].Value.S32));
-                break;
+    switch(sFields[CTU_PV].Type) {
+        case TYPE_LINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.S64 < sFields[CTU_PV].Maximum.S64)) {
 
-            case TYPE_INT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.S16 < sFields[CTU_PV].Maximum.S16)
-                        ++sFields[CTU_CV].Value.S16;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S16 >= sFields[CTU_PV].Value.S16));
-                break;
+                ++sFields[CTU_CV].Value.S64;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S64 >= sFields[CTU_PV].Value.S64));
+            break;
 
-            case TYPE_SINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.S8 < sFields[CTU_PV].Maximum.S8)
-                        ++sFields[CTU_CV].Value.S8;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S8 >= sFields[CTU_PV].Value.S8));
-                break;
+        case TYPE_DINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.S32 < sFields[CTU_PV].Maximum.S32)) {
 
-            case TYPE_ULINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.U64 < sFields[CTU_PV].Maximum.U64)
-                        ++sFields[CTU_CV].Value.U64;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U64 >= sFields[CTU_PV].Value.U64));
-                break;
+                ++sFields[CTU_CV].Value.S32;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S32 >= sFields[CTU_PV].Value.S32));
+            break;
 
-            case TYPE_UDINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.U32 < sFields[CTU_PV].Maximum.U32)
-                        ++sFields[CTU_CV].Value.U32;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U32 >= sFields[CTU_PV].Value.U32));
-                break;
+        case TYPE_INT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.S16 < sFields[CTU_PV].Maximum.S16)) {
 
-            case TYPE_UINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.U16 < sFields[CTU_PV].Maximum.U16)
-                        ++sFields[CTU_CV].Value.U16;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U16 >= sFields[CTU_PV].Value.U16));
-                break;
+                ++sFields[CTU_CV].Value.S16;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S16 >= sFields[CTU_PV].Value.S16));
+            break;
 
-            case TYPE_USINT:
-                if(sFields[CTU_CU].Value.B1) {
-                    if(sFields[CTU_CV].Value.U8 < sFields[CTU_PV].Maximum.U8)
-                        ++sFields[CTU_CV].Value.U8;
-                }
-                value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U8 >= sFields[CTU_PV].Value.U8));
-                break;
+        case TYPE_SINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.S8 < sFields[CTU_PV].Maximum.S8)) {
 
-            default:
-                return ERROR_PARAMETER_TYPE;
-        }
+                ++sFields[CTU_CV].Value.S8;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.S8 >= sFields[CTU_PV].Value.S8));
+            break;
+
+        case TYPE_ULINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.U64 < sFields[CTU_PV].Maximum.U64)) {
+
+                ++sFields[CTU_CV].Value.U64;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U64 >= sFields[CTU_PV].Value.U64));
+            break;
+
+        case TYPE_UDINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.U32 < sFields[CTU_PV].Maximum.U32)) {
+
+                ++sFields[CTU_CV].Value.U32;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U32 >= sFields[CTU_PV].Value.U32));
+            break;
+
+        case TYPE_UINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.U16 < sFields[CTU_PV].Maximum.U16)) {
+
+                ++sFields[CTU_CV].Value.U16;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U16 >= sFields[CTU_PV].Value.U16));
+            break;
+
+        case TYPE_USINT:
+            if((!sFields[CTU_R].Value.B1) &&
+                    (sFields[CTU_CU].Value.B1) &&
+                    (sFields[CTU_CV].Value.U8 < sFields[CTU_PV].Maximum.U8)) {
+
+                ++sFields[CTU_CV].Value.U8;
+            }
+            value_assign(&sFields[CTU_Q], TYPE_BOOL, (sFields[CTU_CV].Value.U8 >= sFields[CTU_PV].Value.U8));
+            break;
+
+        default:
+            break;
     }
 
     return parameter_write_values(Context, Function, Instance, sFields);
@@ -408,20 +422,32 @@ static _FUNCTION_BLOCK _Functions[] = {
     { .Name = "ctd", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
     { .Name = "ctd_lint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
     { .Name = "ctd_dint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
+    { .Name = "ctd_int", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
+    { .Name = "ctd_sint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
     { .Name = "ctd_ulint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
     { .Name = "ctd_udint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
+    { .Name = "ctd_uint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
+    { .Name = "ctd_usint", .Count = 5, .Fields = _ctd_fields, .Execute = _standard_ctd },
 
     { .Name = "ctu", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
     { .Name = "ctu_lint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
     { .Name = "ctu_dint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
+    { .Name = "ctu_int", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
+    { .Name = "ctu_sint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
     { .Name = "ctu_ulint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
     { .Name = "ctu_udint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
+    { .Name = "ctu_uint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
+    { .Name = "ctu_usint", .Count = 5, .Fields = _ctu_fields, .Execute = _standard_ctu },
 
     { .Name = "ctud", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
     { .Name = "ctud_lint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
     { .Name = "ctud_dint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
+    { .Name = "ctud_int", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
+    { .Name = "ctud_sint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
     { .Name = "ctud_ulint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
     { .Name = "ctud_udint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
+    { .Name = "ctud_uint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
+    { .Name = "ctud_usint", .Count = 8, .Fields = _ctud_fields, .Execute = _standard_ctud },
 
     { NULL }
 };

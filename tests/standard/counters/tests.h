@@ -9,6 +9,8 @@ MunitResult test_counters_ctd(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_counters_ctu(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_counters_ctutype(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_counters_ctud(const MunitParameter Parameters[], void *Fixture);
 
 

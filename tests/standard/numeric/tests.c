@@ -13,17 +13,6 @@
 #include <standard/numeric.h>
 
 
-MunitResult 
-test_numeric_acos(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
-
-
-MunitResult 
-test_numeric_asin(const MunitParameter Parameters[], void *Fixture) {
-    return MUNIT_SKIP;
-}
-
 
 MunitResult 
 test_numeric_atan(const MunitParameter Parameters[], void *Fixture) {

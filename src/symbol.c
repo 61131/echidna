@@ -764,7 +764,10 @@ symbol_insert(ECHIDNA *Context, char *Config, char *Resource, char *POU, char *N
                 */
 
                 pSymbol->Function = function_search(&Context->Functions, (const char *) pSymbol->Value.Meta);
-                assert(pSymbol->Function != NULL);
+                if(pSymbol->Function == NULL) {
+                    errno = ENOENT;
+                    goto error;
+                }
                 pBlock = pSymbol->Function->Block;
                 assert(pBlock != NULL);
 
