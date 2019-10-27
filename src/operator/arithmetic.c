@@ -350,7 +350,7 @@ operator_mod(FRAME *Frame, VALUE *Value) {
         case TYPE_LREAL:
         case TYPE_TIME:
         default:
-            return -1;
+            return ERROR_OPERAND_TYPE;
     }
 
     operand_subrange(&Frame->CR, &Frame->CR);
@@ -509,49 +509,73 @@ operator_sub(FRAME *Frame, VALUE *Value) {
         case TYPE_ULINT:
             if(cast_ulint(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.U64 -= Value->Value.U64;
+            if(Value->Value.U64 > Frame->CR.Value.U64)
+                Frame->CR.Value.U64 = 0;
+            else 
+                Frame->CR.Value.U64 -= Value->Value.U64;
             break;
 
         case TYPE_UDINT:
             if(cast_udint(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.U32 -= Value->Value.U32;
+            if(Value->Value.U32 > Frame->CR.Value.U32)
+                Frame->CR.Value.U32 = 0;
+            else
+                Frame->CR.Value.U32 -= Value->Value.U32;
             break;
 
         case TYPE_UINT:
             if(cast_uint(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.U16 -= Value->Value.U16;
+            if(Value->Value.U16 > Frame->CR.Value.U16)
+                Frame->CR.Value.U16 = 0;
+            else
+                Frame->CR.Value.U16 -= Value->Value.U16;
             break;
 
         case TYPE_USINT:
             if(cast_usint(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.U8 -= Value->Value.U8;
+            if(Value->Value.U8 > Frame->CR.Value.U8)
+                Frame->CR.Value.U8 = 0;
+            else
+                Frame->CR.Value.U8 -= Value->Value.U8;
             break;
 
         case TYPE_LWORD:
             if(cast_lword(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.B64 -= Value->Value.B64;
+            if(Value->Value.B64 > Frame->CR.Value.B64)
+                Frame->CR.Value.B64 = 0;
+            else
+                Frame->CR.Value.B64 -= Value->Value.B64;
             break;
 
         case TYPE_DWORD:
             if(cast_dword(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.B32 -= Value->Value.B32;
+            if(Value->Value.B32 > Frame->CR.Value.B32)
+                Frame->CR.Value.B32 = 0;
+            else
+                Frame->CR.Value.B32 -= Value->Value.B32;
             break;
 
         case TYPE_WORD:
             if(cast_word(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.B16 -= Value->Value.B16;
+            if(Value->Value.B16 > Frame->CR.Value.B16)
+                Frame->CR.Value.B16 = 0;
+            else
+                Frame->CR.Value.B16 -= Value->Value.B16;
             break;
 
         case TYPE_BYTE:
             if(cast_byte(Value) != 0)
                 return ERROR_OPERAND_TYPE;
-            Frame->CR.Value.B8 -= Value->Value.B8;
+            if(Value->Value.B8 > Frame->CR.Value.B8)
+                Frame->CR.Value.B8 = 0;
+            else
+                Frame->CR.Value.B8 -= Value->Value.B8;
             break;
                     
         case TYPE_BOOL:
