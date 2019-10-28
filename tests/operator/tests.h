@@ -5,6 +5,10 @@
 #include <munit/munit.h>
 
 
+MunitResult test_operand_invert(const MunitParameter Parameters[], void *Fixture);
+
+MunitResult test_operand_subrange(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_operator_add(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_operator_and(const MunitParameter Parameters[], void *Fixture);

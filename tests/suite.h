@@ -27,6 +27,8 @@ extern MunitTest suite_queue[];
 
 extern MunitTest suite_standard_arithmetic[];
 
+extern MunitTest suite_standard_bistable[];
+
 extern MunitTest suite_standard_bitstring[];
 
 extern MunitTest suite_standard_bitwise[];

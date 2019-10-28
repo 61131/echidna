@@ -22,6 +22,8 @@ MunitTest suite_operator[] = {
     { "logical/not", test_operator_not, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "logical/or", test_operator_or, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
     { "logical/xor", test_operator_xor, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+    { "operand/invert", test_operand_invert, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+    { "operand/subrange", test_operand_subrange, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
     { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

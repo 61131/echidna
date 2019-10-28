@@ -3,17 +3,17 @@
 CC?= $(CROSS)gcc
 AR?= $(CROSS)ar
 
-SRCDIR:= ../../src
+SRCDIR:= ../../../src
 
 CFLAGS:= -Wall -g -std=c99
 DEFINES:= -D_POSIX_C_SOURCE=200809L
 INCLUDE_TEMPLATE:= -I! -I!/include
 INCLUDES:= $(subst !,.,$(INCLUDE_TEMPLATE)) \
-	$(subst !,..,$(INCLUDE_TEMPLATE)) \
+	$(subst !,../..,$(INCLUDE_TEMPLATE)) \
 	$(subst !,$(SRCDIR),$(INCLUDE_TEMPLATE)) 
 
 TARGET:= libsuite.a
-OBJS:= arithmetic.o boolean.o comparison.o logical.o operand.o suite.o
+OBJS:= bistable.o suite.o
 
 all: clean $(TARGET)
 

@@ -1,0 +1,35 @@
+PROGRAM test
+VAR input, reset: BOOL := FALSE; END_VAR
+VAR count: ULINT := 0; END_VAR
+VAR fb: RS; END_VAR
+
+ADD count, 1
+ST count
+
+LD count
+MOD 3
+EQ 0
+ST input
+
+LD count
+MOD 5
+EQ 0
+ST reset
+
+CAL fb(
+    R1 := reset,
+    S := input
+)
+
+LD count
+EQ 15
+RETCN
+_exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (INTERVAL := t#50ms, PRIORITY := 1);
+PROGRAM program1: test;
+END_CONFIGURATION
+

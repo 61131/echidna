@@ -23,6 +23,7 @@ static MunitSuite sSuites[] = {
     { "standard/", suite_standard_arithmetic, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_bitstring, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_bitwise, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_bistable, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_comparison, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_counters, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_edge, NULL, 1, MUNIT_SUITE_OPTION_NONE },

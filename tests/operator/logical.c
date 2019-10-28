@@ -169,7 +169,7 @@ test_operator_not(const MunitParameter Parameters[], void *Fixture) {
     for(nIndex = 0; _Types[nIndex] != TYPE_NONE; ++nIndex) {
         value_assign(&sFrame.CR, _Types[nIndex]);
         value_assign(&sValue, _Types[nIndex]);
-        munit_assert_int(operator_and(&sFrame, &sValue), ==, ERROR_OPERAND_TYPE);
+        munit_assert_int(operator_not(&sFrame, &sValue), ==, ERROR_OPERAND_TYPE);
     }
 
     //  TYPE_LINT

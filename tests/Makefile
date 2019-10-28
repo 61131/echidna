@@ -1,6 +1,6 @@
 # echidna - IEC 61131-3 compiler and virtual machine
 
-LIBS_SUBDIR:= block callback cast echidna grammar ll operator queue sha256 standard/arithmetic standard/bitstring standard/bitwise standard/comparison standard/counters standard/edge standard/numeric standard/select standard/string stats strl tree unit value
+LIBS_SUBDIR:= block callback cast echidna grammar ll operator queue sha256 standard/arithmetic standard/bistable standard/bitstring standard/bitwise standard/comparison standard/counters standard/edge standard/numeric standard/select standard/string stats strl tree unit value
 
 .PHONY: $(LIBS_SUBDIR)
 
