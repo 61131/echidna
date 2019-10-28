@@ -1,0 +1,31 @@
+PROGRAM test
+VAR on: BOOL := true; END_VAR
+VAR off: BOOL := false; END_VAR
+VAR count: ULINT := 0; END_VAR
+
+ADD count, 1
+ST count
+LE 10
+JMPCN end
+
+LD count
+MOD 2
+EQ 1
+S off
+R on
+RETC
+
+LD true
+R off
+S on
+RET
+
+end: _exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (PRIORITY := 1);
+PROGRAM program1: test;
+END_CONFIGURATION
+

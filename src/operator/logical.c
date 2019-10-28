@@ -91,7 +91,7 @@ operator_and(FRAME *Frame, VALUE *Value) {
         case TYPE_LREAL:
         case TYPE_TIME:
         default:
-            return -1;
+            return ERROR_OPERAND_TYPE;
     }
 
     operand_subrange(&Frame->CR, &Frame->CR);
@@ -185,7 +185,7 @@ operator_not(FRAME *Frame, VALUE *Value) {
         case TYPE_LREAL:
         case TYPE_TIME:
         default:
-            return -1;
+            return ERROR_OPERAND_TYPE;
     }
 
     operand_subrange(&Frame->CR, &Frame->CR);
@@ -279,7 +279,7 @@ operator_or(FRAME *Frame, VALUE *Value) {
         case TYPE_LREAL:
         case TYPE_TIME:
         default:
-            return -1;
+            return ERROR_OPERAND_TYPE;
     }
 
     operand_subrange(&Frame->CR, &Frame->CR);
@@ -373,7 +373,7 @@ operator_xor(FRAME *Frame, VALUE *Value) {
         case TYPE_LREAL:
         case TYPE_TIME:
         default:
-            return -1;
+            return ERROR_OPERAND_TYPE;
     }
 
     operand_subrange(&Frame->CR, &Frame->CR);
