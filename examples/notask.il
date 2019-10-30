@@ -1,0 +1,17 @@
+PROGRAM cycle
+VAR count: ULINT := 0; END_VAR
+
+LD count
+ADD 1
+ST count
+EQ 20
+RETCN
+_exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (INTERVAL := t#500ms, PRIORITY := 1);
+PROGRAM program1: cycle;
+END_CONFIGURATION
+
