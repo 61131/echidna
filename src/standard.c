@@ -679,6 +679,7 @@ standard_initialise(ECHIDNA *Context) {
     if(((nResult = standard_bistable(Context)) != 0) ||
             ((nResult = standard_counters(Context)) != 0) ||
             ((nResult = standard_edge(Context)) != 0) ||
+            ((nResult = standard_rtc(Context)) != 0) ||
             ((nResult = standard_timers(Context)) != 0))
         return nResult;
 

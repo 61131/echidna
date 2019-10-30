@@ -74,7 +74,8 @@ _parse_file(ECHIDNA *Context, FILE *File) {
     }
     yylex_destroy();
 
-    token_list_merge(&pParse->Tokens, &pParse->Parse);
+    if(nResult == 0)
+        token_list_merge(&pParse->Tokens, &pParse->Parse);
     token_destroy(&pParse->Parse);
 
     return nResult;
@@ -136,13 +137,14 @@ parse_initialise(ECHIDNA *Context, PARSE *Parse) {
         uType = (pFunction->Type == TYPE_FUNCTION) ? _function_name : _function_block_type_name;
         if((pToken = lexer_new(uType, pFunction->Name)) == NULL)
             return -1;
-        if( tree_insert(&Parse->Identifiers, pToken) != 0) {
+        if(tree_insert(&Parse->Identifiers, pToken) != 0) {
             lexer_destroy(pToken);
             return -1;
         }
     }
 
     Parse->File = NULL;
+    Parse->Parameters = 0;
     Parse->Preparse = 0;
     Parse->Type = TYPE_NONE;
 

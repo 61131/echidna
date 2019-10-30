@@ -2,6 +2,8 @@
 /*  bison -Wall -v grammar.y -o grammar.c */
 
 %{
+#define _DEFAULT_SOURCE         //  Required for timegm since glibc 2.19
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -34,6 +36,7 @@ int yylex(void);
 #include <stdio.h>
 #include <float.h>
 #include <math.h>
+#include <time.h>
 #include <assert.h>
 
 #include <cast.h>
@@ -1314,7 +1317,7 @@ daytime: integer ':' integer ':' integer {
             sTime.tm_hour = $5->Value.Value.U32;
 
             pToken = token_new(TOD, @1.first_line, @1.first_column);
-            value_assign(&pToken->Value, TYPE_TOD, mktime(&sTime));
+            value_assign(&pToken->Value, TYPE_TOD, timegm(&sTime));
             token_destroy($1, $3, $5);
             $$ = pToken;
         };
@@ -1333,30 +1336,30 @@ date_literal: integer '-' integer '-' integer {
             struct tm sTime;
 
             pParse = &Context->Parse;
-            if($1->Value.Value.U32 < 1900) {
-                log_error("%s: Invalid value for year (%lu) in date literal [%u:%u]",
+            if($1->Value.Value.S64 < 1970) {
+                log_error("%s: Invalid value for year (%ld) in date literal [%u:%u]",
                         pParse->File,
-                        $1->Value.Value.U32,
+                        (long int) $1->Value.Value.S64,
                         @1.first_line,
                         @1.first_column);
                 token_destroy($1, $3, $5);
                 YYERROR;
             }
-            if(($3->Value.Value.U32 < 1) ||
-                    ($3->Value.Value.U32 > 12)) {
-                log_error("%s: Invalid value for month (%lu) in date literal [%u:%u]",
+            if(($3->Value.Value.S64 < 1) ||
+                    ($3->Value.Value.S64 > 12)) {
+                log_error("%s: Invalid value for month (%ld) in date literal [%u:%u]",
                         pParse->File,
-                        $3->Value.Value.U32,
+                        (long int) $3->Value.Value.S64,
                         @3.first_line,
                         @3.first_column);
                 token_destroy($1, $3, $5);
                 YYERROR;
             }
-            if(($5->Value.Value.U32 < 1) ||
-                    ($5->Value.Value.U32 > 31)) {
-                log_error("%s: Invalid value for day (%lu) in date literal [%u:%u]",
+            if(($5->Value.Value.S64 < 1) ||
+                    ($5->Value.Value.S64 > 31)) {
+                log_error("%s: Invalid value for day (%ld) in date literal [%u:%u]",
                         pParse->File,
-                        $5->Value.Value.U32,
+                        (long int) $5->Value.Value.S64,
                         @5.first_line,
                         @5.first_column);
                 token_destroy($1, $3, $5);
@@ -1364,12 +1367,13 @@ date_literal: integer '-' integer '-' integer {
             }
 
             memset(&sTime, 0, sizeof(sTime));
-            sTime.tm_year = $1->Value.Value.U32 - 1900;
-            sTime.tm_mon = $3->Value.Value.U32 - 1;
-            sTime.tm_mday = $5->Value.Value.U32;
+            sTime.tm_year = $1->Value.Value.S64 - 1900;
+            sTime.tm_mon = $3->Value.Value.S64 - 1;
+            sTime.tm_mday = $5->Value.Value.S64;
+            sTime.tm_isdst = 0;
 
             pToken = token_new(DATE, @1.first_line, @1.first_column);
-            value_assign(&pToken->Value, TYPE_DATE, mktime(&sTime));
+            value_assign(&pToken->Value, TYPE_DATE, timegm(&sTime));
             token_destroy($1, $3, $5);
             $$ = pToken;
         };
@@ -1389,7 +1393,7 @@ date_and_time: DATE_AND_TIME '#' date_literal '-' daytime {
             sResult.tm_sec = sTime.tm_sec;
 
             pToken = token_new(DT, @1.first_line, @1.first_column);
-            value_assign(&pToken->Value, TYPE_DT, mktime(&sResult));
+            value_assign(&pToken->Value, TYPE_DT, timegm(&sResult));
             token_destroy($date_literal, $daytime);
             $$ = pToken;
         }
@@ -1408,7 +1412,7 @@ date_and_time: DATE_AND_TIME '#' date_literal '-' daytime {
             sResult.tm_sec = sTime.tm_sec;
 
             pToken = token_new(DT, @1.first_line, @1.first_column);
-            value_assign(&pToken->Value , TYPE_DT, mktime(&sResult));
+            value_assign(&pToken->Value , TYPE_DT, timegm(&sResult));
             token_destroy($date_literal, $daytime);
             $$ = pToken;
         };
@@ -5849,12 +5853,19 @@ il_fb_call: il_call_operator _variable_name '(' EOL il_param_list ')' {
             $$ = (TOKEN *) pList;
         };
 
-il_formal_funct_call: _function_name '(' EOL il_param_list ')' {
+il_formal_funct_call: _function_name '(' EOL {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Parameters = 1;
+
+        } il_param_list ')' {
             TOKEN_LIST *pList;
             PARSE *pParse;
 
             pList = NULL;
             pParse = &Context->Parse;
+            pParse->Parameters = 0;
             if(!pParse->Preparse) {
                 pList = token_list_cast($il_param_list, CAL);
                 value_assign(&pList->Token.Value, TYPE_FUNCTION, $_function_name->Name);
@@ -5870,10 +5881,17 @@ il_formal_funct_call: _function_name '(' EOL il_param_list ')' {
             token_destroy($_function_name);
             $$ = (TOKEN *) pList;
         }
-    | identifier '(' EOL il_param_list ')' {
+    | identifier '(' EOL {
             PARSE *pParse;
 
             pParse = &Context->Parse;
+            pParse->Parameters = 1;
+
+        } il_param_list ')' {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Parameters = 0;
             if(!pParse->Preparse) {
                 log_error("%s: Unknown function or function block: %s [%u:%u]",
                         pParse->File,

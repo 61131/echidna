@@ -11,6 +11,8 @@ int standard_counters(ECHIDNA *Context);
 
 int standard_edge(ECHIDNA *Context);
 
+int standard_rtc(ECHIDNA *Context);
+
 int standard_timers(ECHIDNA *Context);
 
 

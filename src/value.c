@@ -205,6 +205,17 @@ _value_assign(size_t Arg, ...) {
                     pValue->Value.Time = 0.0f;
                 break;
 
+            case ANY_DATE:
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
+                pValue->Length = sizeof(pValue->Value.DateTime);
+                if(Arg > 2)
+                    pValue->Value.DateTime = (time_t) va_arg(sArg, long int);
+                else
+                    pValue->Value.DateTime = 0;
+                break;
+
             case TYPE_ENUMERATED:
             case TYPE_FUNCTION:
             case TYPE_FUNCTION_BLOCK:
@@ -223,9 +234,6 @@ _value_assign(size_t Arg, ...) {
 
             case TYPE_STRING:
             case TYPE_WSTRING:
-            case TYPE_DATE:
-            case TYPE_DT:
-            case TYPE_TOD:
             default:
                 log_error("Unhandled type: %08x [%s:%u]", uType, __FILE__, __LINE__);
                 assert(0);
@@ -287,6 +295,9 @@ _value_cast(size_t Arg, VALUE *Value, VALUE_TYPE Type, ...) {
         case TYPE_WORD:         return cast_word(Value);
         case TYPE_BYTE:         return cast_byte(Value);
         case TYPE_BOOL:         return cast_bool(Value);
+        case TYPE_DATE:         return cast_date(Value);
+        case TYPE_DT:           return cast_dt(Value);
+        case TYPE_TOD:          return cast_tod(Value);
         case ANY:
         case ANY_DERIVED:
         case ANY_ELEMENTARY:
@@ -519,6 +530,26 @@ value_strtotype(VALUE *Value, char *Str) {
         Value->Minimum.Time = FLT_MIN;
         Value->Value.Time = 0.0f;
     }
+    else if(strcasecmp(Str, "DATE") == 0) {
+        Value->Type = TYPE_DATE;
+        Value->Length = sizeof(Value->Value.DateTime);
+        Value->Maximum.DateTime = Value->Minimum.DateTime = 0;
+        Value->Value.DateTime = 0;
+    }
+    else if((strcasecmp(Str, "DT") == 0) ||
+            (strcasecmp(Str, "DATE_AND_TIME") == 0)) {
+        Value->Type = TYPE_DT;
+        Value->Length = sizeof(Value->Value.DateTime);
+        Value->Maximum.DateTime = Value->Minimum.DateTime = 0;
+        Value->Value.DateTime = 0;
+    }
+    else if((strcasecmp(Str, "TOD") == 0) ||
+            (strcasecmp(Str, "TIME_OF_DAY") == 0)) {
+        Value->Type = TYPE_TOD;
+        Value->Length = sizeof(Value->Value.DateTime);
+        Value->Maximum.DateTime = Value->Minimum.DateTime = 0;
+        Value->Value.DateTime = 0;
+    }
     else
         return -1;
 
@@ -735,6 +766,12 @@ value_strtoval(VALUE *Value, VALUE_TYPE Type, char *Str /*, uint8_t Base = 10 */
         case TYPE_DATE:
         case TYPE_DT:
         case TYPE_TOD:
+            Value->Length = sizeof(Value->Value.DateTime);
+            Value->Maximum.DateTime = 0;
+            Value->Minimum.DateTime = 0;
+            Value->Value.DateTime = 0;
+            break;
+
         default:
             errno = EINVAL;
             return -1;
@@ -778,6 +815,10 @@ value_typetosize(VALUE_TYPE Type) {
         case TYPE_BYTE:         return sizeof(sValue.Value.B8);
         case TYPE_BOOL:         return sizeof(sValue.Value.B1);
         case TYPE_TIME:         return sizeof(sValue.Value.Time);
+        case ANY_DATE:          
+        case TYPE_DATE:         
+        case TYPE_DT:
+        case TYPE_TOD:          return sizeof(sValue.Value.DateTime);
         default:
             return -1;
     }

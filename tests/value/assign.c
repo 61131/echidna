@@ -254,6 +254,24 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_float(sValue.Value.Time, ==, 1.0f);
     value_destroy(&sValue);
 
+    //  ANY_DATE, TYPE_DATE, TYPE_DT, TYPE_TOD
+    sType[0] = ANY_DATE;
+    sType[1] = TYPE_DATE;
+    sType[2] = TYPE_DT;
+    sType[3] = TYPE_TOD;
+    for(nIndex = 0; nIndex < 4; ++nIndex) {
+        value_assign(&sValue, sType[nIndex]);
+        munit_assert_uint32(sValue.Type, ==, sType[nIndex]);
+        munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+        munit_assert_int(sValue.Length, ==, sizeof(time_t));
+        munit_assert_uint64((uint64_t) sValue.Maximum.DateTime, ==, 0);
+        munit_assert_uint64((uint64_t) sValue.Minimum.DateTime, ==, 0);
+        munit_assert_uint64((uint64_t) sValue.Value.DateTime, ==, 0);
+        munit_assert_null(sValue.Meta);
+    }
+
+     
+    //  TYPE_NONE
     value_assign(&sValue, TYPE_NONE);
     munit_assert_uint32(sValue.Type, ==, TYPE_NONE);
     munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
@@ -283,19 +301,11 @@ test_value_assign(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_string_equal(sValue.Meta, "_label");
     value_destroy(&sValue, NULL);
 
-    //  TYPE_NONE
     //  TYPE_STRING
     //  TYPE_WSTRING
-    //  TYPE_DATE
-    //  TYPE_DT
-    //  TYPE_TOD
-    sType[0] = TYPE_NONE;
-    sType[1] = TYPE_STRING;
-    sType[2] = TYPE_WSTRING;
-    sType[3] = TYPE_DATE;
-    sType[4] = TYPE_DT;
-    sType[5] = TYPE_TOD;
-    for(nIndex = 0; nIndex < 6; ++nIndex) {
+    sType[0] = TYPE_STRING;
+    sType[1] = TYPE_WSTRING;
+    for(nIndex = 0; nIndex < 2; ++nIndex) {
         value_assign(&sValue, sType[nIndex]);
         munit_assert_uint32(sValue.Type, ==, sType[nIndex]);
         munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);

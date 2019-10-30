@@ -188,6 +188,73 @@ test_grammar_literals_boolean(const MunitParameter Parameters[], void *Fixture) 
 
 
 MunitResult 
+test_grammar_literals_date(const MunitParameter Parameters[], void *Fixture) {
+    ECHIDNA *pContext;
+    LLE *pElement;
+    PARSE *pParse;
+    TOKEN *pToken;
+    TOKEN_LIST *pList;
+    struct _TEST_LITERAL *pValue;
+    char sLine[LINE_MAX];
+    int nIndex, nResult;
+
+    pContext = (ECHIDNA *) Fixture;
+    munit_assert_not_null(pContext);
+
+    struct _TEST_LITERAL sDate[] = {
+
+        { "2000-01-01", { .Integer = 946684800 } },
+        { "2000-00-01", { .Integer = 0 }, -1 },
+        { "2000-13-01", { .Integer = 0 }, -1 },
+        { "2000-01-00", { .Integer = 0 }, -1 },
+        { "2000-01-32", { .Integer = 0 }, -1 },
+        { "1899-12-31", { .Integer = 0 }, -1 },
+
+        { NULL }
+    };
+
+    //  TYPE_DATE
+
+    for(nIndex = 0;; ++nIndex) {
+        pValue = &sDate[nIndex];
+        if(!pValue->Source)
+            break;
+        snprintf(sLine, sizeof(sLine), "TYPE TEST: DATE := %s; END_TYPE", pValue->Source);
+        fprintf(stderr, "%s\n", sLine);
+        nResult = test_parse(pContext, sLine);
+        munit_assert_int(nResult, ==, pValue->Result);
+        if(nResult != 0)
+            continue;
+
+        munit_assert_not_null(pParse = &pContext->Parse);
+        munit_assert_not_null(pList = &pParse->Tokens);
+        munit_assert_size(pList->List.Size, ==, 1);
+        munit_assert_not_null(pElement = pList->List.Head);
+
+        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+        munit_assert_int(pToken->Id, ==, TYPE);
+        munit_assert_int(pToken->Type, ==, TYPE_LIST);
+        pList = (TOKEN_LIST *) pToken;
+        munit_assert_size(pList->List.Size, ==, 1);
+        munit_assert_not_null(pElement = pList->List.Head);
+
+        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+        munit_assert_int(pToken->Id, ==, TYPE);
+        munit_assert_not_null(pToken->Name);
+        munit_assert_string_equal(pToken->Name, "TEST");
+        munit_assert_uint32(pToken->Value.Type, ==, TYPE_DATE);
+        munit_assert_uint32(pToken->Value.Cast, ==, TYPE_DATE);
+        munit_assert_uint64((uint64_t) pToken->Value.Value.DateTime, ==, pValue->Value.Integer);
+        munit_assert_null(pElement->Next);
+
+        parse_reset(pContext, pParse);
+    }
+
+    return MUNIT_OK;
+}
+
+
+MunitResult 
 test_grammar_literals_integer(const MunitParameter Parameters[], void *Fixture) {
     ECHIDNA *pContext;
     LLE *pElement;

@@ -248,6 +248,46 @@ test_value_strtotype(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_null(sValue.Meta);
     value_destroy(&sValue);
 
+    //  TYPE_DATE
+    value_initialise(&sValue);
+    munit_assert_int(value_strtotype(&sValue, "DATE"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_DATE);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, sizeof(time_t));
+    munit_assert_uint64((uint64_t) sValue.Maximum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Minimum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Value.DateTime, ==, 0);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
+    //  TYPE_DT
+    value_initialise(&sValue);
+    munit_assert_int(value_strtotype(&sValue, "DATE_AND_TIME"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_DT);
+    munit_assert_int(value_strtotype(&sValue, "DT"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_DT);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, sizeof(time_t));
+    munit_assert_uint64((uint64_t) sValue.Maximum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Minimum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Value.DateTime, ==, 0);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
+    //  TYPE_TOD
+    value_initialise(&sValue);
+    munit_assert_int(value_strtotype(&sValue, "TIME_OF_DAY"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TOD);
+    munit_assert_int(value_strtotype(&sValue, "TOD"), ==, 0);
+    munit_assert_uint32(sValue.Type, ==, TYPE_TOD);
+    munit_assert_uint32(sValue.Flags, ==, FLAG_NONE);
+    munit_assert_int(sValue.Length, ==, sizeof(time_t));
+    munit_assert_uint64((uint64_t) sValue.Maximum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Minimum.DateTime, ==, 0);
+    munit_assert_uint64((uint64_t) sValue.Value.DateTime, ==, 0);
+    munit_assert_null(sValue.Meta);
+    value_destroy(&sValue);
+
     value_initialise(&sValue);
     munit_assert_int(value_strtotype(&sValue, "OTHER"), ==, -1);
 
@@ -657,6 +697,29 @@ test_value_type(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_uint32(ANY_STRING & TYPE_STRING, ==, TYPE_STRING);
     munit_assert_uint32(ANY_STRING & TYPE_WSTRING, ==, TYPE_WSTRING);
 
+    //  ANY_DATE
+    munit_assert_uint32(ANY_DATE & TYPE_LREAL, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_REAL, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_LINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_DINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_INT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_SINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_ULINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_UDINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_UINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_USINT, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_LWORD, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_DWORD, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_WORD, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_BYTE, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_BOOL, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_TIME, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_DATE, ==, TYPE_DATE);
+    munit_assert_uint32(ANY_DATE & TYPE_DT, ==, TYPE_DT);
+    munit_assert_uint32(ANY_DATE & TYPE_TOD, ==, TYPE_TOD);
+    munit_assert_uint32(ANY_DATE & TYPE_STRING, ==, 0);
+    munit_assert_uint32(ANY_DATE & TYPE_WSTRING, ==, 0);
+
     return MUNIT_OK;
 }
 
@@ -712,6 +775,9 @@ test_value_typetosize(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(value_typetosize(TYPE_BYTE), ==, sizeof(uint8_t));
     munit_assert_int(value_typetosize(TYPE_BOOL), ==, sizeof(uint8_t));
     munit_assert_int(value_typetosize(TYPE_TIME), ==, sizeof(float));
+    munit_assert_int(value_typetosize(TYPE_DATE), ==, sizeof(time_t));
+    munit_assert_int(value_typetosize(TYPE_DT), ==, sizeof(time_t));
+    munit_assert_int(value_typetosize(TYPE_TOD), ==, sizeof(time_t));
     munit_assert_int(value_typetosize(TYPE_INPUT), ==, 0);
     munit_assert_int(value_typetosize(TYPE_IN_OUT), ==, 0);
     munit_assert_int(value_typetosize(TYPE_OUTPUT), ==, 0);

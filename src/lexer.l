@@ -513,19 +513,24 @@ JMPCN                           {
 
     BEGIN(IL);
     pParse = (PARSE *) _yycontext;
-    pParse->State = 1;
-    yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
-    switch(yylval.Token->Id) {
-        case CAL:
-        case CALC:
-        case CALCN:
-            ++pParse->State;
-            break;
+    if(!pParse->Parameters) {
+        pParse->State = 1;
+        yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
+        switch(yylval.Token->Id) {
+            case CAL:
+            case CALC:
+            case CALCN:
+                ++pParse->State;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+        }
+        yy_push_state(Operand);
     }
-    yy_push_state(Operand);
+    else
+        yylval.Token = token_new(identifier, yylloc.first_line, yylloc.first_column, yytext);
+
     return yylval.Token->Id;
 }
 
@@ -550,10 +555,15 @@ NE                              {
 
     BEGIN(IL);
     pParse = (PARSE *) _yycontext;
-    pParse->State = 1;
-    yylval.List = token_list_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
-    yylval.List->Token.Name = strdup(yytext);
-    yy_push_state(Operand);
+    if(!pParse->Parameters) {
+        pParse->State = 1;
+        yylval.List = token_list_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
+        yylval.List->Token.Name = strdup(yytext);
+        yy_push_state(Operand);
+    }
+    else 
+        yylval.Token = token_new(identifier, yylloc.first_line, yylloc.first_column, yytext);
+
     return yylval.List->Token.Id;
 }
 

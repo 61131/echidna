@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/types.h>
 
 #include <macros.h>
@@ -123,6 +124,8 @@ typedef union _VALUE_UNION {
     uint64_t B64;
 
     float Time;
+
+    time_t DateTime;
 }
 VALUE_UNION;
 
