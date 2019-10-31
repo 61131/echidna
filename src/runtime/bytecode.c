@@ -69,6 +69,9 @@ _runtime_bytecode_value(RUNTIME_CONTEXT *Context, FRAME *Frame, SYMBOL **Symbol,
         case TYPE_BYTE:
         case TYPE_BOOL:
         case TYPE_TIME:
+        case TYPE_DATE:
+        case TYPE_DT:
+        case TYPE_TOD:
         case TYPE_FUNCTION:
         case TYPE_FUNCTION_BLOCK:
         case TYPE_LABEL:

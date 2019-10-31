@@ -8,8 +8,8 @@ Echidna is a compiler and virtual-machine run-time for IEC 61131-3 languages for
 
 ## Features
 
--   Preemptive, high performance, multiple configuration virtual machine run-time
--   IEC 61131-3 language compiler supporting Instruction List (IL) and Structured Text (ST)
+-   Preemptive, high performance virtual machine run-time
+-   IEC 61131-3 language compiler supporting Instruction List (IL)
 -   Support for all IEC 61131-3 standard functions, function blocks and configuration elements
 -   API support for custom function and function block extensions
 -   Comprehensive test suite
@@ -28,3 +28,10 @@ The following shows an Echidna application running on a Raspberry Pi 1 Model B w
 -   [GNU flex](https://github.com/westes/flex) - Fast lexical analyser generator (build dependency)
 -   [µnit](https://github.com/nemequ/munit/) - C unit testing framework (test dependency)
 -   [gcovr](https://github.com/gcovr/gcovr) - Generate code coverage reports with gcc/gcov (test coverage)
+
+## Links
+
+-   [IEC 61131-3:2013](https://webstore.iec.ch/publication/4552) Programmable controllers - Part 3: Programming languages (Edition 3.0)
+-   [IEC 61131-3:2003](https://webstore.iec.ch/publication/19081) Programmable controllers - Part 3: Programming languages (Edition 2.0)
+
+

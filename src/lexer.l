@@ -525,6 +525,7 @@ JMPCN                           {
             case CALC:
             case CALCN:
                 ++pParse->State;
+fprintf(stderr, "CAL: %u\n", pParse->State);
                 break;
 
             default:

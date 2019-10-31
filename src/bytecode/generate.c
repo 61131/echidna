@@ -516,66 +516,91 @@ _bytecode_generate_parameter(ECHIDNA *Context, char *Config, char *Resource, cha
 
 
 static int
-_bytecode_generate_value( ECHIDNA *Context, char *pConfig, char *pResource, char *pName, BLOCK *pBlock, VALUE *pValue ) {
+_bytecode_generate_value(ECHIDNA *Context, char *Config, char *Resource, char *Name, BLOCK *Block, VALUE *Value) {
     SYMBOL *pSymbol;
     uint32_t uValue;
     int nResult;
 
-    switch( pValue->Type & ~TYPE_IN_OUT ) {
+    switch(Value->Type & ~TYPE_IN_OUT) {
         case TYPE_LREAL:
-            /* assert( pValue->Length == sizeof( pValue->Value.Double ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.Double );
+            assert(Value->Length == sizeof(Value->Value.Double));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.Double);
+
         case TYPE_REAL:
-            /* assert( pValue->Length == sizeof( pValue->Value.Single ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.Single );
+            assert(Value->Length == sizeof(Value->Value.Single));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.Single);
+
         case TYPE_LINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.S64 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.S64 );
+            assert(Value->Length == sizeof(Value->Value.S64));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.S64);
+
         case TYPE_DINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.S32 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.S32 );
+            assert(Value->Length == sizeof(Value->Value.S32));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.S32);
+
         case TYPE_INT:
-            /* assert( pValue->Length == sizeof( pValue->Value.S16 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.S16 );
+            assert(Value->Length == sizeof(Value->Value.S16));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.S16);
+
         case TYPE_SINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.S8 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.S8 );
+            assert(Value->Length == sizeof(Value->Value.S8));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.S8);
+
         case TYPE_ULINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.U64 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.U64 );
+            assert(Value->Length == sizeof(Value->Value.U64));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.U64);
+
         case TYPE_UDINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.U32 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.U32 );
+            assert(Value->Length == sizeof(Value->Value.U32));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.U32);
+
         case TYPE_UINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.U16 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.U16 );
+            assert(Value->Length == sizeof(Value->Value.U16));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.U16);
+
         case TYPE_USINT:
-            /* assert( pValue->Length == sizeof( pValue->Value.U8 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.U8 );
+            assert(Value->Length == sizeof(Value->Value.U8));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.U8);
+
         case TYPE_LWORD:
-            /* assert( pValue->Length == sizeof( pValue->Value.B64 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.B64 );
+            assert(Value->Length == sizeof(Value->Value.B64));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.B64);
+
         case TYPE_DWORD:
-            /* assert( pValue->Length == sizeof( pValue->Value.B32 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.B32 );
+            assert(Value->Length == sizeof(Value->Value.B32));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.B32);
+
         case TYPE_WORD:
-            /* assert( pValue->Length == sizeof( pValue->Value.B16 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.B16 );
+            assert(Value->Length == sizeof(Value->Value.B16));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.B16);
+
         case TYPE_BYTE:
-            /* assert( pValue->Length == sizeof( pValue->Value.B8 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.B8 );
+            assert(Value->Length == sizeof(Value->Value.B8));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.B8);
+
         case TYPE_BOOL:
-            /* assert( pValue->Length == sizeof( pValue->Value.B1 ) ); */
-            return bytecode_write( Context, pBlock, pValue->Length, ( char * ) &pValue->Value.B1 );
+            assert(Value->Length == sizeof(Value->Value.B1));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.B1);
+
+        case TYPE_TIME:
+            assert(Value->Length == sizeof(Value->Value.Time));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.Time);
+
+        case TYPE_DATE:
+        case TYPE_DT:
+        case TYPE_TOD:
+            assert(Value->Length == sizeof(Value->Value.DateTime));
+            return bytecode_write(Context, Block, Value->Length, (char *) &Value->Value.DateTime);
+
         case TYPE_LABEL:
             uValue = 0;
-			return bytecode_write( Context, pBlock, sizeof( uValue ), ( char * ) &uValue );
+			return bytecode_write(Context, Block, sizeof(uValue), (char *) &uValue);
 
         case TYPE_VARIABLE:
-            if( ( pSymbol = symbol_search( Context, pConfig, pResource, pName, ( char * ) pValue->Meta ) ) == NULL )
+            if((pSymbol = symbol_search(Context, Config, Resource, Name, (char *) Value->Meta)) == NULL)
                 return ENOENT;
             uValue = pSymbol->Id;
-            if((nResult = bytecode_write( Context, pBlock, sizeof( uValue ), ( char * ) &uValue )) != 0)
+            if((nResult = bytecode_write(Context, Block, sizeof(uValue), (char *) &uValue)) != 0)
                 return nResult;
             ++pSymbol->Ref;
             return 0;
@@ -586,7 +611,7 @@ _bytecode_generate_value( ECHIDNA *Context, char *pConfig, char *pResource, char
             return 0;
 
         default:
-            log_debug( "%s: %08x", __func__, pValue->Type & ~TYPE_IN_OUT );
+            log_debug("%s: %08x", __func__, Value->Type & ~TYPE_IN_OUT);
             assert(0);
     }
 
