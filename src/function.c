@@ -5,6 +5,7 @@
 #include <string.h>
 #include <strings.h>
 #include <limits.h>
+#include <time.h>
 #include <errno.h>
 #include <assert.h>
 
@@ -51,7 +52,8 @@ static int
 _function_debug( void *pContext, const char *pName, LL *pParameters, VALUE *pResult ) {
     PARAMETER *pParameter;
     LL_ITER sIter;
-    char sLine[LINE_MAX], sValue[32];
+    struct tm sTime;
+    char sLine[LINE_MAX], sValue[48];
     char *pSeparator;
 
     sLine[0] = '\0';
@@ -61,22 +63,143 @@ _function_debug( void *pContext, const char *pName, LL *pParameters, VALUE *pRes
 
         pSeparator = (strlen(sLine) > 0) ? ", " : "";
         switch(pParameter->Value.Type) {
-            case TYPE_LREAL:        snprintf(sValue, sizeof(sValue), "%sLREAL %g", pSeparator, pParameter->Value.Value.Double); break;
-            case TYPE_REAL:         snprintf(sValue, sizeof(sValue), "%sREAL %g", pSeparator, pParameter->Value.Value.Single); break;
-            case TYPE_LINT:         snprintf(sValue, sizeof(sValue), "%sLINT %lld", pSeparator, (long long int) pParameter->Value.Value.S64); break;
-            case TYPE_DINT:         snprintf(sValue, sizeof(sValue), "%sDINT %ld", pSeparator, (long int) pParameter->Value.Value.S32); break;
-            case TYPE_INT:          snprintf(sValue, sizeof(sValue), "%sINT %d", pSeparator, pParameter->Value.Value.S16); break;
-            case TYPE_SINT:         snprintf(sValue, sizeof(sValue), "%sSINT %d", pSeparator, pParameter->Value.Value.S8); break;
-            case TYPE_ULINT:        snprintf(sValue, sizeof(sValue), "%sULINT %llu", pSeparator, (long long unsigned int) pParameter->Value.Value.U64); break;
-            case TYPE_UDINT:        snprintf(sValue, sizeof(sValue), "%sUDINT %lu", pSeparator, (long unsigned int) pParameter->Value.Value.U32); break;
-            case TYPE_UINT:         snprintf(sValue, sizeof(sValue), "%sUINT %u", pSeparator, pParameter->Value.Value.U16); break;
-            case TYPE_USINT:        snprintf(sValue, sizeof(sValue), "%sUSINT %u", pSeparator, pParameter->Value.Value.U8); break;
-            case TYPE_LWORD:        snprintf(sValue, sizeof(sValue), "%sLWORD %016llx (%llu)", pSeparator, (long long unsigned int) pParameter->Value.Value.B64, (long long unsigned int) pParameter->Value.Value.B64); break;
-            case TYPE_DWORD:        snprintf(sValue, sizeof(sValue), "%sDWORD %08lx (%lu)", pSeparator, (long unsigned int) pParameter->Value.Value.B32, (long unsigned int) pParameter->Value.Value.B32); break;
-            case TYPE_WORD:         snprintf(sValue, sizeof(sValue), "%sWORD %04x (%u)", pSeparator, pParameter->Value.Value.B16, pParameter->Value.Value.B16); break;
-            case TYPE_BYTE:         snprintf(sValue, sizeof(sValue), "%sBYTE %02x (%u)", pSeparator, pParameter->Value.Value.B8, pParameter->Value.Value.B8); break;
-            case TYPE_BOOL:         snprintf(sValue, sizeof(sValue), "%sBOOL %s", pSeparator, pParameter->Value.Value.B1 ? "true" : "false"); break;
-            case TYPE_TIME:         snprintf(sValue, sizeof(sValue), "%sTIME %gms", pSeparator, pParameter->Value.Value.Time); break;
+            case TYPE_LREAL:
+                snprintf(sValue, sizeof(sValue), "%s%s %g", pSeparator, value_typetostr(pParameter->Value.Type), pParameter->Value.Value.Double); 
+                break;
+
+            case TYPE_REAL:
+                snprintf(sValue, sizeof(sValue), "%s%s %g", pSeparator, value_typetostr(pParameter->Value.Type), pParameter->Value.Value.Single); 
+                break;
+
+            case TYPE_LINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %lld", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long long int) pParameter->Value.Value.S64); 
+                break;
+
+            case TYPE_DINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %ld", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long int) pParameter->Value.Value.S32); 
+                break;
+
+            case TYPE_INT:
+                snprintf(sValue, sizeof(sValue), "%s%s %d", pSeparator, value_typetostr(pParameter->Value.Type), pParameter->Value.Value.S16); 
+                break;
+
+            case TYPE_SINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %d", pSeparator, value_typetostr(pParameter->Value.Type), pParameter->Value.Value.S8); 
+                break;
+
+            case TYPE_ULINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %llu", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long long unsigned int) pParameter->Value.Value.U64); 
+                break;
+
+            case TYPE_UDINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %lu", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long unsigned int) pParameter->Value.Value.U32); 
+                break;
+
+            case TYPE_UINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %u", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.U16); 
+                break;
+
+            case TYPE_USINT:
+                snprintf(sValue, sizeof(sValue), "%s%s %u", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.U8); 
+                break;
+
+            case TYPE_LWORD:
+                snprintf(sValue, sizeof(sValue), "%s%s %016llx (%llu)", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long long unsigned int) pParameter->Value.Value.B64, 
+                        (long long unsigned int) pParameter->Value.Value.B64); 
+                break;
+
+            case TYPE_DWORD:
+                snprintf(sValue, sizeof(sValue), "%s%s %08lx (%lu)", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        (long unsigned int) pParameter->Value.Value.B32, 
+                        (long unsigned int) pParameter->Value.Value.B32); 
+                break;
+
+            case TYPE_WORD:
+                snprintf(sValue, sizeof(sValue), "%s%s %04x (%u)", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.B16, 
+                        pParameter->Value.Value.B16); 
+                break;
+
+            case TYPE_BYTE:
+                snprintf(sValue, sizeof(sValue), "%s%s %02x (%u)", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.B8, 
+                        pParameter->Value.Value.B8); 
+                break;
+
+            case TYPE_BOOL:
+                snprintf(sValue, sizeof(sValue), "%s%s %s", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.B1 ? "true" : "false"); 
+                break;
+
+            case TYPE_TIME:
+                snprintf(sValue, sizeof(sValue), "%s%s %gms", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        pParameter->Value.Value.Time); 
+                break;
+
+            case TYPE_DATE:
+                gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
+                snprintf(sValue, sizeof(sValue), "%s%s %04d-%02d-%02d", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        sTime.tm_year + 1900, 
+                        sTime.tm_mon + 1, 
+                        sTime.tm_mday);
+                break;
+
+            case TYPE_DT:
+                gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
+                snprintf(sValue, sizeof(sValue), "%s%s %04d-%02d-%02d-%02d:%02d:%02d", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        sTime.tm_year + 1900,
+                        sTime.tm_mon + 1,
+                        sTime.tm_mday,
+                        sTime.tm_hour, 
+                        sTime.tm_min, 
+                        sTime.tm_sec);
+                break;
+
+            case TYPE_TOD:
+                gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
+                snprintf(sValue, sizeof(sValue), "%s%s %02d:%02d:%02d", 
+                        pSeparator, 
+                        value_typetostr(pParameter->Value.Type), 
+                        sTime.tm_hour, 
+                        sTime.tm_min, 
+                        sTime.tm_sec);
+                break;
+
             default:
                 snprintf(sValue, sizeof(sValue), "%s%08x ", pSeparator, pParameter->Value.Type);
                 break;

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 #include <assert.h>
 #include <sys/time.h>
 
@@ -30,18 +31,21 @@ enum {
 int
 _standard_rtc(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void *User) {
     VALUE sFields[4];
-    struct timeval sTime;
+    struct timespec sTime;
     int nResult;
 
     if((nResult = parameter_read_values(Context, Function, Instance, sFields)) != 0)
         return nResult;
 
     if(sFields[FIELD_IN].Value.B1 & ~sFields[FIELD_Q].Value.B1) {
-        //  Set RTC
+        sTime.tv_sec = sFields[FIELD_PDT].Value.DateTime;
+        sTime.tv_nsec = 0;
+        clock_settime(CLOCK_REALTIME, &sTime);
     }
     value_assign(&sFields[FIELD_Q], TYPE_BOOL, sFields[FIELD_IN].Value.B1);
 
-    gettimeofday(&sTime, NULL);
+    clock_gettime(CLOCK_REALTIME, &sTime);
+    value_assign(&sFields[FIELD_CDT], TYPE_DT, sTime.tv_sec);
 
     return parameter_write_values(Context, Function, Instance, sFields);
 }
