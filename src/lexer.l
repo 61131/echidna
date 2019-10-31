@@ -122,6 +122,8 @@ static const char * const _yytext[] = {
         "DATE",
         "TIME_OF_DAY",
         "TOD",
+        "DATE_AND_TIME",
+        "DT",
         "EN",
         "ENO",
         NULL
@@ -195,6 +197,8 @@ static const int _yytoken[] = {
         DATE,
         TOD,
         TOD,
+        DT,
+        DT,
         EN,
         ENO,
         0
@@ -597,7 +601,9 @@ STRING                          |
 TIME                            |
 DATE                            |
 TIME_OF_DAY                     |
-TOD                             {
+TOD                             |
+DATE_AND_TIME                   |
+DT                              {
         yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
         value_strtotype(&yylval.Token->Value, yytext);
         return yylval.Token->Id;

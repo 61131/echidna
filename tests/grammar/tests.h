@@ -15,7 +15,7 @@ MunitResult test_grammar_literals_bitstring(const MunitParameter Parameters[], v
 
 MunitResult test_grammar_literals_boolean(const MunitParameter Parameters[], void *Fixture);
 
-MunitResult test_grammar_literals_date(const MunitParameter Parameters[], void *Fixture);
+MunitResult test_grammar_literals_datetime(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_grammar_literals_integer(const MunitParameter Parameters[], void *Fixture);
 

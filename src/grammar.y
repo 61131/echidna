@@ -141,9 +141,7 @@ extern FILE *yyin;
 %token <Token> REAL
 %token <Token> LREAL
 %token <Token> DATE
-%token <Token> TIME_OF_DAY
 %token <Token> TOD
-%token <Token> DATE_AND_TIME
 %token <Token> DT
 %token <Token> BOOL
 %token <Token> BYTE
@@ -1269,10 +1267,7 @@ milliseconds: fixed_point _duration_milliseconds {
 
     date_and_time ::= ('DATE_AND_TIME' | 'DT') '#' date_literal '-' daytime */
 
-time_of_day: TIME_OF_DAY '#' daytime {
-            $$ = $daytime;
-        }
-    | TOD '#' daytime {
+time_of_day: TOD '#' daytime {
             $$ = $daytime;
         }
     | daytime;
@@ -1283,28 +1278,28 @@ daytime: integer ':' integer ':' integer {
             struct tm sTime;            
 
             pParse = &Context->Parse;
-            if($1->Value.Value.U32 > 23) {
-                log_error("%s: Invalid value for hour (%lu) in time of day literal [%u:%u]",
+            if($1->Value.Value.S64 > 23) {
+                log_error("%s: Invalid value for hour (%ld) in time of day literal [%u:%u]",
                         pParse->File,
-                        $1->Value.Value.U32,
+                        (long int) $1->Value.Value.S64,
                         @1.first_line,
                         @1.first_column);
                 token_destroy($1, $3, $5);
                 YYERROR;
             }
-            if($3->Value.Value.U32 > 59) {
-                log_error("%s: Invalid value for minute (%lu) in time of day literal [%u:%u]",
+            if($3->Value.Value.S64 > 59) {
+                log_error("%s: Invalid value for minute (%ld) in time of day literal [%u:%u]",
                         pParse->File,
-                        $3->Value.Value.U32,
+                        (long int) $3->Value.Value.S64,
                         @3.first_line,
                         @3.first_column);
                 token_destroy($1, $3, $5);
                 YYERROR;
             }
-            if($5->Value.Value.U32 > /* 60 */ 59) {
-                log_error("%s: Invalid value for second (%lu) in time of day literal [%u:%u]",
+            if($5->Value.Value.S64 > /* 60 */ 59) {
+                log_error("%s: Invalid value for second (%ld) in time of day literal [%u:%u]",
                         pParse->File,
-                        $5->Value.Value.U32,
+                        (long int) $5->Value.Value.S64,
                         @5.first_line,
                         @5.first_column);
                 token_destroy($1, $3, $5);
@@ -1312,9 +1307,12 @@ daytime: integer ':' integer ':' integer {
             }
 
             memset(&sTime, 0, sizeof(sTime));
-            sTime.tm_sec = $1->Value.Value.U32;
-            sTime.tm_min = $3->Value.Value.U32;
-            sTime.tm_hour = $5->Value.Value.U32;
+            sTime.tm_year = /* 1970 - 1900 */ 70;
+            sTime.tm_mon = /* 1 - 1 */ 0;
+            sTime.tm_mday = 1;
+            sTime.tm_hour = $1->Value.Value.S64;
+            sTime.tm_min = $3->Value.Value.S64;
+            sTime.tm_sec = $5->Value.Value.S64;
 
             pToken = token_new(TOD, @1.first_line, @1.first_column);
             value_assign(&pToken->Value, TYPE_TOD, timegm(&sTime));
@@ -1370,7 +1368,6 @@ date_literal: integer '-' integer '-' integer {
             sTime.tm_year = $1->Value.Value.S64 - 1900;
             sTime.tm_mon = $3->Value.Value.S64 - 1;
             sTime.tm_mday = $5->Value.Value.S64;
-            sTime.tm_isdst = 0;
 
             pToken = token_new(DATE, @1.first_line, @1.first_column);
             value_assign(&pToken->Value, TYPE_DATE, timegm(&sTime));
@@ -1378,12 +1375,12 @@ date_literal: integer '-' integer '-' integer {
             $$ = pToken;
         };
 
-date_and_time: DATE_AND_TIME '#' date_literal '-' daytime {
+date_and_time: DT '#' date_literal '-' daytime {
             TOKEN *pToken;
             struct tm sDate, sResult, sTime;
 
-            localtime_r((const time_t *) &$date_literal->Value.Value.U32, &sDate);
-            localtime_r((const time_t *) &$daytime->Value.Value.U32, &sTime);
+            gmtime_r((const time_t *) &$date_literal->Value.Value.DateTime, &sDate);
+            gmtime_r((const time_t *) &$daytime->Value.Value.DateTime, &sTime);
             memset(&sResult, 0, sizeof(sResult));
             sResult.tm_year = sDate.tm_year;
             sResult.tm_mon = sDate.tm_mon;
@@ -1394,25 +1391,6 @@ date_and_time: DATE_AND_TIME '#' date_literal '-' daytime {
 
             pToken = token_new(DT, @1.first_line, @1.first_column);
             value_assign(&pToken->Value, TYPE_DT, timegm(&sResult));
-            token_destroy($date_literal, $daytime);
-            $$ = pToken;
-        }
-    | _dt_sharp date_literal '-' daytime {
-            TOKEN *pToken;
-            struct tm sDate, sResult, sTime;
-
-            localtime_r((const time_t *) &$date_literal->Value.Value.U32, &sDate);
-            localtime_r((const time_t *) &$daytime->Value.Value.U32, &sTime);
-            memset(&sResult, 0, sizeof(sResult));
-            sResult.tm_year = sDate.tm_year;
-            sResult.tm_mon = sDate.tm_mon;
-            sResult.tm_mday = sDate.tm_mday;
-            sResult.tm_hour = sTime.tm_hour;
-            sResult.tm_min = sTime.tm_min;
-            sResult.tm_sec = sTime.tm_sec;
-
-            pToken = token_new(DT, @1.first_line, @1.first_column);
-            value_assign(&pToken->Value , TYPE_DT, timegm(&sResult));
             token_destroy($date_literal, $daytime);
             $$ = pToken;
         };
@@ -1532,17 +1510,9 @@ date_type_name: DATE {
             value_assign(&$DATE->Value, TYPE_DATE, 0);
             $$ = $DATE;
         }
-    | TIME_OF_DAY {
-            value_assign(&$TIME_OF_DAY->Value, TYPE_TOD, 0);
-            $$ = $TIME_OF_DAY;
-        }
     | TOD {
             value_assign(&$TOD->Value, TYPE_TOD, 0);
             $$ = $TOD;
-        }
-    | DATE_AND_TIME {
-            value_assign(&$DATE_AND_TIME->Value, TYPE_DT, 0);
-            $$ = $DATE_AND_TIME;
         }
     | DT {
             value_assign(&$DT->Value, TYPE_DT, 0);
