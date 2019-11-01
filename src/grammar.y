@@ -5522,12 +5522,19 @@ il_instruction: _label ':' _il_instruction EOL {
         }
     | _il_instruction EOL;
 
-il_simple_operation: il_simple_operator il_operand {
+il_simple_operation: il_simple_operator {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+
+        } il_operand {
             PARSE *pParse;
             SYMBOL *pSymbol;
             int nResult;
 
             pParse = &Context->Parse;
+            pParse->Identifier = 0;
             switch($il_simple_operator->Id) {
                 case R:
                 case S:
@@ -5773,12 +5780,19 @@ il_jump_operation: il_jump_operator _label {
             $$ = NULL;
         };
 
-il_fb_call: il_call_operator _variable_name '(' EOL il_param_list ')' {
+il_fb_call: il_call_operator _variable_name '(' EOL {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+
+         } il_param_list ')' {
             TOKEN_LIST *pList;
             PARSE *pParse;
 
             pList = NULL;
             pParse = &Context->Parse;
+            pParse->Identifier = 0;
             if(!pParse->Preparse) {
                 pList = token_list_convert($il_call_operator);
                 value_assign(&pList->Token.Value, TYPE_FUNCTION_BLOCK, $_variable_name->Name);
@@ -5795,12 +5809,19 @@ il_fb_call: il_call_operator _variable_name '(' EOL il_param_list ')' {
             token_destroy($_variable_name, $il_param_list);
             $$ = (TOKEN *) pList;
         }
-    | il_call_operator _variable_name '(' il_operand_list ')' {
+    | il_call_operator _variable_name '(' {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+
+        } il_operand_list ')' {
             TOKEN_LIST *pList;
             PARSE *pParse;
 
             pList = NULL;
             pParse = &Context->Parse;
+            pParse->Identifier = 0;
             if(!pParse->Preparse) {
                 pList = token_list_convert($il_call_operator);
                 value_assign(&pList->Token.Value, TYPE_FUNCTION_BLOCK, $_variable_name->Name);
@@ -5827,7 +5848,7 @@ il_formal_funct_call: _function_name '(' EOL {
             PARSE *pParse;
 
             pParse = &Context->Parse;
-            pParse->Parameters = 1;
+            pParse->Identifier = 1;
 
         } il_param_list ')' {
             TOKEN_LIST *pList;
@@ -5835,7 +5856,7 @@ il_formal_funct_call: _function_name '(' EOL {
 
             pList = NULL;
             pParse = &Context->Parse;
-            pParse->Parameters = 0;
+            pParse->Identifier = 0;
             if(!pParse->Preparse) {
                 pList = token_list_cast($il_param_list, CAL);
                 value_assign(&pList->Token.Value, TYPE_FUNCTION, $_function_name->Name);
@@ -5855,13 +5876,13 @@ il_formal_funct_call: _function_name '(' EOL {
             PARSE *pParse;
 
             pParse = &Context->Parse;
-            pParse->Parameters = 1;
+            pParse->Identifier = 1;
 
         } il_param_list ')' {
             PARSE *pParse;
 
             pParse = &Context->Parse;
-            pParse->Parameters = 0;
+            pParse->Identifier = 0;
             if(!pParse->Preparse) {
                 log_error("%s: Unknown function or function block: %s [%u:%u]",
                         pParse->File,
@@ -6069,21 +6090,96 @@ _il_param_list: il_param_instruction {
     il_jump_operator ::= 'JMP' | 'JMPC' | 'JMPCN' */
 
 il_simple_operator: NOP
-    | LD
-    | LDN
-    | ST
-    | STN
-    | NOT
-    | S
-    | R
-    | S1
-    | R1
-    | CLK
-    | CU
-    | CD
-    | PV
-    | IN
-    | PT
+    | LD {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | LDN {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | ST {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | STN {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | NOT {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | S {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | R {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | S1 {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | R1 {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | CLK {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | CU {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | CD {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | PV {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | IN {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
+    | PT {
+            PARSE *pParse;
+
+            pParse = &Context->Parse;
+            pParse->Identifier = 1;
+        }
     | il_expr_operator {
             $$ = (TOKEN *) $il_expr_operator;
         };

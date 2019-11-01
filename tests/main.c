@@ -28,6 +28,7 @@ static MunitSuite sSuites[] = {
     { "standard/", suite_standard_counters, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_edge, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_numeric, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_rtc, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_select, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_string, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "stats/", suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },

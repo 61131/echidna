@@ -15,7 +15,6 @@
 %s Declaration
 %s Duration
 %s IL
-%s Operand
 
 %{
 #include <stdio.h>
@@ -343,25 +342,8 @@ size_prefix                     [XBWDL]
 
 %%
 
-<Operand>{
-{eol}                           {
-    PARSE *pParse;
 
-    pParse = (PARSE *) _yycontext;
-    switch(pParse->State) {
-        case 0: break;
-        case 1:
-            yy_pop_state();
-        default:
-            --pParse->State;
-            break;
-    }
-    return EOL;
-}
-
-}
-
-<IL,Operand>{
+<IL>{
 {eol}                           { return EOL; }
 {whitespace_il}
 
@@ -503,7 +485,6 @@ IN                              |
 PV                              |
 PT                              |
 EN                              |
-ENO                             |
 CAL                             |
 CALC                            |
 CALCN                           |
@@ -514,28 +495,26 @@ JMP                             |
 JMPC                            |
 JMPCN                           {
     PARSE *pParse;
+    LEXER_TOKEN *pToken;
+    int nId;
 
     BEGIN(IL);
     pParse = (PARSE *) _yycontext;
-    if(!pParse->Parameters) {
-        pParse->State = 1;
-        yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
-        switch(yylval.Token->Id) {
-            case CAL:
-            case CALC:
-            case CALCN:
-                ++pParse->State;
-fprintf(stderr, "CAL: %u\n", pParse->State);
-                break;
-
-            default:
-                break;
-        }
-        yy_push_state(Operand);
+    if(pParse->Identifier) {
+        if((pToken = parse_search(pParse, yytext)) != NULL)
+            nId = pToken->Id;
+        else
+            nId = identifier;
+        yylval.Token = token_new(nId, yylloc.first_line, yylloc.first_column, yytext);
     }
     else
-        yylval.Token = token_new(identifier, yylloc.first_line, yylloc.first_column, yytext);
+        yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
 
+    return yylval.Token->Id;
+}
+
+ENO                             {
+    yylval.Token = token_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
     return yylval.Token->Id;
 }
 
@@ -557,25 +536,29 @@ LT                              |
 LE                              |
 NE                              {
     PARSE *pParse;
+    LEXER_TOKEN *pToken;
+    int nId;
 
     BEGIN(IL);
     pParse = (PARSE *) _yycontext;
-    if(!pParse->Parameters) {
-        pParse->State = 1;
-        yylval.List = token_list_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
-        yylval.List->Token.Name = strdup(yytext);
-        yy_push_state(Operand);
+    if(pParse->Identifier) {
+        if((pToken = parse_search(pParse, yytext)) != NULL)
+            nId = pToken->Id;
+        else
+            nId = identifier;
+        yylval.List = token_list_new(nId, yylloc.first_line, yylloc.first_column);
     }
     else 
-        yylval.Token = token_new(identifier, yylloc.first_line, yylloc.first_column, yytext);
-
+        yylval.List = token_list_new(_lexer_token(yytext), yylloc.first_line, yylloc.first_column);
+    
+    yylval.List->Token.Name = strdup(yytext);
     return yylval.List->Token.Id;
 }
 
 }
 
 
-<Body,Configuration,Declaration,IL,Operand>{
+<Body,Configuration,Declaration,IL>{
 
 T#                              |
 TIME#                           {
@@ -615,20 +598,8 @@ OF                              return OF;
 STRUCT                          return STRUCT;
 END_STRUCT                      return END_STRUCT;
 
-:=                              {
-    PARSE *pParse;
-
-    pParse = (PARSE *) _yycontext;
-    ++pParse->State;
-    return _assign;
-}
-=>                              {
-    PARSE *pParse;
-
-    pParse = (PARSE *) _yycontext;
-    ++pParse->State;
-    return _sendto;
-}
+:=                              return _assign;
+=>                              return _sendto;
 ".."                            return _range;
 
     /*

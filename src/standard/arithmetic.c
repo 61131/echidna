@@ -202,8 +202,6 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
                     return ERROR_PARAMETER_TYPE;
                 value_copy(&sExponent, &pParameter->Value);
             }
-            else
-                return ERROR_PARAMETER_UNKNOWN;
         }
         else {
             switch(uParameter++) {

@@ -51,13 +51,6 @@ test_arithmetic_expt(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     //  IN1:TYPE_LREAL ** IN2:TYPE_LREAL -> 0
     munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_uint32(sResult.Type, ==, TYPE_LREAL);
-    munit_assert_double(sResult.Value.Double, ==, 4.0);
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("IN3"));
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    //  IN1:TYPE_LREAL ** IN2:TYPE_LREAL  ?? IN3:TYPE_LREAL -> ERROR_PARAMETER_UNKNOWN
-    munit_assert_int(standard_expt(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     ll_initialise(&sParameters, parameter_destroy);

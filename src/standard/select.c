@@ -36,8 +36,6 @@ standard_limit(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
             else if((strcasecmp(pParameter->Name, "MN") == 0) ||
                     (strcasecmp(pParameter->Name, "MIN") == 0))
                 value_copy(&sMin, &pParameter->Value);
-            else
-                return ERROR_PARAMETER_UNKNOWN;
         }
         else {
             switch(uParameter++) {

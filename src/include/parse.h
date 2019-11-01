@@ -29,7 +29,7 @@ typedef struct _PARSE {
 
     TOKEN * POU;
 
-    uint8_t Parameters;
+    uint8_t Identifier;
 
     uint8_t Preparse;
 

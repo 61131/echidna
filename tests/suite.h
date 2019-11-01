@@ -41,6 +41,8 @@ extern MunitTest suite_standard_edge[];
 
 extern MunitTest suite_standard_numeric[];
 
+extern MunitTest suite_standard_rtc[];
+
 extern MunitTest suite_standard_select[];
 
 extern MunitTest suite_standard_string[];

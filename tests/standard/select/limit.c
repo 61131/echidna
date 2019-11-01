@@ -379,11 +379,7 @@ test_select_limit(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_not_null(pMinimum->Name = strdup("MN"));
     free((char *) pMaximum->Name);
     munit_assert_not_null(pMaximum->Name = strdup("MX"));
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
-    value_assign(&pParameter->Value, TYPE_BOOL);
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
+    munit_assert_int(standard_limit(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
     ll_destroy(&sParameters);
 
     ll_initialise(&sParameters, parameter_destroy);

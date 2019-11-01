@@ -144,7 +144,7 @@ parse_initialise(ECHIDNA *Context, PARSE *Parse) {
     }
 
     Parse->File = NULL;
-    Parse->Parameters = 0;
+    Parse->Identifier = 0;
     Parse->Preparse = 0;
     Parse->Type = TYPE_NONE;
 

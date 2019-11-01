@@ -79,75 +79,89 @@ _standard_ctd(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
 
     if(sFields[CTD_LD].Value.B1)
         value_copy(&sFields[CTD_CV], &sFields[CTD_PV]);
-    else {
-        switch(sFields[CTD_PV].Type) {
-            case TYPE_LINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.S64 > sFields[CTD_PV].Minimum.S64)
-                        --sFields[CTD_CV].Value.S64;
-                }  
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S64 <= 0));
-                break;
 
-            case TYPE_DINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.S32 > sFields[CTD_PV].Minimum.S32)
-                        --sFields[CTD_CV].Value.S32;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S32 <= 0));
-                break;
+    switch(sFields[CTD_PV].Type) {
+        case TYPE_LINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.S64 > sFields[CTD_PV].Minimum.S64)) {
 
-            case TYPE_INT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.S16 > sFields[CTD_PV].Minimum.S16)
-                        --sFields[CTD_CV].Value.S16;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S16 <= 0));
-                break;
+                --sFields[CTD_CV].Value.S64;
+            }  
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S64 <= 0));
+            break;
 
-            case TYPE_SINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.S8 > sFields[CTD_PV].Minimum.S8)
-                        --sFields[CTD_CV].Value.S8;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S8 <= 0));
-                break;
+        case TYPE_DINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.S32 > sFields[CTD_PV].Minimum.S32)) {
 
-            case TYPE_ULINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.U64 > sFields[CTD_PV].Minimum.U64)
-                        --sFields[CTD_CV].Value.U64;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U64 <= 0));
-                break;
+                --sFields[CTD_CV].Value.S32;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S32 <= 0));
+            break;
 
-            case TYPE_UDINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.U32 > sFields[CTD_PV].Minimum.U32)
-                        --sFields[CTD_CV].Value.U32;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U32 <= 0));
-                break;
+        case TYPE_INT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.S16 > sFields[CTD_PV].Minimum.S16)) {
 
-            case TYPE_UINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.U16 > sFields[CTD_PV].Minimum.U16)
-                        --sFields[CTD_CV].Value.U16;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U16 <= 0));
-                break;
+                --sFields[CTD_CV].Value.S16;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S16 <= 0));
+            break;
 
-            case TYPE_USINT:
-                if(sFields[CTD_CD].Value.B1) {
-                    if(sFields[CTD_CV].Value.U8 > sFields[CTD_PV].Minimum.U8)
-                        --sFields[CTD_CV].Value.U8;
-                }
-                value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U8 <= 0));
-                break;
+        case TYPE_SINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.S8 > sFields[CTD_PV].Minimum.S8)) {
 
-            default:
-                return ERROR_PARAMETER_TYPE;
-        }
+                --sFields[CTD_CV].Value.S8;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.S8 <= 0));
+            break;
+
+        case TYPE_ULINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.U64 > sFields[CTD_PV].Minimum.U64)) {
+
+                --sFields[CTD_CV].Value.U64;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U64 <= 0));
+            break;
+
+        case TYPE_UDINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.U32 > sFields[CTD_PV].Minimum.U32)) {
+
+                --sFields[CTD_CV].Value.U32;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U32 <= 0));
+            break;
+
+        case TYPE_UINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.U16 > sFields[CTD_PV].Minimum.U16)) {
+                --sFields[CTD_CV].Value.U16;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U16 <= 0));
+            break;
+
+        case TYPE_USINT:
+            if((!sFields[CTD_LD].Value.B1) &&
+                    (sFields[CTD_CD].Value.B1) &&
+                    (sFields[CTD_CV].Value.U8 > sFields[CTD_PV].Minimum.U8)) {
+
+                --sFields[CTD_CV].Value.U8;
+            }
+            value_assign(&sFields[CTD_Q], TYPE_BOOL, (sFields[CTD_CV].Value.U8 <= 0));
+            break;
+
+        default:
+            return ERROR_PARAMETER_TYPE;
     }
 
     return parameter_write_values(Context, Function, Instance, sFields);

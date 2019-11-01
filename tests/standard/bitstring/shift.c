@@ -82,18 +82,6 @@ test_bitstring_shl(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pParameter->Value, TYPE_BYTE);
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
-    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
-    ll_delete(sParameters.Tail);
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("N"));
-    value_assign(&pParameter->Value, TYPE_INT);
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
-    value_assign(&pParameter->Value, TYPE_INT);
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    munit_assert_int(standard_shl(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     uValue = 1;
@@ -182,18 +170,6 @@ test_bitstring_shr(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&pParameter->Value, TYPE_BYTE);
     munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
     munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_TYPE);
-    //  IN:TYPE_LWORD, N:TYPE_INT, OTHER:TYPE_INT -> ERROR_PARAMETER_UNKNOWN
-    ll_delete(sParameters.Tail);
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("N"));
-    value_assign(&pParameter->Value, TYPE_INT);
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_not_null(pParameter = parameter_new(NULL));
-    munit_assert_not_null(pParameter->Name = strdup("OTHER"));
-    value_assign(&pParameter->Value, TYPE_INT);
-    munit_assert_int(ll_insert(&sParameters, pParameter), ==, 0);
-    munit_assert_int(standard_shr(pContext, NULL, &sParameters, &sResult, NULL), ==, ERROR_PARAMETER_UNKNOWN);
     ll_destroy(&sParameters);
 
     uValue = 1;

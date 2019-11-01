@@ -1,0 +1,17 @@
+PROGRAM test
+VAR clock: rtc; END_VAR
+VAR now: DATE_AND_TIME := DT#1970-01-01-00:00:00; END_VAR
+
+CAL clock
+
+LD clock.CDT
+ST now
+_exit
+
+END_PROGRAM
+
+CONFIGURATION config1
+TASK task1 (PRIORITY := 1);
+PROGRAM program1: test;
+END_CONFIGURATION
+
