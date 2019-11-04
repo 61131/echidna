@@ -4,7 +4,7 @@
 
 Echidna is a compiler and virtual machine run-time for IEC 61131-3 languages for programmable controllers. This project can be used to create programmable logic controllers for interface with industrial automation, Internet-of-Things (IoT) and I/O control applications. 
 
-This tutorial is intended to provide an overview of a basic project to blink an LED on example hardware. The example hardware used for this      tutorial is a Raspberry Pi 1 Model B with PiFace Digital I/O board.
+This tutorial is intended to provide an overview of a basic project to blink an LED on example hardware. The example hardware used for this tutorial is a Raspberry Pi 1 Model B with PiFace Digital I/O board.
 
 ## Installation
 
@@ -82,3 +82,15 @@ The following example IEC 61131-3 language application uses a pair of `TON` func
 This example code allows task execution to be performed every 50 milliseconds while the LED on the Raspberry Pi PiFace Digital I/O board is only updated every 500 milliseconds. 
 
 This application is equivalent to the following ladder diagram code:
+
+<p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/tutorial2.png?raw=true" /></p>
+
+In this ladder diagram code, the output of both `TON` timer function blocks are initially off and their elapsed time output is 0 ms. The output of the second `TON` timer function block is negated and supplied to first `TON` function block, causing this (first) function block to begin increasing the elapsed time. After 500 ms, the output of the first `TON` timer function block will be asserted causing the second `TON` function block to begin increasing its elapsed time. Again, after 500 ms the output of the second `TON` timer function block will be asserted, causing the input to the first `TON` function block to be deasserted, resetting this function block. This in turn will deassert the input to the second `TON` function block, similarly causing this function block to be reset and output to be deasserted. This establishes a periodic cycle of assertion and deassertion that can be used to blink the LED on the Raspberry Pi PiFace Digital I/O board.
+
+The timing of this arrangement of `TON` timer function blocks can be represented as follows:
+
+<p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/tutorial3.png?raw=true" /></p>
+
+## Links
+
+-   [Contact and Coil - Flasher](http://www.contactandcoil.com/patterns-of-ladder-logic-programming/flasher/)
