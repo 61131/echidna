@@ -89,8 +89,8 @@ In this ladder diagram code, the output of both `TON` timer function blocks are 
 
 The timing of this arrangement of `TON` timer function blocks can be represented as follows:
 
-<p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/tutorial3.png?raw=true" /></p>
+<p align="center"><img width="50%" src="https://github.com/61131/echidna/blob/master/media/tutorial3.png?raw=true" /></p>
 
 ## Links
 
--   [Contact and Coil - Flasher](http://www.contactandcoil.com/patterns-of-ladder-logic-programming/flasher/)
+-   Image credit: [Contact and Coil - Flasher](http://www.contactandcoil.com/patterns-of-ladder-logic-programming/flasher/)
