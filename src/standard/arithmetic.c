@@ -16,14 +16,18 @@ int
 standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
+    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
+    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if((pParameter->Value.Type & ANY_NUM) == 0) 
-            return ERROR_PARAMETER_TYPE;
+        if(uGeneral == 0) {
+            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0) 
+                return ERROR_PARAMETER_TYPE;
+        }
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -71,6 +75,16 @@ standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 sValue.Value.U8 += sIn.Value.U8;
                 break;
 
+            case TYPE_TIME:
+                sValue.Value.Time += sIn.Value.Time;
+                break;
+
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
+                sValue.Value.DateTime += sIn.Value.DateTime;
+                break;
+
             default:
                 return ERROR_PARAMETER_TYPE;
         }
@@ -86,14 +100,18 @@ int
 standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
+    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
+    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if((pParameter->Value.Type & ANY_NUM) == 0)
-            return ERROR_PARAMETER_TYPE;
+        if(uGeneral == 0) {
+            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+                return ERROR_PARAMETER_TYPE;
+        }
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -159,6 +177,20 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 if(sIn.Value.U8 == 0u)
                     goto error;
                 sValue.Value.U8 /= sIn.Value.U8;
+                break;
+
+            case TYPE_TIME:
+                if(sIn.Value.Time == 0.0f)
+                    goto error;
+                sValue.Value.Time /= sIn.Value.Time;
+                break;
+
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
+                if(sIn.Value.DateTime == 0)
+                    goto error;
+                sValue.Value.DateTime /= sIn.Value.DateTime;
                 break;
 
             default:
@@ -320,14 +352,18 @@ int
 standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
+    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
+    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if((pParameter->Value.Type & ANY_NUM) == 0)
-            return ERROR_PARAMETER_TYPE;
+        if(uGeneral == 0) {
+            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+                return ERROR_PARAMETER_TYPE;
+        }
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -375,6 +411,16 @@ standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 sValue.Value.U8 *= sIn.Value.U8;
                 break;
 
+            case TYPE_TIME:
+                sValue.Value.Time *= sIn.Value.Time;
+                break;
+
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
+                sValue.Value.DateTime *= sIn.Value.DateTime;
+                break;
+
             default:
                 return ERROR_PARAMETER_TYPE;
         }
@@ -390,14 +436,18 @@ int
 standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
+    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
+    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if((pParameter->Value.Type & ANY_NUM) == 0)
-            return ERROR_PARAMETER_TYPE;
+        if(uGeneral == 0) {
+            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+                return ERROR_PARAMETER_TYPE;
+        }
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -443,6 +493,16 @@ standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
             case TYPE_USINT:
                 sValue.Value.U8 -= sIn.Value.U8;
+                break;
+
+            case TYPE_TIME:
+                sValue.Value.Time -= sIn.Value.Time;
+                break;
+
+            case TYPE_DATE:
+            case TYPE_DT:
+            case TYPE_TOD:
+                sValue.Value.DateTime -= sIn.Value.DateTime;
                 break;
 
             default:

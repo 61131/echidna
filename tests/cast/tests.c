@@ -24,18 +24,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_lreal(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_lreal(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_lreal(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_lreal(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_REAL
@@ -49,18 +37,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_real(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_real(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_real(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_real(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -78,18 +54,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_lint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_lint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_lint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_lint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_DINT
@@ -103,18 +67,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_dint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_dint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_dint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_dint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -132,18 +84,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_int(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_int(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_int(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_int(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_SINT
@@ -157,18 +97,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_sint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_sint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_sint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_sint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -186,18 +114,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_ulint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_ulint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_ulint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_ulint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_UDINT
@@ -211,18 +127,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_udint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_udint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_udint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_udint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -240,18 +144,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_uint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_uint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_uint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_uint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_USINT
@@ -265,18 +157,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_usint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_usint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_usint(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_usint(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -294,18 +174,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_lword(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_lword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_lword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_lword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_DWORD
@@ -319,18 +187,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_dword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_dword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_dword(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_dword(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -348,18 +204,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_word(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_word(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_word(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_word(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_BYTE
@@ -373,18 +217,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     value_assign(&sValue, TYPE_WSTRING);
-    munit_assert_int(cast_byte(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_byte(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_byte(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
     munit_assert_int(cast_byte(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
@@ -402,18 +234,6 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_bool(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_TIME
@@ -429,39 +249,15 @@ test_cast_error(const MunitParameter Parameters[], void *Fixture) {
     value_assign(&sValue, TYPE_WSTRING);
     munit_assert_int(cast_bool(&sValue), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DATE);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_DT);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    value_assign(&sValue, TYPE_TOD);
-    munit_assert_int(cast_bool(&sValue), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
     value_destroy(&sValue);
 
     //  TYPE_STRING
     //  TYPE_WSTRING
-    //  TYPE_DATE
-    //  TYPE_DT
-    //  TYPE_TOD
     errno = 0;
     munit_assert_int(cast_string(NULL), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
     errno = 0;
     munit_assert_int(cast_wstring(NULL), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    munit_assert_int(cast_date(NULL), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    munit_assert_int(cast_dt(NULL), ==, -1);
-    munit_assert_int(errno, ==, EINVAL);
-    errno = 0;
-    munit_assert_int(cast_tod(NULL), ==, -1);
     munit_assert_int(errno, ==, EINVAL);
 
     return MUNIT_OK;
@@ -509,73 +305,81 @@ test_cast_none(const MunitParameter Parameters[], void *Fixture) {
     value_destroy(&sValue);
 
     //  TYPE_ULINT
-    
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_ULINT);
     munit_assert_int(cast_ulint(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_UDINT
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_UDINT);
     munit_assert_int(cast_udint(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_UINT
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_UINT);
     munit_assert_int(cast_uint(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_USINT
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_USINT);
     munit_assert_int(cast_usint(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_LWORD
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_LWORD);
     munit_assert_int(cast_lword(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_DWORD
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_DWORD);
     munit_assert_int(cast_dword(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_WORD
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_WORD);
     munit_assert_int(cast_word(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_BYTE
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_BYTE);
     munit_assert_int(cast_byte(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_BOOL
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_BOOL);
     munit_assert_int(cast_bool(&sValue), ==, 0);
     value_destroy(&sValue);
 
     //  TYPE_TIME
-
     value_initialise(&sValue);
     value_assign(&sValue, TYPE_TIME);
     munit_assert_int(cast_time(&sValue), ==, 0);
+    value_destroy(&sValue);
+
+    //  TYPE_DATE
+    value_initialise(&sValue);
+    value_assign(&sValue, TYPE_DATE);
+    munit_assert_int(cast_date(&sValue), ==, 0);
+    value_destroy(&sValue);
+
+    //  TYPE_DT
+    value_initialise(&sValue);
+    value_assign(&sValue, TYPE_DT);
+    munit_assert_int(cast_dt(&sValue), ==, 0);
+    value_destroy(&sValue);
+
+    //  TYPE_TOD
+    value_initialise(&sValue);
+    value_assign(&sValue, TYPE_TOD);
+    munit_assert_int(cast_tod(&sValue), ==, 0);
     value_destroy(&sValue);
 
     return MUNIT_OK;

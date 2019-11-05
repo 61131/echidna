@@ -52,6 +52,13 @@ _symbol_calculate_offset(ECHIDNA *Context) {
         pSymbol = pSymbols->Symbol[nIndex];
         pSymbol->Id = uId++;
 
+        /*
+            If the name of the symbol includes a fullstop-separator, it is assumed that 
+            this symbol is a field associated with a function block instance. The task of 
+            calculating the offset for this symbol is then delegated to the _symbol_field_offset 
+            function.
+        */
+
         if(strchr(pSymbol->Name, '.') != NULL) {
             pSymbol->Offset = _symbol_field_offset(Context, pSymbol);
             continue;
@@ -241,6 +248,7 @@ _symbol_function_block(ECHIDNA *Context, SYMBOL *Symbol) {
 
     for(uIndex = 0; uIndex < pBlock->Count; ++uIndex) {
         pField = &pBlock->Fields[uIndex];
+log_debug("%u: %s, %08x", uIndex, pField->Name, pField->Type);
         uOffset = sizeof(uint32_t) * uIndex;
         if((pField->Type & TYPE_IN_OUT) == 0) {
 
@@ -560,7 +568,9 @@ _symbol_table_initialise(size_t Arg, ECHIDNA *Context, ...) {
         This function is intended to initialise the symbols associated with a 
         configuration, resource or program organisation unit to their initial values. 
         The determination as to the level of initialisation to perform is based upon 
-        the number of arguments passed to this function.
+        the number of arguments passed to this function. Note that all variables 
+        associated with independent program organisation units (POUs), identifiable 
+        by the lack of configuration parameter, are always initialised.
     */
 
     if((Arg < 2) || (Arg > 4))
@@ -584,25 +594,25 @@ _symbol_table_initialise(size_t Arg, ECHIDNA *Context, ...) {
     pSymbols = &Context->Symbols;
     for(uIndex = 0; uIndex < pSymbols->Count; ++uIndex) {
         pSymbol = pSymbols->Symbol[uIndex];
-        if(!pSymbol->Configuration)
-            continue;
-        for(uScope = 0; uScope < uCount; ++uScope) {
-            assert(pValues[uScope] != NULL);
-            switch(uScope) {
-                case 0:     pValue = pSymbol->Configuration; break;
-                case 1:     pValue = pSymbol->Resource; break;
-                case 2:     pValue = pSymbol->POU; break;
-                default:
-                    pValue = NULL;
+        if(pSymbol->Configuration) {
+            for(uScope = 0; uScope < uCount; ++uScope) {
+                assert(pValues[uScope] != NULL);
+                switch(uScope) {
+                    case 0:     pValue = pSymbol->Configuration; break;
+                    case 1:     pValue = pSymbol->Resource; break;
+                    case 2:     pValue = pSymbol->POU; break;
+                    default:
+                        pValue = NULL;
+                        break;
+                }
+                if(pValue == NULL)
+                    break;
+                if(strcasecmp(pValues[uScope], pValue) != 0)
                     break;
             }
-            if(pValue == NULL)
-                break;
-            if(strcasecmp(pValues[uScope], pValue) != 0)
-                break;
+            if(uScope < uCount)
+                continue;
         }
-        if(uScope < uCount)
-            continue;
 
         switch(pSymbol->Value.Type) {
             case TYPE_FUNCTION_BLOCK:
@@ -610,7 +620,7 @@ _symbol_table_initialise(size_t Arg, ECHIDNA *Context, ...) {
                 assert(pFunction != NULL);
                 pBlock = pFunction->Block;
                 assert(pBlock != NULL);
-
+log_debug("%s: pSymbol->Name %s, %s", __func__, pSymbol->Name, pSymbol->Path);
                 _symbol_function_block(Context, pSymbol);
 
                 if(pBlock->Initialise != NULL) 
@@ -896,45 +906,6 @@ symbol_table_destroy(ECHIDNA *Context) {
     for(uIndex = 0; uIndex < Context->Symbols.Count; ++uIndex)
         symbol_destroy(Context, Context->Symbols.Symbol[uIndex]);
     free(Context->Symbols.Symbol);
-}
-
-
-void
-symbol_table_dump(ECHIDNA *Context) {
-    RUNTIME *pRun;
-    SYMBOLS *pSymbols;
-    SYMBOL *pSymbol;
-    VALUE sValue;
-    size_t uIndex;
-
-    pRun = Context->VM;
-    pSymbols = &Context->Symbols;
-    for(uIndex = 0; uIndex < pSymbols->Count; ++uIndex) {
-        pSymbol = pSymbols->Symbol[uIndex];
-
-        value_initialise(&sValue);
-        memcpy((char *) &sValue.Value.Pointer, &pRun->Memory[pSymbol->Offset], pSymbol->Value.Length);
-        switch(pSymbol->Value.Type) {
-            case TYPE_LREAL:    log_debug("%s: LREAL: %g", pSymbol->Name, sValue.Value.Double); break;
-            case TYPE_REAL:     log_debug("%s: REAL: %f", pSymbol->Name, sValue.Value.Single); break;
-            case TYPE_LINT:     log_debug("%s: LINT: %lld", pSymbol->Name, sValue.Value.S64); break;
-            case TYPE_DINT:     log_debug("%s: DINT: %ld", pSymbol->Name, sValue.Value.S32); break;
-            case TYPE_INT:      log_debug("%s: INT: %d", pSymbol->Name, sValue.Value.S16); break;
-            case TYPE_SINT:     log_debug("%s: SINT: %d", pSymbol->Name, sValue.Value.S8); break;
-            case TYPE_ULINT:    log_debug("%s: ULINT: %llu", pSymbol->Name, sValue.Value.U64); break;
-            case TYPE_UDINT:    log_debug("%s: UDINT: %lu", pSymbol->Name, sValue.Value.U32); break;
-            case TYPE_UINT:     log_debug("%s: UINT: %u", pSymbol->Name, sValue.Value.U16); break;
-            case TYPE_USINT:    log_debug("%s: USINT: %u", pSymbol->Name, sValue.Value.U8); break;
-            case TYPE_LWORD:    log_debug("%s: LWORD: %llx", pSymbol->Name, sValue.Value.B64); break;
-            case TYPE_DWORD:    log_debug("%s: DWORD: %08lx", pSymbol->Name, sValue.Value.B32); break;
-            case TYPE_WORD:     log_debug("%s: WORD: %04x", pSymbol->Name, sValue.Value.B16); break;
-            case TYPE_BYTE:     log_debug("%s: BYTE: %02x", pSymbol->Name, sValue.Value.B8); break;
-            case TYPE_BOOL:     log_debug("%s: BOOL: %s", pSymbol->Name, sValue.Value.B1 ? "true" : "false"); break;
-            default:
-                log_debug("%s: ", pSymbol->Name);
-                break;
-        }
-    }
 }
 
 

@@ -87,10 +87,6 @@ This application is equivalent to the following ladder diagram code:
 
 In this ladder diagram code, the output of both `TON` timer function blocks are initially off and their elapsed time output is 0 ms. The output of the second `TON` timer function block is negated and supplied to first `TON` function block, causing this (first) function block to begin increasing the elapsed time. After 500 ms, the output of the first `TON` timer function block will be asserted causing the second `TON` function block to begin increasing its elapsed time. Again, after 500 ms the output of the second `TON` timer function block will be asserted, causing the input to the first `TON` function block to be deasserted, resetting this function block. This in turn will deassert the input to the second `TON` function block, similarly causing this function block to be reset and output to be deasserted. This establishes a periodic cycle of assertion and deassertion that can be used to blink the LED on the Raspberry Pi PiFace Digital I/O board.
 
-The timing of this arrangement of `TON` timer function blocks can be represented as follows:
-
-<p align="center"><img width="50%" src="https://github.com/61131/echidna/blob/master/media/tutorial3.png?raw=true" /></p>
-
 ## Links
 
 -   Image credit: [Contact and Coil - Flasher](http://www.contactandcoil.com/patterns-of-ladder-logic-programming/flasher/)

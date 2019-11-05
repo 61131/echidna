@@ -36,6 +36,7 @@ _test_arithmetic_populate(LL *Parameters, VALUE_TYPE Type) {
         switch(Type) {
             case TYPE_LREAL:
             case TYPE_REAL:
+            case TYPE_TIME:
                 value_assign(&pParameter->Value, Type, dValue);
                 break;
 

@@ -266,6 +266,7 @@ _function_new(const char *Name) {
 static size_t 
 _function_size(ECHIDNA *Context, _FUNCTION_BLOCK *Function) {
     FUNCTION_BLOCK_FIELD *pField;
+    FUNCTION_REGISTER *pFunction;
     size_t uIndex, uSize;
 
     assert(Context != NULL);
@@ -275,7 +276,18 @@ _function_size(ECHIDNA *Context, _FUNCTION_BLOCK *Function) {
     for(uIndex = 0; uIndex < Function->Count; ++uIndex) {
         pField = &Function->Fields[uIndex];
         pField->Offset = uSize;
-        uSize += value_typetosize(pField->Type);
+        switch(pField->Type) {
+            case TYPE_FUNCTION_BLOCK:
+                assert(pField->Meta != NULL);
+                if((pFunction = function_search(&Context->Functions, (const char *) pField->Meta)) == NULL)
+                    return 0;
+                uSize += pFunction->Size;
+                break;
+
+            default:
+                uSize += value_typetosize(pField->Type);
+                break;
+        }
         if((uSize % Context->Align) != 0)
              uSize += (Context->Align - (uSize % Context->Align));
     }

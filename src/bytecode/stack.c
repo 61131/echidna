@@ -33,6 +33,10 @@ _bytecode_stack_compare(VALUE *A, VALUE *B) {
         case TYPE_WORD:         return (A->Value.B16 != B->Value.B16);
         case TYPE_BYTE:         return (A->Value.B8 != B->Value.B8);
         case TYPE_BOOL:         return (A->Value.B1 != B->Value.B1);
+        case TYPE_TIME:         return (fabs(A->Value.Time - B->Value.Time) > FLT_EPSILON);
+        case TYPE_DATE:
+        case TYPE_DT:
+        case TYPE_TOD:          return (A->Value.DateTime != B->Value.DateTime);
         default:
             assert(0);
     }

@@ -15,6 +15,8 @@
 #include <symbol.h>
 #include <value.h>
 
+#include <log.h>
+
 
 int 
 operator_parameter(RUNTIME_CONTEXT *Context) {

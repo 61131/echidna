@@ -108,8 +108,6 @@ int symbol_table_build(ECHIDNA *Context);
 
 void symbol_table_destroy(ECHIDNA *Context);
 
-void symbol_table_dump(ECHIDNA *Context);
-
 void symbol_table_reset(ECHIDNA *Context);
 
 unsigned int symbol_table_size(ECHIDNA *Context);

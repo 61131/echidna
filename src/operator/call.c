@@ -143,7 +143,16 @@ _operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instan
         block instance.
     */
 
+#if 0
+    BLOCK sBlock;
+    block_initialise(&sBlock);
+    block_pointer(&sBlock, pRun->Memory);
+    sBlock.End = symbol_table_size(pContext);
+    block_dump(&sBlock);
+
+#endif
     pInstance = &pRun->Memory[pSymbol->Offset];
+//log_debug("%s: %s [%u]", __func__, pBlock->Name, pSymbol->Offset);
 
     uOrder = 0;
     ll_reset(&Instance->List);
@@ -169,14 +178,14 @@ _operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instan
 
         pField = &pBlock->Fields[uIndex];
         assert(pField != NULL);
-
         if((pField->Type & pParameter->Value.Type) != pParameter->Value.Type)
             return ERROR_PARAMETER_TYPE;
-        if((pField->Type & TYPE_INPUT) == 0)
-            continue;
+        /* if((pField->Type & TYPE_INPUT) == 0)
+            continue; */
 
         pSymbol = _operator_call_read_symbol(pSymbols, pInstance, uIndex);
         pSymbol->Value.Type = pParameter->Value.Type;
+//log_debug("%s: pParameter->Name %s, %08x, pParameter->Value.Length %u, pSymbol->Id %u", __func__, pParameter->Name, pSymbol->Value.Type, pParameter->Value.Length, pSymbol->Id);
         memcpy(&pInstance[pField->Offset], &pParameter->Value.Value.Pointer, pParameter->Value.Length);
     }
 
@@ -194,6 +203,7 @@ _operator_call_read_symbol(SYMBOLS *Symbols, char *Instance, size_t Index) {
 
     uOffset = sizeof(int32_t) * Index;
     memcpy(&nId, &Instance[uOffset], sizeof(int32_t));
+//log_debug("%s: nId %d", __func__, nId);
     assert((unsigned) nId < Symbols->Count);
     return Symbols->Symbol[nId];
 }

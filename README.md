@@ -40,7 +40,7 @@ The echidna compiler and virtual machine run-time can only be built from source.
 ```
 Following a successful build, the echidna binary can be found in the src sub-directory. This can be used to compile and execute any of the supplied IEC 61131-3 language applications that can be found in the examples sub-directory.
 
-## Further Information
+## Links
 
 -   [IEC 61131-3:2013](https://webstore.iec.ch/publication/4552) Programmable controllers - Part 3: Programming languages (Edition 3.0)
 -   [IEC 61131-3:2003](https://webstore.iec.ch/publication/19081) Programmable controllers - Part 3: Programming languages (Edition 2.0)

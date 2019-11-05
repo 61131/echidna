@@ -346,7 +346,13 @@ size_prefix                     [XBWDL]
 <IL>{
 {eol}                           { return EOL; }
 {whitespace_il}
+}
 
+<Duration>{
+{eol}                           {
+    yy_pop_state();
+    return EOL;
+}
 }
 
 <Body,Comment,Configuration,Declaration,Duration>{whitespace}

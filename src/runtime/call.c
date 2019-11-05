@@ -103,6 +103,14 @@ _runtime_value(RUNTIME_CONTEXT *Context, VALUE *Value) {
         case TYPE_BOOL:
             assert(Value->Length == sizeof(Value->Value.B1)); 
             return runtime_read(Context, Value->Length, (char *) &Value->Value.B1);
+        case TYPE_TIME:
+            assert(Value->Length == sizeof(Value->Value.Time));
+            return runtime_read(Context, Value->Length, (char *) &Value->Value.Time);
+        case TYPE_DATE:
+        case TYPE_DT:
+        case TYPE_TOD:
+            assert(Value->Length == sizeof(Value->Value.DateTime));
+            return runtime_read(Context, Value->Length, (char *) &Value->Value.DateTime);
         default:
             log_debug("%s: %08x", __func__, Value->Type);
             assert(0);

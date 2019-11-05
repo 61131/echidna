@@ -22,6 +22,8 @@ typedef struct _FUNCTION_BLOCK_FIELD {
     VALUE_TYPE Type;
 
     size_t Offset;
+
+    void * Meta;
 }
 FUNCTION_BLOCK_FIELD;
 

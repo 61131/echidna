@@ -40,11 +40,11 @@ cast_lreal(VALUE *Value) {
         case TYPE_BYTE:         dVal = (double) Value->Value.B8; break;
         case TYPE_BOOL:         dVal = (double) Value->Value.B1; break;
         case TYPE_TIME:         dVal = (double) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:          
+        case TYPE_DATE:         dVal = (double) Value->Value.DateTime; break;
+        case TYPE_DT:           dVal = (double) Value->Value.DateTime; break;
+        case TYPE_TOD:          dVal = (double) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -98,11 +98,11 @@ cast_real(VALUE *Value) {
         case TYPE_BYTE:         fVal = (float) Value->Value.B8; break;
         case TYPE_BOOL:         fVal = (float) Value->Value.B1; break;
         case TYPE_TIME:         fVal = (float) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         fVal = (float) Value->Value.DateTime; break;
+        case TYPE_DT:           fVal = (float) Value->Value.DateTime; break;
+        case TYPE_TOD:          fVal = (float) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -156,11 +156,11 @@ cast_lint(VALUE *Value) {
         case TYPE_BYTE:         nVal = (int64_t) Value->Value.B8; break;
         case TYPE_BOOL:         nVal = (int64_t) Value->Value.B1; break;
         case TYPE_TIME:         nVal = (int64_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_DT:           nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -214,11 +214,11 @@ cast_dint(VALUE *Value) {
         case TYPE_BYTE:         nVal = (int32_t) Value->Value.B8; break;
         case TYPE_BOOL:         nVal = (int32_t) Value->Value.B1; break;
         case TYPE_TIME:         nVal = (int32_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         nVal = (int32_t) Value->Value.DateTime; break;
+        case TYPE_DT:           nVal = (int32_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          nVal = (int32_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -272,11 +272,11 @@ cast_int(VALUE *Value) {
         case TYPE_BYTE:         nVal = (int16_t) Value->Value.B8; break;
         case TYPE_BOOL:         nVal = (int16_t) Value->Value.B1; break;
         case TYPE_TIME:         nVal = (int16_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         nVal = (int16_t) Value->Value.DateTime; break;
+        case TYPE_DT:           nVal = (int16_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          nVal = (int16_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -330,11 +330,11 @@ cast_sint(VALUE *Value) {
         case TYPE_BYTE:         nVal = (int8_t) Value->Value.B8; break;
         case TYPE_BOOL:         nVal = (int8_t) Value->Value.B1; break;
         case TYPE_TIME:         nVal = (int8_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         nVal = (int8_t) Value->Value.DateTime; break;
+        case TYPE_DT:           nVal = (int8_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          nVal = (int8_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -388,11 +388,11 @@ cast_ulint(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint64_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint64_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint64_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -446,11 +446,11 @@ cast_udint(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint32_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint32_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint32_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -504,11 +504,11 @@ cast_uint(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint16_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint16_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint16_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -562,11 +562,11 @@ cast_usint(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint8_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint8_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint8_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -621,11 +621,11 @@ cast_lword(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint64_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint64_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint64_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint64_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -679,11 +679,11 @@ cast_dword(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint32_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint32_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint32_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint32_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -737,11 +737,11 @@ cast_word(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint16_t) Value->Value.B8; break;
         case TYPE_BOOL:         uVal = (uint16_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint16_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint16_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -795,11 +795,11 @@ cast_byte(VALUE *Value) {
         case TYPE_BYTE:         return 0;
         case TYPE_BOOL:         uVal = (uint8_t) Value->Value.B1; break;
         case TYPE_TIME:         uVal = (uint8_t) Value->Value.Time; break;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_DT:           uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          uVal = (uint8_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -853,11 +853,11 @@ cast_bool(VALUE *Value) {
         case TYPE_BYTE:         uVal = (uint8_t)(Value->Value.B8 != 0); break;
         case TYPE_TIME:         uVal = (uint8_t)(Value->Value.Time != 0.0); break;
         case TYPE_BOOL:         return 0;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         uVal = (uint8_t)(Value->Value.DateTime != 0); break;
+        case TYPE_DT:           uVal = (uint8_t)(Value->Value.DateTime != 0); break;
+        case TYPE_TOD:          uVal = (uint8_t)(Value->Value.DateTime != 0); break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -925,11 +925,11 @@ cast_time(VALUE *Value) {
         case TYPE_BYTE:         fVal = (float) Value->Value.B8; break;
         case TYPE_BOOL:         fVal = (float) Value->Value.B1; break;
         case TYPE_TIME:         return 0;
-        case TYPE_STRING:       /* break; */
-        case TYPE_WSTRING:      /* break; */
-        case TYPE_DATE:         /* break; */
-        case TYPE_DT:           /* break; */
-        case TYPE_TOD:
+        case TYPE_DATE:         fVal = (float) Value->Value.DateTime; break;
+        case TYPE_DT:           fVal = (float) Value->Value.DateTime; break;
+        case TYPE_TOD:          fVal = (float) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
             errno = EINVAL;
             return -1;
 
@@ -953,6 +953,59 @@ cast_time(VALUE *Value) {
 
 int 
 cast_date(VALUE *Value) {
+    uint32_t uType;
+    int64_t nVal;
+
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    nVal = 0;
+    if((uType = Value->Type) == TYPE_DERIVED)
+        uType = Value->Cast;
+
+    uType &= ~ANY_INTERNAL;
+    switch(uType) {
+        case TYPE_LREAL:        nVal = (int64_t) Value->Value.Double; break;
+        case TYPE_REAL:         nVal = (int64_t) Value->Value.Single; break;
+        case TYPE_LINT:         nVal = (int64_t) Value->Value.S64; break;
+        case TYPE_DINT:         nVal = (int64_t) Value->Value.S32; break;
+        case TYPE_INT:          nVal = (int64_t) Value->Value.S16; break;
+        case TYPE_SINT:         nVal = (int64_t) Value->Value.S8; break;
+        case TYPE_ULINT:        nVal = (int64_t) Value->Value.U64; break;
+        case TYPE_UDINT:        nVal = (int64_t) Value->Value.U32; break;
+        case TYPE_UINT:         nVal = (int64_t) Value->Value.U16; break;
+        case TYPE_USINT:        nVal = (int64_t) Value->Value.U8; break;
+        case TYPE_LWORD:        nVal = (int64_t) Value->Value.B64; break;
+        case TYPE_DWORD:        nVal = (int64_t) Value->Value.B32; break;
+        case TYPE_WORD:         nVal = (int64_t) Value->Value.B16; break;
+        case TYPE_BYTE:         nVal = (int64_t) Value->Value.B8; break;
+        case TYPE_BOOL:         nVal = (int64_t) Value->Value.B1; break;
+        case TYPE_TIME:         nVal = (int64_t) Value->Value.Time; break;
+        case TYPE_DATE:         return 0;
+        case TYPE_DT:           nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
+            errno = EINVAL;
+            return -1;
+
+        default:
+            break;
+    }
+
+    if(Value->Type == TYPE_DERIVED) {
+        if(Value->Meta)
+            free(Value->Meta);
+        Value->Meta = NULL;
+    }
+    Value->Value.DateTime = nVal;
+    Value->Maximum.DateTime = 0;
+    Value->Minimum.DateTime = 0;
+    Value->Length = sizeof(Value->Value.DateTime);
+    Value->Type = Value->Cast = TYPE_DATE;
+    return 0;
     errno = EINVAL;
     return -1;
 }
@@ -960,13 +1013,115 @@ cast_date(VALUE *Value) {
 
 int 
 cast_dt(VALUE *Value) {
-    errno = EINVAL;
-    return -1;
+    uint32_t uType;
+    int64_t nVal;
+
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    nVal = 0;
+    if((uType = Value->Type) == TYPE_DERIVED)
+        uType = Value->Cast;
+
+    uType &= ~ANY_INTERNAL;
+    switch(uType) {
+        case TYPE_LREAL:        nVal = (int64_t) Value->Value.Double; break;
+        case TYPE_REAL:         nVal = (int64_t) Value->Value.Single; break;
+        case TYPE_LINT:         nVal = (int64_t) Value->Value.S64; break;
+        case TYPE_DINT:         nVal = (int64_t) Value->Value.S32; break;
+        case TYPE_INT:          nVal = (int64_t) Value->Value.S16; break;
+        case TYPE_SINT:         nVal = (int64_t) Value->Value.S8; break;
+        case TYPE_ULINT:        nVal = (int64_t) Value->Value.U64; break;
+        case TYPE_UDINT:        nVal = (int64_t) Value->Value.U32; break;
+        case TYPE_UINT:         nVal = (int64_t) Value->Value.U16; break;
+        case TYPE_USINT:        nVal = (int64_t) Value->Value.U8; break;
+        case TYPE_LWORD:        nVal = (int64_t) Value->Value.B64; break;
+        case TYPE_DWORD:        nVal = (int64_t) Value->Value.B32; break;
+        case TYPE_WORD:         nVal = (int64_t) Value->Value.B16; break;
+        case TYPE_BYTE:         nVal = (int64_t) Value->Value.B8; break;
+        case TYPE_BOOL:         nVal = (int64_t) Value->Value.B1; break;
+        case TYPE_TIME:         nVal = (int64_t) Value->Value.Time; break;
+        case TYPE_DATE:         nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_DT:           return 0;
+        case TYPE_TOD:          nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
+            errno = EINVAL;
+            return -1;
+
+        default:
+            break;
+    }
+
+    if(Value->Type == TYPE_DERIVED) {
+        if(Value->Meta)
+            free(Value->Meta);
+        Value->Meta = NULL;
+    }
+    Value->Value.DateTime = nVal;
+    Value->Maximum.DateTime = 0;
+    Value->Minimum.DateTime = 0;
+    Value->Length = sizeof(Value->Value.DateTime);
+    Value->Type = Value->Cast = TYPE_DT;
+    return 0;
 }
 
 
 int 
 cast_tod(VALUE *Value) {
-    errno = EINVAL;
-    return -1;
+    uint32_t uType;
+    int64_t nVal;
+
+    if(!Value) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    nVal = 0;
+    if((uType = Value->Type) == TYPE_DERIVED)
+        uType = Value->Cast;
+
+    uType &= ~ANY_INTERNAL;
+    switch(uType) {
+        case TYPE_LREAL:        nVal = (int64_t) Value->Value.Double; break;
+        case TYPE_REAL:         nVal = (int64_t) Value->Value.Single; break;
+        case TYPE_LINT:         nVal = (int64_t) Value->Value.S64; break;
+        case TYPE_DINT:         nVal = (int64_t) Value->Value.S32; break;
+        case TYPE_INT:          nVal = (int64_t) Value->Value.S16; break;
+        case TYPE_SINT:         nVal = (int64_t) Value->Value.S8; break;
+        case TYPE_ULINT:        nVal = (int64_t) Value->Value.U64; break;
+        case TYPE_UDINT:        nVal = (int64_t) Value->Value.U32; break;
+        case TYPE_UINT:         nVal = (int64_t) Value->Value.U16; break;
+        case TYPE_USINT:        nVal = (int64_t) Value->Value.U8; break;
+        case TYPE_LWORD:        nVal = (int64_t) Value->Value.B64; break;
+        case TYPE_DWORD:        nVal = (int64_t) Value->Value.B32; break;
+        case TYPE_WORD:         nVal = (int64_t) Value->Value.B16; break;
+        case TYPE_BYTE:         nVal = (int64_t) Value->Value.B8; break;
+        case TYPE_BOOL:         nVal = (int64_t) Value->Value.B1; break;
+        case TYPE_TIME:         nVal = (int64_t) Value->Value.Time; break;
+        case TYPE_DATE:         nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_DT:           nVal = (int64_t) Value->Value.DateTime; break;
+        case TYPE_TOD:          return 0;
+        case TYPE_STRING:       
+        case TYPE_WSTRING:      
+            errno = EINVAL;
+            return -1;
+
+        default:
+            break;
+    }
+
+    if(Value->Type == TYPE_DERIVED) {
+        if(Value->Meta)
+            free(Value->Meta);
+        Value->Meta = NULL;
+    }
+    Value->Value.DateTime = nVal;
+    Value->Maximum.DateTime = 0;
+    Value->Minimum.DateTime = 0;
+    Value->Length = sizeof(Value->Value.DateTime);
+    Value->Type = Value->Cast = TYPE_TOD;
+    return 0;
 }

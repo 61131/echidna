@@ -87,7 +87,7 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
 
     for(uIndex = 0; uIndex < pBlock->Count; ++uIndex) {
         pField = &pBlock->Fields[uIndex];
-        if((pField->Type & TYPE_INPUT) == 0)
+        if((pField->Type & TYPE_IN_OUT) == 0)
             continue;
 
         snprintf(sName, sizeof(sName), "%s.%s", Symbol->Name, pField->Name);

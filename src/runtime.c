@@ -187,6 +187,10 @@ runtime_execute( RUNTIME *pRun ) {
     block_initialise(&sSymbol);
     block_pointer(&sSymbol, pRun->Memory);
     sSymbol.End = symbol_table_size(pEch);
+    if(pEch->Verbose > 0) {
+        log_debug("Initial symbol table");
+        block_dump(&sSymbol);
+    }
 
     for(pContext = NULL; pRun->Exit == 0;) {
         if(!ev_run(pRun->Loop, EVRUN_NOWAIT))
@@ -288,7 +292,9 @@ runtime_execute( RUNTIME *pRun ) {
 
                     /*
                         The following is required for the round-robin execution of queued byte code 
-                        with equal (or greater) task or contextual priority.
+                        with equal (or greater) task or contextual priority. This is technically wrong 
+                        as no task should interrupt another of equal priority but has been included
+                        to provide a more equitable execution model.
                     */
 
                     if((pRun->Exit != 0) ||
@@ -298,7 +304,7 @@ runtime_execute( RUNTIME *pRun ) {
                     }
                     if((pNext = queue_peek(&pRun->Queue)) != NULL) {
                         if((pNext->Priority >= 0) &&
-                                (pNext->Priority <= pContext->Priority)) {
+                                (pNext->Priority /* < */ <= pContext->Priority)) {
                             if(queue_push(&pRun->Queue, pContext) != 0)
                                 pContext->State = STATE_ERROR;
                             pContext = NULL;
@@ -452,7 +458,7 @@ runtime_start( RUNTIME *pRun, CONFIG *pConfig ) {
         while( ( pConfig = ll_iterate( pStack[ nStack ] ) ) != NULL ) {
             switch( pConfig->Type ) {
                 case TYPE_RESOURCE:
-                    /* log_info( "Starting resource: %s", pConfig->Name ); */
+                    /* log_info("Starting resource: %s", pConfig->Name); */
                     pStack[ ++nStack ] = &pConfig->List;
                     ll_reset( pStack[ nStack ] );
                     continue;
