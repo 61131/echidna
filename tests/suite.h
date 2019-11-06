@@ -47,6 +47,8 @@ extern MunitTest suite_standard_select[];
 
 extern MunitTest suite_standard_string[];
 
+extern MunitTest suite_standard_time[];
+
 extern MunitTest suite_stats[];
 
 extern MunitTest suite_strl[];

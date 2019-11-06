@@ -20,10 +20,9 @@ standard_initialise(ECHIDNA *Context) {
     if(((nResult = echidna_register(Context, "abs", TYPE_FUNCTION, standard_abs)) != 0) ||
             ((nResult = echidna_register(Context, "acos", TYPE_FUNCTION, standard_acos)) != 0) ||
             ((nResult = echidna_register(Context, "add", TYPE_FUNCTION, standard_add)) != 0) ||
-            ((nResult = echidna_register(Context, "add_date_time", TYPE_FUNCTION, standard_add)) != 0) ||
-            ((nResult = echidna_register(Context, "add_dt_time", TYPE_FUNCTION, standard_add)) != 0) ||
-            ((nResult = echidna_register(Context, "add_time", TYPE_FUNCTION, standard_add)) != 0) ||
-            ((nResult = echidna_register(Context, "add_tod_time", TYPE_FUNCTION, standard_add)) != 0) ||
+            ((nResult = echidna_register(Context, "add_dt_time", TYPE_FUNCTION, standard_add_dttime)) != 0) ||
+            ((nResult = echidna_register(Context, "add_time", TYPE_FUNCTION, standard_add_time)) != 0) ||
+            ((nResult = echidna_register(Context, "add_tod_time", TYPE_FUNCTION, standard_add_todtime)) != 0) ||
             ((nResult = echidna_register(Context, "and", TYPE_FUNCTION, standard_and)) != 0) ||
             ((nResult = echidna_register(Context, "any_to_bool", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "any_to_byte", TYPE_FUNCTION, standard_type)) != 0) ||
@@ -159,7 +158,7 @@ standard_initialise(ECHIDNA *Context) {
             ((nResult = echidna_register(Context, "dint_to_usint", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dint_to_word", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "div", TYPE_FUNCTION, standard_div)) != 0) ||
-            ((nResult = echidna_register(Context, "divtime", TYPE_FUNCTION, standard_div)) != 0) ||
+            ((nResult = echidna_register(Context, "divtime", TYPE_FUNCTION, standard_divtime)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_bool", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_byte", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_date", TYPE_FUNCTION, standard_type)) != 0) ||
@@ -307,7 +306,7 @@ standard_initialise(ECHIDNA *Context) {
             ((nResult = echidna_register(Context, "min", TYPE_FUNCTION, standard_min)) != 0) ||
             ((nResult = echidna_register(Context, "mod", TYPE_FUNCTION, standard_mod)) != 0) ||
             ((nResult = echidna_register(Context, "mul", TYPE_FUNCTION, standard_mul)) != 0) ||
-            ((nResult = echidna_register(Context, "multime", TYPE_FUNCTION, standard_mul)) != 0) ||
+            ((nResult = echidna_register(Context, "multime", TYPE_FUNCTION, standard_multime)) != 0) ||
             ((nResult = echidna_register(Context, "mux", TYPE_FUNCTION, standard_mux)) != 0) ||
             ((nResult = echidna_register(Context, "mux_dint_lreal", TYPE_FUNCTION, standard_mux)) != 0) ||
             ((nResult = echidna_register(Context, "mux_dint_real", TYPE_FUNCTION, standard_mux)) != 0) ||
@@ -504,12 +503,12 @@ standard_initialise(ECHIDNA *Context) {
             ((nResult = echidna_register(Context, "string_to_usint", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "string_to_word", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "sub", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_date_date", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_date_time", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_dt_dt", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_dt_time", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_time", TYPE_FUNCTION, standard_sub)) != 0) ||
-            ((nResult = echidna_register(Context, "sub_tod_time", TYPE_FUNCTION, standard_sub)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_date_date", TYPE_FUNCTION, standard_sub_datedate)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_dt_dt", TYPE_FUNCTION, standard_sub_dtdt)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_dt_time", TYPE_FUNCTION, standard_sub_dttime)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_time", TYPE_FUNCTION, standard_sub_time)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_tod_time", TYPE_FUNCTION, standard_sub_todtime)) != 0) ||
+            ((nResult = echidna_register(Context, "sub_tod_tod", TYPE_FUNCTION, standard_sub_todtod)) != 0) ||
             ((nResult = echidna_register(Context, "tan", TYPE_FUNCTION, standard_tan)) != 0) ||
             ((nResult = echidna_register(Context, "time_of_day_to_bool", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "time_of_day_to_byte", TYPE_FUNCTION, standard_type)) != 0) ||

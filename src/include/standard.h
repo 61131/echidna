@@ -9,6 +9,7 @@
 #include <standard/comparison.h>
 #include <standard/numeric.h>
 #include <standard/select.h>
+#include <standard/time.h>
 #include <standard/type.h>
 
 

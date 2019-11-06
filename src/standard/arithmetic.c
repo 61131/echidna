@@ -79,12 +79,6 @@ standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 sValue.Value.Time += sIn.Value.Time;
                 break;
 
-            case TYPE_DATE:
-            case TYPE_DT:
-            case TYPE_TOD:
-                sValue.Value.DateTime += sIn.Value.DateTime;
-                break;
-
             default:
                 return ERROR_PARAMETER_TYPE;
         }
@@ -183,14 +177,6 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 if(sIn.Value.Time == 0.0f)
                     goto error;
                 sValue.Value.Time /= sIn.Value.Time;
-                break;
-
-            case TYPE_DATE:
-            case TYPE_DT:
-            case TYPE_TOD:
-                if(sIn.Value.DateTime == 0)
-                    goto error;
-                sValue.Value.DateTime /= sIn.Value.DateTime;
                 break;
 
             default:
@@ -415,12 +401,6 @@ standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 sValue.Value.Time *= sIn.Value.Time;
                 break;
 
-            case TYPE_DATE:
-            case TYPE_DT:
-            case TYPE_TOD:
-                sValue.Value.DateTime *= sIn.Value.DateTime;
-                break;
-
             default:
                 return ERROR_PARAMETER_TYPE;
         }
@@ -497,12 +477,6 @@ standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
             case TYPE_TIME:
                 sValue.Value.Time -= sIn.Value.Time;
-                break;
-
-            case TYPE_DATE:
-            case TYPE_DT:
-            case TYPE_TOD:
-                sValue.Value.DateTime -= sIn.Value.DateTime;
                 break;
 
             default:

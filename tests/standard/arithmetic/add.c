@@ -48,7 +48,7 @@ test_arithmetic_add(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int16(sResult.Value.S16, ==, 14);
     _test_arithmetic_populate(&sParameters, TYPE_SINT);
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_int8(sResult.Type, ==, TYPE_SINT);
+    munit_assert_int32(sResult.Type, ==, TYPE_SINT);
     munit_assert_double(sResult.Value.S8, ==, 14);
     _test_arithmetic_populate(&sParameters, TYPE_ULINT);
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
@@ -70,18 +70,6 @@ test_arithmetic_add(const MunitParameter Parameters[], void *Fixture) {
     munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
     munit_assert_uint32(sResult.Type, ==, TYPE_TIME);
     munit_assert_float(sResult.Value.Time, ==, 14.0);
-    _test_arithmetic_populate(&sParameters, TYPE_DATE);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_uint32(sResult.Type, ==, TYPE_DATE);
-    munit_assert_float(sResult.Value.DateTime, ==, 14.0);
-    _test_arithmetic_populate(&sParameters, TYPE_DT);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_uint32(sResult.Type, ==, TYPE_DT);
-    munit_assert_float(sResult.Value.DateTime, ==, 14.0);
-    _test_arithmetic_populate(&sParameters, TYPE_TOD);
-    munit_assert_int(standard_add(pContext, NULL, &sParameters, &sResult, NULL), ==, 0);
-    munit_assert_uint32(sResult.Type, ==, TYPE_TOD);
-    munit_assert_float(sResult.Value.DateTime, ==, 14.0);
     ll_destroy(&sParameters);
 
     return MUNIT_OK;

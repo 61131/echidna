@@ -31,6 +31,7 @@ static MunitSuite sSuites[] = {
     { "standard/", suite_standard_rtc, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_select, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "standard/", suite_standard_string, NULL, 1, MUNIT_SUITE_OPTION_NONE },
+    { "standard/", suite_standard_time, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "stats/", suite_stats, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "strl/", suite_strl, NULL, 1, MUNIT_SUITE_OPTION_NONE },
     { "tree/", suite_tree, NULL, 1, MUNIT_SUITE_OPTION_NONE },
