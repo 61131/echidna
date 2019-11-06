@@ -1,0 +1,30 @@
+program test
+var count: uint := 0; end_var
+var input: bool; end_var
+var fb: ton; end_var
+
+add count, 1
+st count
+mod 10
+eq 1
+jmpcn timer
+xor input, TRUE
+st input
+
+timer: cal fb(
+    IN := input,
+    PT := t#250ms
+)
+
+ld count
+eq 30
+retcn
+_exit
+
+end_program
+
+configuration config1
+task task1 (interval := t#50ms, priority := 1);
+program program1 WITH task1: test;
+end_configuration
+
