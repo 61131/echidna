@@ -62,8 +62,9 @@ operand_invert(FRAME *Frame, VALUE *Value) {
             Value->Value.B1 = ( Value->Value.B1 & 1 );
             break;
 
-        case TYPE_REAL:
         case TYPE_LREAL:
+        case TYPE_REAL:
+        case TYPE_TIME:
         default:
             return -1;
     }
