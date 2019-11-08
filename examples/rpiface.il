@@ -1,27 +1,27 @@
-PROGRAM test
-VAR inp, val: BYTE := 1; END_VAR
-VAR res: BOOL; END_VAR
+program test
+var inp, val: byte := 1; end_var
+var res: bool; end_var
 
 piface_read
-ST inp
-EQ 0
-JMPC roll
+st inp
+eq 0
+jmpc roll
 
-LD inp
-AND val
-EQ val
-JMPCN roll
+ld inp
+and val
+eq val
+jmpcn roll
 piface_write inp        (* Mirror inputs if asserted *)
-RET
+ret
 
 roll: piface_write val  (* Otherwise roll outputs *)
 rol val, 1
-ST val
+st val
 
-END_PROGRAM
+end_program
 
-CONFIGURATION config1
-TASK task1 (INTERVAL := t#100ms, PRIORITY := 1);
-PROGRAM program1 WITH task1: test;
-END_CONFIGURATION
+configuration config1
+task task1 (interval := t#100ms, priority := 1);
+program program1 with task1: test;
+end_configuration
 

@@ -352,11 +352,11 @@ _echidna_initialise(size_t Arg, ECHIDNA *Context, ...) {
     ll_initialise(&Context->Config);
     tree_initialise(&Context->POU, block_compare);
     function_initialise(&Context->Functions);
-    parse_initialise(Context, &Context->Parse);
 #if defined(HARDWARE_PIFACE)
     if((nResult = hardware_initialise(Context)) != 0)
         return nResult;
 #endif
+    parse_initialise(Context, &Context->Parse);
 
     nResult = 0;
     if(Arg > 2) {

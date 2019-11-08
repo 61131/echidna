@@ -1,11 +1,12 @@
-PROGRAM test
-VAR val: BYTE := 1; END_VAR
-VAR dir: BOOL := true; END_VAR
+program test
+var val: byte := 1; end_var
+var dir: bool := true; end_var
 
 piface_write val
 
 ld dir
 jmpcn rshift
+
 lshift: shl val, 1
 st val
 eq 128
@@ -18,10 +19,10 @@ eq 1
 s dir
 ret
 
-END_PROGRAM
+end_program
 
-CONFIGURATION config1
-TASK task1 (INTERVAL := t#80ms, PRIORITY := 1);
-PROGRAM program1 WITH task1: test;
-END_CONFIGURATION
+configuration config1
+task task1 (interval := t#80ms, priority := 1);
+program program1 with task1: test;
+end_configuration
 
