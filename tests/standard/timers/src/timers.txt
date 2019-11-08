@@ -1,32 +1,27 @@
 program test
 var count: uint := 0; end_var
 var input: bool; end_var
-var fb: tof; end_var
+var fb: %s; end_var
 
 add count, 1
 st count
 mod 10
 eq 1
 jmpcn timer
-xor input, TRUE
+xor input, true
 st input
-
 timer: cal fb(
-    IN := input,
-    PT := t#250ms
+    in := input,
+    pt := t#250ms
 )
 
-dbg input, fb.q, fb.et
-
-ld count
-eq 30
-retcn
-_exit
+eq count, 30
+_exitc
 
 end_program
 
 configuration config1
 task task1 (interval := t#50ms, priority := 1);
-program program1 WITH task1: test;
+program program1 with task1: test;
 end_configuration
 

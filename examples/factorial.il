@@ -1,43 +1,40 @@
-FUNCTION fact : UDINT
-VAR_INPUT inp: UDINT; END_VAR
-VAR_OUTPUT out: UDINT; END_VAR
-VAR local: UDINT; END_VAR
+function fact: udint
+var_input inp: udint; end_var
+var_output out: udint; end_var
+var local: udint; end_var
 
-LD inp
-GE 1
-JMPC nonzero
-LD 1
-RET
-nonzero: LD inp
-SUB 1
-ST local
+ld inp
+ge 1
+jmpc nonzero
+ld 1
+ret
+nonzero: ld inp
+sub 1
+st local
 fact local
-MUL inp
-ST out
-RET
+mul inp
+st out
+ret
 
-END_FUNCTION
+end_function
 
-
-PROGRAM myprogram
-VAR cycle, result: UDINT := 0; END_VAR
+program test
+var cycle, result: udint := 0; end_var
 
 fact cycle
-ST result
+st result
 dbg cycle, result
 
-LD cycle
-ADD 1
-ST cycle
-LE 10  (* Limit execution to 11 cycles *)
-RETC
+add cycle, 1
+st cycle
+le 10  (* Limit execution to 11 cycles *)
+retc
 _exit
 
-END_PROGRAM
+end_program
 
-
-CONFIGURATION config1
-TASK task1 (INTERVAL := t#50ms, PRIORITY := 1);
-PROGRAM program1 WITH task1: myprogram;
-END_CONFIGURATION
+configuration config1
+task task1 (interval := t#50ms, priority := 1);
+program program1 with task1: test;
+end_configuration
 

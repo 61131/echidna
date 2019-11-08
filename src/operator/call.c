@@ -98,7 +98,11 @@ _operator_call_function(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, VA
         return ERROR_INVALID_FUNCTION;
 
     pFunction = pFunctions->Function[Instance->Id];
-    pUser = (pFunction->Function == runtime_function) ? Context : pFunction->Context;
+    pUser = pFunction->Context;
+    if((pFunction->Function == runtime_exit) ||
+            (pFunction->Function == runtime_function))
+        pUser = Context;
+
     return pFunction->Function(pContext, pFunction->Name, &Instance->List, Result, pUser);
 }
 

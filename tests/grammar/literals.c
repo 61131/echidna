@@ -540,7 +540,8 @@ test_grammar_literals_real(const MunitParameter Parameters[], void *Fixture) {
             pValue = &sValues[nIndex];
             if(!pValue->Source)
                 break;
-            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s; END_TYPE", 
+            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s#%s; END_TYPE", 
+                    sType[nType], 
                     sType[nType], 
                     pValue->Source);
             value_initialise(&sValue);

@@ -29,8 +29,6 @@ static int _function_debug( void *pContext, const char *pName, LL *pParameters, 
 
 static void _function_destroy(void *Arg);
 
-static int _function_exit( void *pContext, const char *pName, LL *pParameters, VALUE *pResult );
-
 static FUNCTION_REGISTER * _function_new(const char *Name);
 
 static size_t _function_size(ECHIDNA *Context, _FUNCTION_BLOCK *Function);
@@ -224,26 +222,6 @@ _function_destroy(void *Arg) {
 }
 
 
-static int
-_function_exit(void *Context, const char *Name, LL *Parameters, VALUE *Result) {
-    ECHIDNA *pContext;
-
-    /*
-        This function (_exit) has been included primarily for development and testing 
-        purposes and can be used from within IEC 61131-3 code to exit the virtual 
-        machine run-time.
-    */
-
-    pContext = ( ECHIDNA * ) Context;
-    assert(pContext != NULL);
-
-    log_notice("Exit function called, stopping runtime");
-    runtime_stop(pContext->VM);
-
-    return 0;
-}
-
-
 static FUNCTION_REGISTER *
 _function_new(const char *Name) {
     FUNCTION_REGISTER *pFunction;
@@ -405,8 +383,11 @@ function_initialise(FUNCTIONS *Context) {
     Context->Lock = 0;
     memset(Context->Signature, 0, sizeof(Context->Signature));
 
+    function_register(Context, "_exit", TYPE_FUNCTION, runtime_exit);
+    function_register(Context, "_exitc", TYPE_FUNCTION, runtime_exit);
+    function_register(Context, "_exitcn", TYPE_FUNCTION, runtime_exit);
     function_register(Context, "dbg", TYPE_FUNCTION, _function_debug);
-    function_register(Context, "_exit", TYPE_FUNCTION, _function_exit, pContext);
+
     standard_initialise(pContext);
 }
 

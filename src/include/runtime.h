@@ -21,6 +21,7 @@
 #include <runtime/call.h>
 #include <runtime/context.h>
 #include <runtime/error.h>
+#include <runtime/exit.h>
 #include <runtime/function.h>
 #include <runtime/parameter.h>
 #include <runtime/task.h>

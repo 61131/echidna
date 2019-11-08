@@ -51,6 +51,8 @@ extern MunitTest suite_standard_time[];
 
 extern MunitTest suite_standard_timers[];
 
+extern MunitTest suite_standard_type[];
+
 extern MunitTest suite_stats[];
 
 extern MunitTest suite_strl[];

@@ -11,7 +11,7 @@ CFLAGS:= -Wall -g -std=c99 -fPIC
 DEFINES+= $(foreach VAR,GIT_VERSION TIMESTAMP,-D$(VAR)="$($(VAR))") -D_POSIX_C_SOURCE=200809L
 INCLUDES:= -I.. -I../include
 
-OBJS:= bytecode.o call.o context.o error.o function.o parameter.o task.o
+OBJS:= bytecode.o call.o context.o error.o exit.o function.o parameter.o task.o
 
 all: clean $(OBJS)
 

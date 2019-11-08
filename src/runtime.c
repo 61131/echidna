@@ -272,6 +272,7 @@ runtime_execute( RUNTIME *pRun ) {
                         pContext->Stats.LatencyEnd = 0.0;
                         if( pContext->Stats.Execution > pContext->Stats.Maximum )
                             pContext->Stats.Maximum = pContext->Stats.Execution;
+                        runtime_task_interval(pRun, pContext);
 
                         callback_execute(pEch, CALLBACK_CYCLE_FINISH, pContext);
 
