@@ -92,12 +92,12 @@ standard_initialise(ECHIDNA *Context) {
             ((nResult = echidna_register(Context, "byte_to_usint", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "byte_to_word", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "concat", TYPE_FUNCTION, standard_concat)) != 0) ||
+            ((nResult = echidna_register(Context, "concat_date_tod", TYPE_FUNCTION, standard_concat_datetod)) != 0) ||
             ((nResult = echidna_register(Context, "cos", TYPE_FUNCTION, standard_cos)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_bool", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_byte", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_date", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_dint", TYPE_FUNCTION, standard_type)) != 0) ||
-            ((nResult = echidna_register(Context, "date_and_time_to_dt", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_dword", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_int", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "date_and_time_to_lint", TYPE_FUNCTION, standard_type)) != 0) ||
@@ -162,7 +162,6 @@ standard_initialise(ECHIDNA *Context) {
             ((nResult = echidna_register(Context, "dt_to_bool", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_byte", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_date", TYPE_FUNCTION, standard_type)) != 0) ||
-            ((nResult = echidna_register(Context, "dt_to_date_and_time", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_dint", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_dword", TYPE_FUNCTION, standard_type)) != 0) ||
             ((nResult = echidna_register(Context, "dt_to_int", TYPE_FUNCTION, standard_type)) != 0) ||

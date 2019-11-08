@@ -14,6 +14,8 @@ MunitResult test_time_add_time(const MunitParameter Parameters[], void *Fixture)
 
 MunitResult test_time_add_todtime(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_time_concat_datetod(const MunitParameter Parameters[], void *Fixture);
+
 MunitResult test_time_divtime(const MunitParameter Parameters[], void *Fixture);
 
 MunitResult test_time_multime(const MunitParameter Parameters[], void *Fixture);

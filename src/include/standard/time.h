@@ -13,6 +13,8 @@ int standard_add_time(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE 
 
 int standard_add_todtime(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User);
 
+int standard_concat_datetod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User);
+
 int standard_divtime(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User);
 
 int standard_multime(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User);

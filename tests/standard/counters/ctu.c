@@ -253,7 +253,7 @@ test_counters_ctutype(const MunitParameter Parameters[], void *Fixture) {
     }
     while(_Type[++nIndex] != TYPE_NONE);
 
-    //  TODO: Add CTU_* tests with invalid PV parameter - Need error callback handling
+    //  TODO: Add CTU_* tests with invalid PV parameter - Need error callback handler
 
     return MUNIT_OK;
 }

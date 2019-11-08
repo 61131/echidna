@@ -1,6 +1,9 @@
+#define _DEFAULT_SOURCE         //  Required for timegm since glibc 2.19
+
 #include <strings.h>
 #include <float.h>
 #include <math.h>
+#include <time.h>
 #include <assert.h>
 
 #include <echidna.h>
@@ -58,6 +61,7 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
                 if(Parameters->Size != 2)
                     return ERROR_PARAMETER_COUNT;
                 sValue.Value.DateTime -= sIn.Value.DateTime;
+                value_cast(&sValue, TYPE_TIME);
                 goto finish;
 
             case TYPE_DT:
@@ -130,6 +134,49 @@ standard_add_time(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Res
 int
 standard_add_todtime(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     return _standard_time(OP_ADD, TYPE_TOD, TYPE_TIME, Parameters, Result);
+}
+
+
+int
+standard_concat_datetod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
+    PARAMETER *pParameter;
+    struct tm sResult, sTime;
+    int nIndex;
+
+    Result->Type = TYPE_NONE;
+    memset(&sResult, 0, sizeof(sResult));
+    nIndex = 0;
+
+    if(Parameters->Size != 2)
+        return ERROR_PARAMETER_COUNT;
+    ll_reset(Parameters);
+    while((pParameter = ll_iterate(Parameters)) != NULL) {
+        switch(nIndex++) {
+            case 0:
+                if(pParameter->Value.Type != TYPE_DATE)
+                    return ERROR_PARAMETER_TYPE;
+                gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
+                sResult.tm_year = sTime.tm_year;
+                sResult.tm_mon = sTime.tm_mon;
+                sResult.tm_mday = sTime.tm_mday;
+                break;
+
+            case 1:
+                if(pParameter->Value.Type != TYPE_TOD)
+                    return ERROR_PARAMETER_TYPE;
+                gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
+                sResult.tm_hour = sTime.tm_hour;
+                sResult.tm_min = sTime.tm_min;
+                sResult.tm_sec = sTime.tm_sec;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    value_assign(Result, TYPE_DT, timegm(&sResult));
+    return 0;
 }
 
 
