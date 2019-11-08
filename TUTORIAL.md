@@ -46,6 +46,8 @@ This code can be written in a text editor and then executed in the echidna virtu
 ```
 This blinking of the LED is based upon the toggling of the first bit of the byte written to the board hardware on every cycle of task execution. 
 
+<p align="center"><img width="50%" src="https://github.com/61131/echidna/blob/master/media/tutorial.gif?raw=true" /></p>
+
 One limitation of this example however is that it ties the update of I/O state to the cycle time of interval task. This may be an issue if there are other actions which should be performed on each cycle of execution. This could be addressed by either introducing a second task to perform these other actions or updating the example code to offer a more robust solution.
 
 The following example IEC 61131-3 language application uses a pair of `TON` function blocks to toggle the LED on the Raspberry Pi PiFace Digital I/O board independent of the task interval time.
@@ -83,7 +85,7 @@ This example code allows task execution to be performed every 50 milliseconds wh
 
 This application is equivalent to the following ladder diagram code:
 
-<p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/tutorial2.png?raw=true" /></p>
+<p align="center"><img width="40%" src="https://github.com/61131/echidna/blob/master/media/tutorial.png?raw=true" /></p>
 
 In this ladder diagram code, the output of both `TON` timer function blocks are initially off and their elapsed time output is 0 ms. The output of the second `TON` timer function block is negated and supplied to first `TON` function block, causing this (first) function block to begin increasing the elapsed time. After 500 ms, the output of the first `TON` timer function block will be asserted causing the second `TON` function block to begin increasing its elapsed time. Again, after 500 ms the output of the second `TON` timer function block will be asserted, causing the input to the first `TON` function block to be deasserted, resetting this function block. This in turn will deassert the input to the second `TON` function block, similarly causing this function block to be reset and output to be deasserted. This establishes a periodic cycle of assertion and deassertion that can be used to blink the LED on the Raspberry Pi PiFace Digital I/O board.
 
