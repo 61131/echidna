@@ -16,6 +16,7 @@ MunitTest suite_grammar[] = {
     { "literals/time", test_grammar_literals_time, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
     { "modulus", test_grammar_modulus, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
     { "subrange", test_grammar_subrange, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
+    { "type", test_grammar_type, suite_setup, suite_teardown, MUNIT_TEST_OPTION_NONE, NULL },
 
     { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

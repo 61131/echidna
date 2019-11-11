@@ -27,5 +27,7 @@ MunitResult test_grammar_modulus(const MunitParameter Parameters[], void *Fixtur
 
 MunitResult test_grammar_subrange(const MunitParameter Parameters[], void *Fixture);
 
+MunitResult test_grammar_type(const MunitParameter Parameters[], void *Fixture);
+
 
 #endif  //  _TESTS_H

@@ -236,39 +236,46 @@ test_grammar_literals_datetime(const MunitParameter Parameters[], void *Fixture)
 
     //  TYPE_DATE
 
-    for(nIndex = 0;; ++nIndex) {
-        pValue = &sDate[nIndex];
-        if(!pValue->Source)
-            break;
-        snprintf(sLine, sizeof(sLine), "TYPE TEST: DATE := %s; END_TYPE", pValue->Source);
-        fprintf(stderr, "%s\n", sLine);
-        nResult = test_parse(pContext, sLine);
-        munit_assert_int(nResult, ==, pValue->Result);
-        if(nResult != 0)
-            continue;
+    char * pDate[] = {
+        "DATE",
+        "D",
+    };
 
-        munit_assert_not_null(pParse = &pContext->Parse);
-        munit_assert_not_null(pList = &pParse->Tokens);
-        munit_assert_size(pList->List.Size, ==, 1);
-        munit_assert_not_null(pElement = pList->List.Head);
+    for(nPrefix = 0; nPrefix < 2; ++nPrefix) {
+        for(nIndex = 0;; ++nIndex) {
+            pValue = &sDate[nIndex];
+            if(!pValue->Source)
+                break;
+            snprintf(sLine, sizeof(sLine), "TYPE TEST: DATE := %s#%s; END_TYPE", pDate[nPrefix], pValue->Source);
+            fprintf(stderr, "%s\n", sLine);
+            nResult = test_parse(pContext, sLine);
+            munit_assert_int(nResult, ==, pValue->Result);
+            if(nResult != 0)
+                continue;
 
-        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
-        munit_assert_int(pToken->Id, ==, TYPE);
-        munit_assert_int(pToken->Type, ==, TYPE_LIST);
-        pList = (TOKEN_LIST *) pToken;
-        munit_assert_size(pList->List.Size, ==, 1);
-        munit_assert_not_null(pElement = pList->List.Head);
+            munit_assert_not_null(pParse = &pContext->Parse);
+            munit_assert_not_null(pList = &pParse->Tokens);
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
 
-        munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
-        munit_assert_int(pToken->Id, ==, TYPE);
-        munit_assert_not_null(pToken->Name);
-        munit_assert_string_equal(pToken->Name, "TEST");
-        munit_assert_uint32(pToken->Value.Type, ==, TYPE_DATE);
-        munit_assert_uint32(pToken->Value.Cast, ==, TYPE_DATE);
-        munit_assert_uint64((uint64_t) pToken->Value.Value.DateTime, ==, pValue->Value.Integer);
-        munit_assert_null(pElement->Next);
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_int(pToken->Type, ==, TYPE_LIST);
+            pList = (TOKEN_LIST *) pToken;
+            munit_assert_size(pList->List.Size, ==, 1);
+            munit_assert_not_null(pElement = pList->List.Head);
 
-        parse_reset(pContext, pParse);
+            munit_assert_not_null(pToken = (TOKEN *) pElement->Data);
+            munit_assert_int(pToken->Id, ==, TYPE);
+            munit_assert_not_null(pToken->Name);
+            munit_assert_string_equal(pToken->Name, "TEST");
+            munit_assert_uint32(pToken->Value.Type, ==, TYPE_DATE);
+            munit_assert_uint32(pToken->Value.Cast, ==, TYPE_DATE);
+            munit_assert_uint64((uint64_t) pToken->Value.Value.DateTime, ==, pValue->Value.Integer);
+            munit_assert_null(pElement->Next);
+
+            parse_reset(pContext, pParse);
+        }
     }
 
     //  TYPE_TOD
@@ -283,7 +290,7 @@ test_grammar_literals_datetime(const MunitParameter Parameters[], void *Fixture)
             pValue = &sTime[nIndex];
             if(!pValue->Source)
                 break;
-            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s; END_TYPE", pTOD[nPrefix], pValue->Source);
+            snprintf(sLine, sizeof(sLine), "TYPE TEST: %s := %s#%s; END_TYPE", pTOD[nPrefix], pTOD[nPrefix], pValue->Source);
             fprintf(stderr, "%s\n", sLine);
             nResult = test_parse(pContext, sLine);
             munit_assert_int(nResult, ==, pValue->Result);

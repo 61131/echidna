@@ -1320,10 +1320,7 @@ daytime: integer ':' integer ':' integer {
             $$ = pToken;
         };
 
-date: DATE '#' date_literal { 
-            $$ = $date_literal; 
-        }
-    | _d_sharp date_literal { 
+date: _d_sharp date_literal { 
             $$ = $date_literal; 
         }
     | date_literal;

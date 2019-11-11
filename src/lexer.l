@@ -566,6 +566,11 @@ NE                              {
 
 <Body,Configuration,Declaration,IL>{
 
+D#                              |
+DATE#                           {
+    return _d_sharp;
+}
+
 T#                              |
 TIME#                           {
     yy_push_state(Duration);

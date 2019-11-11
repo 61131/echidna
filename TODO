@@ -6,10 +6,11 @@
 - src/grammar.y: Review grammar to ensure all tokens are freed
 - src/bytecode.c: Add support for negated output from functions
 - src/standard.c: Add support for character string functions
-- src/standard.c: Add support for time functions
 - src: Determine method for system configuration beyond command line invocation?
 - src: Simplify where possible and reduce dependency on dynamically allocated memory
+- src: Fix function block instances within function blocks
 - src: Add support for loading function block definitions from hexadecimal file
 - src: Add support for function block signature validation
 - src: Add Modbus server/client functionality
+- src: Add DNP3 slave functionality
 - src: Add MQTT client functionality
