@@ -1006,8 +1006,6 @@ cast_date(VALUE *Value) {
     Value->Length = sizeof(Value->Value.DateTime);
     Value->Type = Value->Cast = TYPE_DATE;
     return 0;
-    errno = EINVAL;
-    return -1;
 }
 
 

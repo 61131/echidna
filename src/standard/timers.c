@@ -73,7 +73,6 @@ _timers_ton(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void *U
         return nResult;
 
     for(dTime = echidna_time(Context);;) {
-        dElapsed = 0.0;
         if(sFields[FIELD_IN].Value.B1) {
             if(!sFields[FIELD_INIT].Value.B1) {
                 value_assign(&sFields[FIELD_START], TYPE_LREAL, dTime);

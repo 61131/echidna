@@ -16,18 +16,14 @@ int
 standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
-    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
-    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if(uGeneral == 0) {
-            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0) 
-                return ERROR_PARAMETER_TYPE;
-        }
+        if((pParameter->Value.Type & ANY_MAGNITUDE) == 0) 
+            return ERROR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -94,18 +90,14 @@ int
 standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
-    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
-    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if(uGeneral == 0) {
-            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-                return ERROR_PARAMETER_TYPE;
-        }
+        if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+            return ERROR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -338,18 +330,14 @@ int
 standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
-    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
-    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if(uGeneral == 0) {
-            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-                return ERROR_PARAMETER_TYPE;
-        }
+        if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+            return ERROR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -416,18 +404,14 @@ int
 standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User) {
     PARAMETER *pParameter;
     VALUE sIn, sValue;
-    uint8_t uGeneral;
 
     Result->Type = TYPE_NONE;
     value_initialise(&sValue);
-    uGeneral = 0;
 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
-        if(uGeneral == 0) {
-            if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-                return ERROR_PARAMETER_TYPE;
-        }
+        if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
+            return ERROR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;

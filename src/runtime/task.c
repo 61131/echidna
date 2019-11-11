@@ -13,7 +13,6 @@ void
 runtime_task_callback(struct ev_loop *Loop, ev_timer *Timer, int Events) {
     RUNTIME *pRun;
     RUNTIME_CONTEXT *pContext;
-    int nResult;
 
     pContext = (RUNTIME_CONTEXT *) Timer;
     assert(pContext != NULL);
@@ -39,7 +38,7 @@ runtime_task_callback(struct ev_loop *Loop, ev_timer *Timer, int Events) {
             (runtime_task_single(pRun, pContext) > 0)) {        
         ++pContext->Stats.Cycle;
         pContext->Stats.LatencyStart = ev_time();
-        if((nResult = queue_push(&pRun->Queue, pContext)) != 0)
+        if(queue_push(&pRun->Queue, pContext) != 0)
             pContext->State = STATE_ERROR;
     }
 }

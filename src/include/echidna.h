@@ -14,6 +14,8 @@
 
 #define echidna_callback(...)   _echidna_callback(_NARG(__VA_ARGS__), __VA_ARGS__)
 
+#define echidna_config(...)     _echidna_config(_NARG(__VA_ARGS__), __VA_ARGS__)
+
 #define echidna_initialise(...) _echidna_initialise(_NARG(__VA_ARGS__), __VA_ARGS__)
 
 #define echidna_register(...)   _echidna_register(_NARG(__VA_ARGS__), __VA_ARGS__)

@@ -14,7 +14,7 @@ TIMESTAMP := $(shell date +'%Y%m%d')
 CFLAGS := -Wall -g -std=c99 -fPIC
 DEFINES += $(foreach VAR,GIT_VERSION TIMESTAMP,-D$(VAR)="$($(VAR))") -D_POSIX_C_SOURCE=200809L
 INCLUDES := -I. -Iinclude
-LIBS := $(foreach VAR,ev jansson m protobuf-c pthread,-l$(VAR))
+LIBS := $(foreach VAR,config ev jansson m protobuf-c pthread,-l$(VAR))
 
 TARGET := echidna
 LIBRARY := libechidna.a

@@ -158,7 +158,6 @@ _config_add_task(CONFIG *Resource, TOKEN *Token) {
     char sName[LINE_MAX];
     int nResult;
 
-    pList = (TOKEN_LIST *) Token;
     assert(Resource != NULL);
     pConfig = (CONFIG *) Resource->Parent;
     assert(pConfig != NULL);

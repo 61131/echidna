@@ -23,11 +23,12 @@ The following shows an echidna application running on a Raspberry Pi 1 Model B w
 ## Dependencies
 
 -   [libev](https://github.com/enki/libev) - High-performance event loop modelled after libevent
+-   [libconfig](https://github.com/hyperrealm/libconfig) - C/C++ library for processing configuration files
 -   [protobuf-c](https://github.com/protobuf-c/protobuf-c) - Protocol Buffers implementation in C
 -   [GNU bison](https://www.gnu.org/software/bison/) - General purpose parser-generator (build dependency)
 -   [GNU flex](https://github.com/westes/flex) - Fast lexical analyser generator (build dependency)
 -   [µnit](https://github.com/nemequ/munit/) - C unit testing framework (test dependency)
--   [gcovr](https://github.com/gcovr/gcovr) - Generate code coverage reports with gcc/gcov (test coverage)
+-   [gcovr](https://github.com/gcovr/gcovr) - Generate code coverage reports with gcc/gcov (test dependency)
 
 ## Installation
 
