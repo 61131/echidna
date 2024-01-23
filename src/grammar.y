@@ -14,8 +14,6 @@
 #include <echidna.h>
 #include <lexer.h>
 
-#define YYPRINT(File, Type, Value)
-
 _FUNCTION_BLOCK * yyfunction_create(const char *Name, TOKEN_LIST *Parameters);
 
 void yyfunction_destroy(void *Arg);
@@ -52,7 +50,7 @@ void yyrestart(FILE *File);
 
 const char * yytokenname(int Id);
 
-int yystrtoid(const char *Str);
+/* int yystrtoid(const char *Str); */
 
 extern FILE *yyin;
 
@@ -5588,8 +5586,8 @@ il_simple_operation: il_simple_operator {
                 switch($il_operand_list->List.Size) {
                     case 1:
                         token_list_reset($il_operand_list);
-                        if(((pToken = token_list_iterate($il_operand_list)) == NULL) ||
-                                ((nId = yystrtoid($_il_expr_function->Token.Name)) < 0)) {
+                        if(((pToken = token_list_iterate($il_operand_list)) == NULL) /* ||
+                                ((nId = yystrtoid($_il_expr_function->Token.Name)) < 0) */) {
                             log_critical("Internal error [%s:%u]", __FILE__, __LINE__);
                             YYABORT;
                         }
@@ -6398,6 +6396,7 @@ void
 yyerror(__attribute__((unused)) ECHIDNA *Context, __attribute__((unused)) const char *Str) {
 }
 
+#if 0
 
 int
 yystrtoid(const char *Str) {
@@ -6411,6 +6410,7 @@ yystrtoid(const char *Str) {
     return -1;
 }
 
+#endif
 
 const char *
 yytokenname(int Id) {
