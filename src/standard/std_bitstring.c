@@ -1,6 +1,8 @@
 #include <string.h>
 #ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
 #endif
 
 #include <cast.h>
@@ -144,7 +146,7 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
 static int
 _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
     PARAMETER *pParameter;
-    VALUE sCount, sValue;
+    VALUE sCount = { 0 }, sValue = { 0 };
     size_t uParameter;
     int nResult;
 

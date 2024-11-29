@@ -198,7 +198,7 @@ _runtime_debug(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
         case BYTECODE_R1:
         case BYTECODE_S:
         case BYTECODE_S1:
-            if(pValue->Type == TYPE_FUNCTION_BLOCK)
+            if((pValue)&&(pValue->Type == TYPE_FUNCTION_BLOCK))
                 break;
             /* break; */
         case BYTECODE_LD:

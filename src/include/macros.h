@@ -78,7 +78,7 @@
 */
 
 #define container_of(ptr, type, member) \
-        ((type *)((char *)(ptr) - (unsigned long)(&((type *)0)->member)))
+        ((type *)((char *)(ptr) - (uintptr_t)(&((type *)0)->member)))
 
 
 #endif  //  _MACROS_H

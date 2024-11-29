@@ -1,5 +1,7 @@
 #ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
 #endif
 #include <float.h>
 #include <math.h>

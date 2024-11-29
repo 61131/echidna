@@ -178,7 +178,7 @@ _echidna_destroy_configuration(void *Arg) {
 
 static int
 _echidna_open_directory(ECHIDNA *Context, char *Path) {
-    struct dirent **pEntry;
+    struct dirent **pEntry = NULL;
     struct stat sInfo;
     char sPath[PATH_MAX];
     int nCount, nIndex, nResult;

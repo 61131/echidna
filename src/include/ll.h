@@ -1,11 +1,7 @@
 #ifndef _LL_H
 #define _LL_H
 
-#ifdef _MSC_VER
 #include <stdlib.h>
-#else
-#include <pthread.h>
-#endif
 #include <macros.h>
 
 
@@ -49,11 +45,7 @@ typedef struct _LL {
     size_t Size;
     
     uint8_t Alloc;
-#ifdef _MSC_VER
     void* Lock;
-#else
-    pthread_rwlock_t Lock;
-#endif
 }
 LL;
 

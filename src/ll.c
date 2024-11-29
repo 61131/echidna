@@ -1,12 +1,10 @@
-#ifdef _MSC_VER
-#include <Windows.h>
-#endif
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
 
 #include <ll.h>
 
+#include "lock.h"
 
 static LLE * _ll_new_element(LL *List);
 
@@ -45,28 +43,21 @@ _ll_copy(size_t Arg, LL *List, ...) {
                 (pList->Head == NULL))
             continue;
 
-#ifdef _MSC_VER
-        EnterCriticalSection(pList->Lock);
-#else
-        if((nResult = pthread_rwlock_rdlock(&pList->Lock)) != 0)
+        if((nResult = lock_rd(pList->Lock)) != 0)
             goto error;
-#endif
+
         for(pData = ll_iterate_first(&sIter, pList);
                 pData;
                 pData = ll_iterate_next(&sIter))
             ll_insert(List, pData);
 
-#ifdef _MSC_VER
-        LeaveCriticalSection(pList->Lock);
-#else
-        pthread_rwlock_unlock(&pList->Lock);
-#endif
+
+        lock_unlock(pList->Lock);
     }
     va_end(sArg);
     nResult = 0;
-#ifndef _MSC_VER
+
 error:
-#endif
     return nResult;
 }
 
@@ -78,9 +69,7 @@ _ll_delete(size_t Arg, LLE *Element, ...) {
     LLE *pNext, *pPrevious;
     va_list sArg;
     void **pValue;
-#ifndef _MSC_VER
     int nResult;
-#endif
 
     assert(Element != NULL);
     assert(Element->List != NULL);
@@ -94,13 +83,10 @@ _ll_delete(size_t Arg, LLE *Element, ...) {
         pValue = NULL;
 
     pList = Element->List;
-#ifdef _MSC_VER
-    EnterCriticalSection(pList->Lock);
-#else
-    if(((nResult = pthread_rwlock_wrlock(&pList->Lock)) != 0) &&
-            (nResult != EDEADLK))
+
+    if((nResult = lock_wr(pList->Lock)) != 0)
         return;
-#endif
+
     pDestroy = pList->Destroy;
 
     pNext = Element->Next;
@@ -116,11 +102,8 @@ _ll_delete(size_t Arg, LLE *Element, ...) {
     assert(pList->Size > 0);
     --pList->Size;
 
-#ifdef _MSC_VER
-    LeaveCriticalSection(pList->Lock);
-#else
-    pthread_rwlock_unlock(&pList->Lock);
-#endif
+    lock_unlock(pList->Lock);
+
     if(pValue != NULL)
         *pValue = Element->Data;
     else if(pDestroy != NULL) 
@@ -135,9 +118,7 @@ _ll_destroy(size_t Arg, LL *List, ...) {
     LL_DESTROY pDestroy;
     LLE *pElement, *pNext;
     va_list sArg;
-#ifndef _MSC_VER
     int nResult;
-#endif
 
     pDestroy = List->Destroy;
     if(Arg > 1) {
@@ -146,15 +127,9 @@ _ll_destroy(size_t Arg, LL *List, ...) {
         va_end(sArg);
     }
 
-#ifdef _MSC_VER
-    if (List->Lock)
-    {
-      EnterCriticalSection(List->Lock);
-#else
-    if (((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-      (nResult != EDEADLK))
+    if ((nResult = lock_wr(List->Lock)) != 0)
       return;
-#endif
+
     for (pElement = List->Head; pElement; pElement = pNext) {
       pNext = pElement->Next;
       if (pDestroy) {
@@ -164,16 +139,9 @@ _ll_destroy(size_t Arg, LL *List, ...) {
     }
     List->Head = List->Tail = List->Item = NULL;
     List->Size = 0;
-#ifdef _MSC_VER
-    LeaveCriticalSection(List->Lock);
-    DeleteCriticalSection(List->Lock);
-    free(List->Lock);
+    lock_unlock(List->Lock);
+    lock_exit(List->Lock);
     List->Lock = NULL;
-    }
-#else
-    pthread_rwlock_unlock(&List->Lock);
-    pthread_rwlock_destroy(&List->Lock);
-#endif
     if(List->Alloc) 
         free(List);
 }
@@ -182,25 +150,16 @@ _ll_destroy(size_t Arg, LL *List, ...) {
 int
 _ll_initialise(size_t Arg, LL *List, ...) {
     va_list sArg;
-#ifndef _MSC_VER
-    int nResult;
-#endif
 
     List->Head = List->Tail = NULL;
     List->Item = NULL;
     List->Size = 0;
     List->Alloc = 0;
-#ifdef _MSC_VER
-    List->Lock = malloc(sizeof(CRITICAL_SECTION));
+
+    List->Lock = lock_init();
     if(!List->Lock)
-    {
-        return 1;
-    }
-    InitializeCriticalSection(List->Lock);
-#else
-    if((nResult = pthread_rwlock_init(&List->Lock, NULL)) != 0)
-        return nResult;
-#endif
+        return ENOMEM;
+
     if(Arg > 1) {
         va_start(sArg, List);
         List->Destroy = va_arg(sArg, LL_DESTROY);
@@ -221,25 +180,18 @@ _ll_merge(size_t Arg, LL *List, ...) {
         return -1;
     }
 
-#ifdef _MSC_VER
-    EnterCriticalSection(List->Lock);
-#else
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK))
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
-#endif
+
     va_start(sArg, List);
     while(Arg-- > 1) {
         if((pList = (LL *) va_arg(sArg, LL *)) == NULL)
             continue;
 
-#ifdef _MSC_VER
-        EnterCriticalSection(List->Lock);
-#else
-        if(((nResult = pthread_rwlock_wrlock(&pList->Lock)) != 0) &&
-                (nResult != EDEADLK))
+
+        if((nResult = lock_wr(pList->Lock)) != 0)
             goto error;
-#endif
+
         if(List->Head == NULL) {
             List->Head = pList->Head;
             List->Tail = pList->Tail;
@@ -259,22 +211,17 @@ _ll_merge(size_t Arg, LL *List, ...) {
 
         pList->Head = pList->Tail = pList->Item = NULL;
         pList->Size = 0;
-#ifdef _MSC_VER
-        LeaveCriticalSection(List->Lock);
-#else
-        pthread_rwlock_unlock(&pList->Lock);
-#endif
+
+        lock_unlock(pList->Lock);
+
         ll_destroy(pList);
     }
     va_end(sArg);
     nResult = 0;
 
-#ifdef _MSC_VER
-    LeaveCriticalSection(List->Lock);
-#else
 error:
-    pthread_rwlock_unlock(&List->Lock);
-#endif
+    lock_unlock(List->Lock);
+
     return nResult;
 }
 
@@ -290,13 +237,9 @@ ll_insert_head(LL *List, void *Data) {
     LLE *pElement;
     int nResult;
 
-#ifdef _MSC_VER
-    EnterCriticalSection(List->Lock);
-#else
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK)) 
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
-#endif   
+
     if((pElement = _ll_new_element(List)) == NULL) {
         nResult = -1;
         goto error;
@@ -316,11 +259,8 @@ ll_insert_head(LL *List, void *Data) {
     nResult = 0;
 
 error:
-#ifdef _MSC_VER
-    LeaveCriticalSection(List->Lock);
-#else
-    pthread_rwlock_unlock(&List->Lock);
-#endif
+    lock_unlock(List->Lock);
+
     return nResult;
 }
 
@@ -330,13 +270,9 @@ ll_insert_tail(LL *List, void *Data) {
     LLE *pElement;
     int nResult;
 
-#ifdef _MSC_VER
-    EnterCriticalSection(List->Lock);
-#else
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK)) 
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
-#endif   
+
     if((pElement = _ll_new_element(List)) == NULL) {
         nResult = -1;
         goto error;
@@ -356,11 +292,7 @@ ll_insert_tail(LL *List, void *Data) {
     nResult = 0;
 
 error:
-#ifdef _MSC_VER
-    LeaveCriticalSection(List->Lock);
-#else
-    pthread_rwlock_unlock(&List->Lock);
-#endif
+    lock_unlock(List->Lock);
     return nResult;
 }
 

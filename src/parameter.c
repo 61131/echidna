@@ -3,6 +3,8 @@
 #include <string.h>
 #ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
 #endif
 #include <errno.h>
 #include <assert.h>

@@ -351,7 +351,7 @@ _config_populate_program(ECHIDNA *Context, PROTOBUF_RESOURCE *File, CONFIG *Reso
     PROTOBUF_PROGRAM *pFile;
     UNIT *pPOU;
     size_t uIndex;
-    int nResult;
+    int nResult = 0;
 
     assert(Resource != NULL);
     pConfig = (CONFIG *) Resource->Parent;
