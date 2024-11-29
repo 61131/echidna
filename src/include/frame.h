@@ -35,7 +35,7 @@ enum {
 
 typedef struct _RUNTIME_CONTEXT RUNTIME_CONTEXT;
 
-typedef struct _RUNTIME_FUNCTION RUNTIME_FUNCTION;
+typedef struct _RT_FUNCTION RT_FUNCTION;
 
 typedef struct _FRAME {
 
@@ -53,7 +53,7 @@ typedef struct _FRAME {
 
     UNIT * POU;                 //  Current program organisation unit (POU)
 
-    struct _RUNTIME_FUNCTION * Function;
+    struct _RT_FUNCTION * Function;
 
     uint32_t Parameter;         //  Parameter index
 

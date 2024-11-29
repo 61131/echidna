@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <assert.h>
 
 #include <bytecode.h>
@@ -15,12 +17,12 @@
 #include <json.h>
 
 
-static RUNTIME_FUNCTION * _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol);
+static RT_FUNCTION * _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol);
 
 static int _operator_inputs_index(const char *Name);
 
 
-static RUNTIME_FUNCTION *
+static RT_FUNCTION *
 _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
     ECHIDNA *pContext;
     FRAME *pFrame;
@@ -28,7 +30,7 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
     FUNCTION_BLOCK_FIELD *pField;
     FUNCTION_REGISTER *pFunction;
     RUNTIME *pRun;
-    RUNTIME_FUNCTION *pInstance;
+    RT_FUNCTION *pInstance;
     RUNTIME_PARAMETER *pParameter;
     SYMBOL *pSymbol;
     char sName[SYMBOL_NAME_MAX];
@@ -60,12 +62,12 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
             (strcasecmp((char *) Symbol->Value.Meta, "tof") != 0) &&
             (strcasecmp((char *) Symbol->Value.Meta, "ton") != 0) &&
             (strcasecmp((char *) Symbol->Value.Meta, "tp") != 0)) {
-        pFrame->ER = ERROR_INVALID_FUNCTION;
+        pFrame->ER = RT_ERR_INVALID_FUNCTION;
         return NULL;
     }
 
     if((pInstance = runtime_call_instance(Context)) == NULL) {
-        pFrame->ER = ERROR_INTERNAL_ALLOCATION;
+        pFrame->ER = RT_ERR_INTERNAL_ALLOCATION;
         return NULL;
     }
     if(pInstance->Id >= 0)
@@ -78,7 +80,7 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
     assert(pBlock != NULL);
 
     /*
-        The following code populates the remaining fields within the RUNTIME_FUNCTION 
+        The following code populates the remaining fields within the RT_FUNCTION 
         data structure associated with the current function block execution. As the 
         input parameters to this function block execution are taken from frame registers 
         rather than parameters which are encoded within bytecode, the list of fields 
@@ -98,7 +100,7 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
             return NULL;
 
         if((pParameter = runtime_parameter_new()) == NULL) {
-            pFrame->ER = ERROR_INTERNAL_ALLOCATION;
+            pFrame->ER = RT_ERR_INTERNAL_ALLOCATION;
             return NULL;
         }
         pParameter->Id = pSymbol->Id;
@@ -110,7 +112,7 @@ _operator_inputs_call(RUNTIME_CONTEXT *Context, SYMBOL *Symbol) {
 
         if((ll_insert(&pInstance->Parameters, pParameter) != 0) ||
                 (ll_insert(&pInstance->List, &pParameter->Parameter) != 0)) {
-            pFrame->ER = ERROR_INTERNAL_ALLOCATION;
+            pFrame->ER = RT_ERR_INTERNAL_ALLOCATION;
             return NULL;
         }
     }
@@ -150,7 +152,7 @@ int
 operator_inputs(RUNTIME_CONTEXT *Context, SYMBOL *Symbol, VALUE *Value) {
     FRAME *pFrame;
     LL_ITER sIter;
-    RUNTIME_FUNCTION *pInstance;
+    RT_FUNCTION *pInstance;
     RUNTIME_PARAMETER *pParameter;
     uint32_t uBC, uType;
     int nIndex;
@@ -171,7 +173,7 @@ operator_inputs(RUNTIME_CONTEXT *Context, SYMBOL *Symbol, VALUE *Value) {
         case BYTECODE_S:        nIndex = FRAME_S; break;
         case BYTECODE_S1:       nIndex = FRAME_S1; break;
         default:
-            return ERROR_INVALID_BYTECODE;
+            return RT_ERR_INVALID_BYTECODE;
     }
 
     /*
@@ -235,11 +237,11 @@ operator_inputs(RUNTIME_CONTEXT *Context, SYMBOL *Symbol, VALUE *Value) {
     */
 
     if((pFrame->Type & ~TYPE_VARIABLE) != TYPE_FUNCTION_BLOCK)
-        return ERROR_OPERAND_TYPE;
+        return RT_ERR_OPERAND_TYPE;
     value_copy(&pFrame->Inputs[nIndex], &pFrame->CR);
 
     if((pInstance = _operator_inputs_call(Context, Symbol)) == NULL)
-        return ERROR_INTERNAL;
+        return RT_ERR_INTERNAL;
     assert(pInstance->Id == Symbol->Id);
     for(pParameter = ll_iterate_first(&sIter, &pInstance->Parameters);
             pParameter;

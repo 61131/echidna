@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <assert.h>
 
 #include <echidna.h>
@@ -72,7 +74,7 @@ _standard_ctd(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
     if((pPtr = strchr(Function->Name, '_')) != NULL) {
         value_strtotype(&sType, ++pPtr);
         if(sFields[CTD_PV].Type != sType.Type) 
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     value_cast(&sFields[CTD_CV], sFields[CTD_PV].Type);
@@ -161,7 +163,7 @@ _standard_ctd(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     return parameter_write_values(Context, Function, Instance, sFields);
@@ -195,7 +197,7 @@ _standard_ctu(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
     if((pPtr = strchr(Function->Name, '_')) != NULL) {
         value_strtotype(&sType, ++pPtr);
         if(sFields[CTU_PV].Type != sType.Type) 
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     value_cast(&sFields[CTU_CV], sFields[CTU_PV].Type);
 
@@ -326,7 +328,7 @@ _standard_ctud(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void
     if((pPtr = strchr(Function->Name, '_')) != NULL) {
         value_strtotype(&sType, ++pPtr);
         if(sFields[CTUD_PV].Type != sType.Type) 
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     value_cast(&sFields[CTUD_CV], sFields[CTUD_PV].Type);
 
@@ -397,7 +399,7 @@ _standard_ctud(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 

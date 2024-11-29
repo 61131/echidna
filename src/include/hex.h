@@ -9,7 +9,7 @@
 #include <ll.h>
 
 
-typedef struct _HEX_BLOCK {
+typedef struct {
 
     uint32_t Start;
 
@@ -19,7 +19,7 @@ typedef struct _HEX_BLOCK {
 }
 HEX_BLOCK;
 
-typedef struct _HEX {
+typedef struct {
 
     LL Blocks;
 

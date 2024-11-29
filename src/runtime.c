@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <errno.h>
 #include <float.h>
 #include <math.h>
@@ -396,7 +398,7 @@ runtime_read(RUNTIME_CONTEXT *Context, size_t Count, char *Buffer) {
     if((pFrame->PC + Count) > pBlock->End) {
         log_critical( "Invalid read operation [%s:%u]", __FILE__, __LINE__ );
 
-        pFrame->ER = ERROR_INTERNAL_READ;
+        pFrame->ER = RT_ERR_INTERNAL_READ;
         Context->State = STATE_ERROR;
         return EINVAL;
     }

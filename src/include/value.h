@@ -9,6 +9,9 @@
 
 #include <macros.h>
 
+#ifdef _MSC_VER
+#define ssize_t ptrdiff_t
+#endif
 
 #define VALUE_STRING_MAX        (255)
 

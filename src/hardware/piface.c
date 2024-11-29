@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <unistd.h>
 #include <string.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#include <linux/spi/spidev.h>
 
 #include <cast.h>
 #include <echidna.h>
@@ -19,6 +12,15 @@
 #include <value.h>
 
 #include <hardware/piface.h>
+
+#ifndef _MSC_VER
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <assert.h>
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <linux/spi/spidev.h>
 
 
 /*
@@ -172,3 +174,57 @@ piface_write(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
     return 0;
 }
+#else
+static uint8_t data = 0;
+static int piface_read(ECHIDNA* Context, const char* Name, LL* Parameters, VALUE* Result, void* User) {
+  uint8_t uByte;
+
+  uByte = data;
+  printf("###read %02X\n", uByte);
+  value_assign(Result, TYPE_BYTE, uByte);
+
+  return 0;
+}
+
+
+static int piface_write(ECHIDNA* Context, const char* Name, LL* Parameters, VALUE* Result, void* User) {
+  PARAMETER* pParameter;
+  VALUE sValue;
+  int nResult = 0;
+
+  ll_reset(Parameters);
+  if ((pParameter = ll_iterate(Parameters)) == NULL)
+    return RT_ERR_PARAMETER_COUNT;
+  value_copy(&sValue, &pParameter->Value);
+  if (cast_byte(&sValue) != 0)
+    return RT_ERR_PARAMETER_TYPE;
+
+  data = sValue.Value.B8;
+  printf("###write %02X\n", sValue.Value.B8);
+
+  value_assign(Result, TYPE_BOOL, (nResult == 0));
+
+  return 0;
+}
+
+int
+piface_initialise(ECHIDNA *Context) {
+    PIFACE *pContext;
+
+    errno = 0;
+    if((pContext = calloc(1, sizeof(PIFACE))) == NULL) {
+        log_critical("Failed to allocate memory: %s", strerror(errno));
+        return errno;
+    }
+    pContext->Address = 0;
+    pContext->Bits = 8;
+    pContext->Speed = 10000000;
+
+    echidna_register(Context, "piface_read", TYPE_FUNCTION, piface_read, NULL);
+    echidna_register(Context, "piface_write", TYPE_FUNCTION, piface_write, NULL);
+
+    log_info("Registered Raspberry PiFace hardware");
+
+    return 0;
+}
+#endif

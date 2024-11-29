@@ -26,19 +26,6 @@ typedef enum _CALLBACK_TYPE {
 }
 CALLBACK_TYPE;
 
-typedef struct _CALLBACK {
-
-    CALLBACK_TYPE Type;
-
-    char * Name;
-
-    CALLBACK_CALLBACK Function;
-
-    void * User;
-}
-CALLBACK;
-
-
 int _callback_register(size_t Arg, ECHIDNA *Context, CALLBACK_TYPE Type, ...);
 
 void callback_destroy(void *Arg);

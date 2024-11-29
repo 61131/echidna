@@ -88,7 +88,7 @@ _runtime_bytecode_value(RUNTIME_CONTEXT *Context, FRAME *Frame, SYMBOL **Symbol,
             if((nResult = runtime_read(Context, sizeof(uId), (char *) &uId)) != 0)
                 return nResult;
             if(uId >= pContext->Symbols.Count) {
-                Frame->ER = ERROR_INVALID_SYMBOL;
+                Frame->ER = RT_ERR_INVALID_SYMBOL;
                 Context->State = STATE_ERROR;
                 return EINVAL;
             }
@@ -166,15 +166,15 @@ _runtime_debug(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
     switch(pFrame->CR.Type) {
         case TYPE_LREAL:        snprintf(sValue2, sizeof(sValue2), "CR:LREAL(%g)", pFrame->CR.Value.Double); break;
         case TYPE_REAL:         snprintf(sValue2, sizeof(sValue2), "CR:REAL(%f)", pFrame->CR.Value.Single); break;
-        case TYPE_LINT:         snprintf(sValue2, sizeof(sValue2), "CR:LINT(%ld)", pFrame->CR.Value.S64); break;
+        case TYPE_LINT:         snprintf(sValue2, sizeof(sValue2), "CR:LINT(%lld)", pFrame->CR.Value.S64); break;
         case TYPE_DINT:         snprintf(sValue2, sizeof(sValue2), "CR:DINT(%d)", pFrame->CR.Value.S32); break;
         case TYPE_INT:          snprintf(sValue2, sizeof(sValue2), "CR:INT(%d)", pFrame->CR.Value.S16); break;
         case TYPE_SINT:         snprintf(sValue2, sizeof(sValue2), "CR:SINT(%d)", pFrame->CR.Value.S8); break;
-        case TYPE_ULINT:        snprintf(sValue2, sizeof(sValue2), "CR:ULINT(%lu)", pFrame->CR.Value.U64); break;
+        case TYPE_ULINT:        snprintf(sValue2, sizeof(sValue2), "CR:ULINT(%llu)", pFrame->CR.Value.U64); break;
         case TYPE_UDINT:        snprintf(sValue2, sizeof(sValue2), "CR:UDINT(%u)", pFrame->CR.Value.U32); break;
         case TYPE_UINT:         snprintf(sValue2, sizeof(sValue2), "CR:UINT(%u)", pFrame->CR.Value.U16); break;
         case TYPE_USINT:        snprintf(sValue2, sizeof(sValue2), "CR:USINT(%u)", pFrame->CR.Value.U8); break;
-        case TYPE_LWORD:        snprintf(sValue2, sizeof(sValue2), "CR:LWORD(%lx)", pFrame->CR.Value.B64); break;
+        case TYPE_LWORD:        snprintf(sValue2, sizeof(sValue2), "CR:LWORD(%llx)", pFrame->CR.Value.B64); break;
         case TYPE_DWORD:        snprintf(sValue2, sizeof(sValue2), "CR:DWORD(%08x)", pFrame->CR.Value.B32); break;
         case TYPE_WORD:         snprintf(sValue2, sizeof(sValue2), "CR:WORD(%04x)", pFrame->CR.Value.B16); break;
         case TYPE_BYTE:         snprintf(sValue2, sizeof(sValue2), "CR:BYTE(%02x)", pFrame->CR.Value.B8); break;
@@ -427,7 +427,7 @@ runtime_bytecode_execute(RUNTIME_CONTEXT *Context) {
     if((nResult != 0) &&
             (pFrame->ER == 0))
         pFrame->ER = nResult;
-    if(pFrame->ER != ERROR_NONE) {
+    if(pFrame->ER != RT_ERR_NONE) {
         log_error("%s: Cycle: %llu, Error: %s", 
                 Context->Name,
                 Context->Stats.Cycle,

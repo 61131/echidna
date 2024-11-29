@@ -1,3 +1,4 @@
+#ifndef JSON_DISABLED
 #include <stdio.h>
 #include <limits.h>
 #include <jansson.h>
@@ -281,3 +282,4 @@ json_value_dump(VALUE *Value) {
 }
 
 
+#endif

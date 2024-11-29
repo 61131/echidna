@@ -95,8 +95,9 @@ RUNTIME_PARAMETER;
     may be to execute a futile (or quiescent) cycle of run-time operations to 
     initialise these instances before starting proper run-time execution.
 */
-
-typedef struct _RUNTIME_FUNCTION {
+/* RUNTIME_FUNCTION has been changed to RT_FUNCTION dur to conflict with
+ * existing type on MSVC */
+typedef struct _RT_FUNCTION {
 
     VALUE_TYPE Type;
 
@@ -118,11 +119,11 @@ typedef struct _RUNTIME_FUNCTION {
 
     LL List;
 }
-RUNTIME_FUNCTION;
+RT_FUNCTION;
 
 typedef struct _RUNTIME_FUNCTIONS {
 
-    RUNTIME_FUNCTION ** Function;
+    RT_FUNCTION ** Function;
 
     size_t Count;
 }

@@ -1,5 +1,7 @@
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 
 #include <cast.h>
 #include <echidna.h>
@@ -33,12 +35,12 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
         if(pParameter->Name) {
             if(strcasecmp(pParameter->Name, "IN") == 0) {
                 if((pParameter->Value.Type & ANY_BIT) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sValue, &pParameter->Value);
             }
             else if(strcasecmp(pParameter->Name, "N") == 0) {
                 if((pParameter->Value.Type & ANY_INT) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sCount, &pParameter->Value);
             }
         }
@@ -47,24 +49,24 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
             switch(uParameter++) {
                 case 0:
                     if((pParameter->Value.Type & ANY_BIT) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sValue, &pParameter->Value);
                     break;
 
                 case 1:
                     if((pParameter->Value.Type & ANY_INT) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sCount, &pParameter->Value);
                     break;
 
                 default:
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
             }
         }
     }
 
     if(cast_ulint(&sCount) != 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
     uCount = sCount.Value.U64;
 
     switch(sValue.Type & ~ANY_INTERNAL) {
@@ -132,7 +134,7 @@ _standard_bitstring_roll(int Op, LL *Parameters, VALUE *Result) {
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     value_copy(Result, &sValue);
     return 0;
@@ -154,12 +156,12 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
         if(pParameter->Name) {
             if(strcasecmp(pParameter->Name, "IN") == 0) {
                 if((pParameter->Value.Type & ANY_BIT) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sValue, &pParameter->Value);
             }
             else if(strcasecmp(pParameter->Name, "N") == 0) {
                 if((pParameter->Value.Type & ANY_INT) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sCount, &pParameter->Value);
                 if((nResult = cast_usint(&sCount)) != 0)
                     return nResult;
@@ -170,20 +172,20 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
             switch(uParameter++) {
                 case 0:
                     if((pParameter->Value.Type & ANY_BIT) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sValue, &pParameter->Value);
                     break;
 
                 case 1:
                     if((pParameter->Value.Type & ANY_INT) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sCount, &pParameter->Value);
                     if((nResult = cast_usint(&sCount)) != 0)
                         return nResult;
                     break;
 
                 default:
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
             }
         }
     }
@@ -238,7 +240,7 @@ _standard_bitstring_shift(int Op, LL *Parameters, VALUE *Result) {
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     value_copy(Result, &sValue);
     return 0;

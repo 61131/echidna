@@ -33,7 +33,7 @@
 #define TOKEN_NAME(x)           ((x) ? (((TOKEN *) (x))->Name) : NULL)
 
 
-typedef enum _TOKEN_TYPE {
+typedef enum {
     TYPE_TOKEN,
     TYPE_LIST,
 }

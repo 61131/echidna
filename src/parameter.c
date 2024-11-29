@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -43,7 +45,7 @@ _parameter_value(ECHIDNA *Context, int Action, _FUNCTION_BLOCK *Function, char *
 
             case PARAMETER_SET:
                 if((pField->Type & Value->Type) != Value->Type)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 memcpy(&Instance[pField->Offset], &Value->Value.Pointer, Value->Length);
                 break;
 
@@ -52,7 +54,7 @@ _parameter_value(ECHIDNA *Context, int Action, _FUNCTION_BLOCK *Function, char *
         }
         return 0;
     }
-    return ERROR_PARAMETER_UNKNOWN;
+    return RT_ERR_PARAMETER_UNKNOWN;
 }
 
 
@@ -159,7 +161,7 @@ _parameter_write_values(size_t Arg, ECHIDNA *Context, _FUNCTION_BLOCK *Function,
         if(pValue->Type == TYPE_NONE)
             continue;
         if((pField->Type & pValue->Type) != pValue->Type) {
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         }
 
         if((pField->Type & TYPE_IN_OUT) != 0) {

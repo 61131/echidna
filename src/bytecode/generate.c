@@ -212,7 +212,9 @@ _bytecode_generate(ECHIDNA *Context, char *Config, char *Resource, char *Name, T
                         break;
 
                     default:
+#ifndef JSON_DISABLED
                         json_token_dump(pToken);
+#endif
                         assert(0);
                 }
             }
@@ -402,7 +404,9 @@ _bytecode_generate_function( ECHIDNA *Context, char *pConfig, char *pResource, c
 
     if( pList->List.Size == 0 )
         return 0;
+#ifndef JSON_DISABLED
 //json_token_dump( ( TOKEN * ) pList );
+#endif
 
     /*
         The following code structure incorporates a for-loop within the iteration of 

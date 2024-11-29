@@ -17,9 +17,9 @@ standard_abs(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_NUM) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
     value_copy(Result, &pParameter->Value);
     switch(Result->Type & ~ANY_INTERNAL) {
         case TYPE_LREAL:
@@ -59,7 +59,7 @@ standard_abs(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     operand_subrange(Result, Result);
@@ -74,9 +74,9 @@ standard_acos(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -90,10 +90,10 @@ standard_acos(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -107,9 +107,9 @@ standard_asin(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -123,10 +123,10 @@ standard_asin(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -140,9 +140,9 @@ standard_atan(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -156,10 +156,10 @@ standard_atan(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -173,9 +173,9 @@ standard_cos(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -189,10 +189,10 @@ standard_cos(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -206,9 +206,9 @@ standard_exp(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -222,10 +222,10 @@ standard_exp(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0)
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -239,9 +239,9 @@ standard_ln(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -255,10 +255,10 @@ standard_ln(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0)
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -272,9 +272,9 @@ standard_log(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -288,10 +288,10 @@ standard_log(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0)
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -305,9 +305,9 @@ standard_sin(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -321,10 +321,10 @@ standard_sin(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -338,9 +338,9 @@ standard_sqrt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -354,10 +354,10 @@ standard_sqrt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0) 
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;
@@ -371,9 +371,9 @@ standard_tan(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -387,10 +387,10 @@ standard_tan(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0)
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     /* operand_subrange(Result, Result); */
     return 0;

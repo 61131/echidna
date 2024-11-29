@@ -1,5 +1,7 @@
 #include <stdint.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <assert.h>
 
 #include <echidna.h>

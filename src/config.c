@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <limits.h>
 #include <assert.h>
 #include <errno.h>

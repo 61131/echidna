@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <unistd.h>
 #include <string.h>
+#ifndef _MSC_VER
+#include <unistd.h>
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <limits.h>
 #include <time.h>
 #include <errno.h>

@@ -7,10 +7,10 @@
 
 typedef struct _RUNTIME_CONTEXT RUNTIME_CONTEXT;
 
-typedef struct _RUNTIME_FUNCTION RUNTIME_FUNCTION;
+typedef struct _RT_FUNCTION RT_FUNCTION;
 
 
-RUNTIME_FUNCTION * runtime_call_instance(RUNTIME_CONTEXT *Context);
+RT_FUNCTION * runtime_call_instance(RUNTIME_CONTEXT *Context);
 
 
 #endif  //  _RUNTIME_CALL_H

@@ -2,8 +2,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <unistd.h>
 #include <libgen.h>
+#else
+#include "deps.h"
+#endif
 #include <limits.h>
 #include <fcntl.h>
 #include <ctype.h>

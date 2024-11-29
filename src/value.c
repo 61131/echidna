@@ -1,6 +1,10 @@
 #include <stdint.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include <stdarg.h>
+#endif
 #include <errno.h>
 #include <float.h>
 #include <limits.h>
@@ -329,7 +333,11 @@ _value_destroy(size_t Arg, VALUE *Value, ...) {
 
     va_start(sArg, Value);
     if(Arg > 1)
+#ifdef _MSC_VER
+        pDestroy = va_arg(sArg, void *);
+#else
         pDestroy = va_arg(sArg, void (*)(void *));
+#endif
     else
         pDestroy = NULL;
     va_end(sArg);
@@ -560,7 +568,8 @@ int
 value_strtoval(VALUE *Value, VALUE_TYPE Type, char *Str /*, uint8_t Base = 10 */) {
     char sValue[LINE_MAX];
     char *pStart;
-    int nBase, nLength;
+    int nBase;
+    size_t nLength;
 
     if(Value == NULL) {
         errno = EINVAL;
