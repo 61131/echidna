@@ -8,6 +8,8 @@
 #include <string.h>
 #ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
 #endif
 #include <errno.h>
 #include <time.h>
@@ -6293,7 +6295,7 @@ yyfunction_create(const char *Name, TOKEN_LIST *Parameters) {
     FUNCTION_BLOCK_FIELD *pField;
     TOKEN *pToken;
     TOKEN_LIST *pStack[3];
-    VALUE_TYPE uType;
+    VALUE_TYPE uType = 0;
     size_t uSize;
     int nSize, nStack;
 

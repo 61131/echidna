@@ -882,7 +882,7 @@ symbol_table_build(ECHIDNA *Context) {
             if(pToken->Id != nId[nStack])
                 continue;
             if(nStack < (nSize - 1)) {
-                assert(pToken->Type = TYPE_LIST);
+                assert(pToken->Type == TYPE_LIST);
                 pStack[++nStack] = (TOKEN_LIST *) pToken;
                 token_list_reset(pStack[nStack++]);
                 break;
