@@ -99,14 +99,17 @@ _block_size(size_t Arg, BLOCK *Block, ...) {
         va_end(sArg);
 
         if(uSize > Block->Size) {
+            char* Data;
             uAlloc = (((uSize / BLOCK_BLK_SIZE) * BLOCK_BLK_SIZE) +
                     (((uSize % BLOCK_BLK_SIZE) > 0) ? BLOCK_BLK_SIZE : 0));
 
             errno = 0;
-            if((Block->Data = realloc(Block->Data, uAlloc)) == NULL) {
+            Data = realloc(Block->Data, uAlloc);
+            if(Data == NULL) {
                 log_critical("Failed to allocate memory: %s", strerror(errno));
                 return -1;
             }
+            Block->Data = Data;
             memset(&Block->Data[Block->Size], 0, uAlloc - Block->Size);
             uSize = uAlloc;
         }
@@ -217,15 +220,18 @@ block_write(BLOCK *Block, size_t Index, size_t Count, char *Data) {
 
     assert(Block != NULL);
     if((Index + Count) > Block->Size) {
+        char* Data;
         uSize = (((Index + Count) / BLOCK_BLK_SIZE) * BLOCK_BLK_SIZE) +
                 ((((Index + Count) % BLOCK_BLK_SIZE) > 0) ? 
                         BLOCK_BLK_SIZE :
                         0);
         errno = 0;
-        if((Block->Data = (char *) realloc(Block->Data, uSize)) == NULL) {
+        Data = (char*)realloc(Block->Data, uSize);
+        if(Data == NULL) {
             log_critical("Failed to allocate memory: %s", strerror(errno));
             return -1;
         }
+        Block->Data = Data;
         Block->Size = uSize;
     }
     if(Data)

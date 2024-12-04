@@ -750,6 +750,7 @@ symbol_insert(ECHIDNA *Context, char *Config, char *Resource, char *POU, char *N
     VALUE sValue;
     char sName[SYMBOL_NAME_MAX];
     size_t uIndex, uBytes;
+    SYMBOL** pNew;
 
     assert(Context != NULL);
     assert(Name != NULL);
@@ -812,10 +813,12 @@ symbol_insert(ECHIDNA *Context, char *Config, char *Resource, char *POU, char *N
     uBytes = ((pSymbols->Count + 1) * sizeof(SYMBOL *));
 
     errno = 0;
-    if((pSymbols->Symbol = realloc(pSymbols->Symbol, uBytes)) == NULL) {
+    pNew = realloc(pSymbols->Symbol, uBytes);
+    if(pNew == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
         goto error;
     }
+    pSymbols->Symbol = pNew;
     pSymbols->Symbol[pSymbols->Count++] = pSymbol;
     qsort(pSymbols->Symbol, pSymbols->Count, sizeof(SYMBOL *), _symbol_compare_symbol);
 

@@ -6335,16 +6335,21 @@ yyfunction_create(const char *Name, TOKEN_LIST *Parameters) {
                 case identifier:
                 case _variable_name:
                 default:
-                    uSize = ((pBlock->Count + 1) * sizeof(FUNCTION_BLOCK_FIELD));
-                    if((pBlock->Fields = realloc(pBlock->Fields, uSize)) == NULL)
-                        goto error;
-                    pField = &pBlock->Fields[pBlock->Count++];
-                    if((pField->Name = strdup(pToken->Name)) == NULL)
-                        goto error;
-                    pField->Type = (pToken->Value.Type | uType);
-                    pField->Meta = (pToken->Value.Meta) ? strdup(pToken->Value.Meta) : NULL;
-                    pField->Offset = 0;
-                    break;
+                    {
+                        FUNCTION_BLOCK_FIELD * Fields;
+                        uSize = ((pBlock->Count + 1) * sizeof(FUNCTION_BLOCK_FIELD));
+                        Fields = realloc(pBlock->Fields, uSize);
+                        if(Fields == NULL)
+                            goto error;
+                        pBlock->Fields = Fields;
+                        pField = &pBlock->Fields[pBlock->Count++];
+                        if((pField->Name = strdup(pToken->Name)) == NULL)
+                            goto error;
+                        pField->Type = (pToken->Value.Type | uType);
+                        pField->Meta = (pToken->Value.Meta) ? strdup(pToken->Value.Meta) : NULL;
+                        pField->Offset = 0;
+                        break;
+                    }
             }
         }
     }

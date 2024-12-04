@@ -484,12 +484,14 @@ _bytecode_generate_label(size_t Arg, TREE *Scope, char *Name, ...) {
     }
 
     if(Arg > 2) {
+        uint32_t* Position;
         uCount = (pLabel->Count + 1) * sizeof(uint32_t);
-        if((pLabel->Position = realloc(pLabel->Position, uCount)) == NULL) {
+        Position = realloc(pLabel->Position, uCount);
+        if(Position == NULL) {
             bytecode_label_destroy(pLabel);
             return NULL;
         }
-
+        pLabel->Position = Position;
         va_start(sArg, Name);
         pLabel->Position[pLabel->Count++] = (uint32_t) va_arg(sArg, int);
         va_end(sArg);

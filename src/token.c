@@ -286,6 +286,7 @@ token_list_unique(TOKEN_LIST *List) {
 
     ll_reset(&List->List);
     while((pToken = ll_iterate(&List->List)) != NULL) {
+        TOKEN_UNIQUE* sNew;
         assert(pToken->Name != NULL);
         nResult = ENOENT;
         for(uIndex = 0; uIndex < uCount; ++uIndex) {
@@ -298,10 +299,12 @@ token_list_unique(TOKEN_LIST *List) {
         if(nResult == 0)
             continue;
 
-        if((sMap = realloc(sMap, (uCount + 1) * sizeof(TOKEN_UNIQUE))) == NULL) {
+        sNew = realloc(sMap, (uCount + 1) * sizeof(TOKEN_UNIQUE));
+        if(sNew == NULL) {
             nResult = -1;
             goto error;
         }
+        sMap = sNew;
         sMap[uCount].Name = pToken->Name;
         sMap[uCount].Count = 1;
         ++uCount;

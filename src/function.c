@@ -282,6 +282,7 @@ int
 _function_register(size_t Arg, FUNCTIONS *Context, const char *Name, VALUE_TYPE Type, ...) {
     ECHIDNA *pContext;
     FUNCTION_REGISTER *pFunction;
+    FUNCTION_REGISTER** pFunctions;
     va_list sArg;
     size_t uBytes;
     int nResult;
@@ -341,11 +342,13 @@ _function_register(size_t Arg, FUNCTIONS *Context, const char *Name, VALUE_TYPE 
         goto error;
 
     uBytes = ((Context->Count + 1) * sizeof(FUNCTION_REGISTER *));
-    if((Context->Function = realloc(Context->Function, uBytes)) == NULL) {
+    pFunctions = realloc(Context->Function, uBytes);
+    if(pFunctions == NULL) {
         log_critical("Failed to allocated memory: %s", strerror(errno));
         nResult = errno;
         goto error;
     }
+    Context->Function = pFunctions;
     Context->Function[Context->Count++] = pFunction;
     qsort(Context->Function, Context->Count, sizeof(FUNCTION_REGISTER *), _function_compare);
 

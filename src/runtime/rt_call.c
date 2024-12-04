@@ -136,6 +136,7 @@ runtime_call_instance(RUNTIME_CONTEXT *Context) {
     FRAME *pFrame;
     RUNTIME *pRun;
     RT_FUNCTION *pFunction;
+    RT_FUNCTION **pFunctions;
     RUNTIME_PARAMETER *pParameter = NULL;
     char sName[SYMBOL_NAME_MAX + 1];
     uint32_t uId, uLength, uType;
@@ -268,10 +269,12 @@ finish:
 
     pFunction->End = pFrame->PC;
     uLength = ((Context->Functions.Count + 1) * sizeof(RT_FUNCTION *));
-    if((Context->Functions.Function = realloc(Context->Functions.Function, uLength)) == NULL) {
+    pFunctions = realloc(Context->Functions.Function, uLength);
+    if(pFunctions == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
         goto error;
     }
+    Context->Functions.Function = pFunctions;
     Context->Functions.Function[Context->Functions.Count++] = pFunction;
     qsort(Context->Functions.Function, Context->Functions.Count, sizeof(RT_FUNCTION *), _runtime_compare);
 

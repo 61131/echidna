@@ -25,14 +25,17 @@ protobuf_config_create(CONFIG *Config) {
 
     ll_reset(&Config->List);
     while((pElement = ll_iterate(&Config->List)) != NULL) {
+        PROTOBUF_RESOURCE** Resources;
         assert(pElement->Type == TYPE_RESOURCE);
         if((pResource = protobuf_resource_create(pElement)) == NULL)
             goto error;
         uSize = (pConfig->Resources + 1) * sizeof(PROTOBUF_RESOURCE *);
-        if((pConfig->Resource = realloc(pConfig->Resource, uSize)) == NULL) {
+        Resources = realloc(pConfig->Resource, uSize);
+        if(Resources == NULL) {
             protobuf_resource_free(pResource, NULL);
             goto error;
         }
+        pConfig->Resource = Resources;
         pConfig->Resource[pConfig->Resources++] = pResource;
     }
 
@@ -156,8 +159,10 @@ PROTOBUF_RESOURCE *
 protobuf_resource_create(CONFIG *Resource) {
     CONFIG *pElement;
     PROTOBUF_PROGRAM *pProgram;
+    PROTOBUF_PROGRAM** pPrograms;
     PROTOBUF_RESOURCE *pResource;
     PROTOBUF_TASK *pTask;
+    PROTOBUF_TASK **pTasks;
     size_t uSize;
 
     assert(Resource != NULL);
@@ -175,10 +180,12 @@ protobuf_resource_create(CONFIG *Resource) {
                 if((pProgram = protobuf_program_create(pElement)) == NULL)
                     goto error;
                 uSize = (pResource->Programs + 1) * sizeof(PROTOBUF_PROGRAM *);
-                if((pResource->Program = realloc(pResource->Program, uSize)) == NULL) {
+                pPrograms = realloc(pResource->Program, uSize);
+                if(pPrograms == NULL) {
                     protobuf_program_free(pProgram, NULL);
                     goto error;
                 }
+                pResource->Program = pPrograms;
                 pResource->Program[pResource->Programs++] = pProgram;
                 break;
 
@@ -186,10 +193,12 @@ protobuf_resource_create(CONFIG *Resource) {
                 if((pTask = protobuf_task_create(pElement)) == NULL)
                     goto error;
                 uSize = (pResource->Tasks + 1) * sizeof(PROTOBUF_TASK *);
-                if((pResource->Task = realloc(pResource->Task, uSize)) == NULL) {
+                pTasks = realloc(pResource->Task, uSize);
+                if(pTasks == NULL) {
                     protobuf_task_free(pTask, NULL);
                     goto error;
                 }
+                pResource->Task = pTasks;
                 pResource->Task[pResource->Tasks++] = pTask;
                 break;
 
