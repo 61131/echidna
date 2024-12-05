@@ -23,7 +23,7 @@ standard_bcd(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
 
     strcpy(sName, Name);
     if((pPtr = strchr(sName, '_')) == NULL)
@@ -32,7 +32,7 @@ standard_bcd(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     if(value_strtotype(&sValue, sName) != 0)
         return -1;
     if(sValue.Type != pParameter->Value.Type)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     /*
         The following determines the number of nibbles to be processed as part of the 
@@ -64,7 +64,7 @@ standard_bcd(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     switch(pParameter->Value.Type) {
@@ -77,7 +77,7 @@ standard_bcd(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
         case TYPE_UINT:         value_assign(Result, TYPE_WORD, uResult); break;
         case TYPE_USINT:        value_assign(Result, TYPE_BYTE, uResult); break;
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     return 0;
@@ -91,9 +91,9 @@ standard_trunc(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
     Result->Type = TYPE_NONE;
     ll_reset(Parameters);
     if((pParameter = ll_iterate(Parameters)) == NULL)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     if((pParameter->Value.Type & ANY_REAL) == 0)
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     errno = 0;
     value_copy(Result, &pParameter->Value);
@@ -107,10 +107,10 @@ standard_trunc(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
             break;
 
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
     if(errno != 0)
-        return ERROR_MATH_OVERFLOW;
+        return RT_ERR_MATH_OVERFLOW;
 
     return 0;
 }

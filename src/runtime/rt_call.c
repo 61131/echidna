@@ -14,37 +14,37 @@
 #include <unit.h>
 
 
-static RUNTIME_FUNCTION * _runtime_cache(RUNTIME_CONTEXT *Context);
+static RT_FUNCTION * _runtime_cache(RUNTIME_CONTEXT *Context);
 
 static int _runtime_compare(const void *A, const void *B);
 
 static int _runtime_value(RUNTIME_CONTEXT *Context, VALUE *Value);
 
 
-static RUNTIME_FUNCTION *
+static RT_FUNCTION *
 _runtime_cache(RUNTIME_CONTEXT *Context) {
     FRAME *pFrame;
-    RUNTIME_FUNCTION *pIndex, **pFunction, sFunction;
+    RT_FUNCTION *pIndex, **pFunction, sFunction;
 
     pFrame = frame_current(Context);
     assert(pFrame->POU != NULL);
     sFunction.POU = pFrame->POU;
     sFunction.PC = pFrame->PC;
     pIndex = &sFunction;
-    pFunction = bsearch(&pIndex, Context->Functions.Function, Context->Functions.Count, sizeof(RUNTIME_FUNCTION *), _runtime_compare);
+    pFunction = bsearch(&pIndex, Context->Functions.Function, Context->Functions.Count, sizeof(RT_FUNCTION *), _runtime_compare);
     return (pFunction != NULL) ? *pFunction : NULL;
 }
 
 
 static int
 _runtime_compare(const void *A, const void *B) {
-    RUNTIME_FUNCTION *pFuncA, *pFuncB;
+    RT_FUNCTION *pFuncA, *pFuncB;
 
     assert(A != NULL);
-    pFuncA = *(RUNTIME_FUNCTION **) A;
+    pFuncA = *(RT_FUNCTION **) A;
     assert(pFuncA != NULL);
     assert(B != NULL);
-    pFuncB = *(RUNTIME_FUNCTION **) B;
+    pFuncB = *(RT_FUNCTION **) B;
     assert(pFuncB != NULL);
 
     if(pFuncA->POU != pFuncB->POU)
@@ -130,13 +130,14 @@ _runtime_value(RUNTIME_CONTEXT *Context, VALUE *Value) {
     function invocation features for IL language.
 */
 
-RUNTIME_FUNCTION *
+RT_FUNCTION *
 runtime_call_instance(RUNTIME_CONTEXT *Context) {
     ECHIDNA *pContext;
     FRAME *pFrame;
     RUNTIME *pRun;
-    RUNTIME_FUNCTION *pFunction;
-    RUNTIME_PARAMETER *pParameter;
+    RT_FUNCTION *pFunction;
+    RT_FUNCTION **pFunctions;
+    RUNTIME_PARAMETER *pParameter = NULL;
     char sName[SYMBOL_NAME_MAX + 1];
     uint32_t uId, uLength, uType;
     size_t uCount, uIndex;
@@ -191,14 +192,14 @@ runtime_call_instance(RUNTIME_CONTEXT *Context) {
     switch(pFunction->Type) {
         case TYPE_FUNCTION:
             if(uId >= pContext->Functions.Count) {
-                pFrame->ER = ERROR_INVALID_FUNCTION;
+                pFrame->ER = RT_ERR_INVALID_FUNCTION;
                 goto error;
             }
             break;
 
         case TYPE_FUNCTION_BLOCK:
             if(uId >= pContext->Symbols.Count) {
-                pFrame->ER = ERROR_INVALID_SYMBOL;
+                pFrame->ER = RT_ERR_INVALID_SYMBOL;
                 goto error;
             }
             break;
@@ -226,7 +227,7 @@ runtime_call_instance(RUNTIME_CONTEXT *Context) {
                     goto error;
                 if((uLength < 1) ||
                         (uLength > SYMBOL_NAME_MAX)) {
-                    pFrame->ER = ERROR_INVALID_LENGTH;
+                    pFrame->ER = RT_ERR_INVALID_LENGTH;
                     goto error;
                 }
                 if(runtime_read(Context, uLength, (char *) sName) != 0)
@@ -267,13 +268,15 @@ finish:
     */
 
     pFunction->End = pFrame->PC;
-    uLength = ((Context->Functions.Count + 1) * sizeof(RUNTIME_FUNCTION *));
-    if((Context->Functions.Function = realloc(Context->Functions.Function, uLength)) == NULL) {
+    uLength = ((Context->Functions.Count + 1) * sizeof(RT_FUNCTION *));
+    pFunctions = realloc(Context->Functions.Function, uLength);
+    if(pFunctions == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
         goto error;
     }
+    Context->Functions.Function = pFunctions;
     Context->Functions.Function[Context->Functions.Count++] = pFunction;
-    qsort(Context->Functions.Function, Context->Functions.Count, sizeof(RUNTIME_FUNCTION *), _runtime_compare);
+    qsort(Context->Functions.Function, Context->Functions.Count, sizeof(RT_FUNCTION *), _runtime_compare);
 
     return pFunction;
 

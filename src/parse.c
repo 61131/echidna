@@ -6,7 +6,11 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#ifndef _MSC_VER
 #include <unistd.h>
+#else
+#include "deps.h"
+#endif
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
@@ -58,7 +62,9 @@ _parse_file(ECHIDNA *Context, FILE *File) {
     if(!pParse->File)
         pParse->File = "<input>";
 
+#if YYDEBUG
     yydebug = (Context->Verbose > 2);
+#endif
     yyin = File;
     for(nIndex = 1; nIndex >= 0; --nIndex) {
         pParse->Preparse = nIndex;

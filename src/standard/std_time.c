@@ -1,6 +1,10 @@
 #define _DEFAULT_SOURCE         //  Required for timegm since glibc 2.19
 
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <float.h>
 #include <math.h>
 #include <time.h>
@@ -25,18 +29,18 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
     value_initialise(&sValue);
 
     if(Parameters->Size < 2)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         uType = pParameter->Value.Type;
         if(sValue.Type == TYPE_NONE) {
             if((uType & Pri) != uType)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sValue, &pParameter->Value);
             continue;
         }
         if((uType & Sec) != uType)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         value_copy(&sIn, &pParameter->Value);
         value_cast(&sIn, sValue.Type);
         switch(sValue.Type) {
@@ -47,7 +51,7 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
                     case OP_MUL:    sValue.Value.Time *= sIn.Value.Time; break;
                     case OP_DIV:    
                         if(sIn.Value.Time == 0.0f)
-                            return ERROR_DIVIDE_ZERO;
+                            return RT_ERR_DIVIDE_ZERO;
                         sValue.Value.Time /= sIn.Value.Time;
                         break;
 
@@ -59,7 +63,7 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
             case TYPE_DATE:
                 assert(Operation == OP_SUB);
                 if(Parameters->Size != 2)
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
                 sValue.Value.DateTime -= sIn.Value.DateTime;
                 value_cast(&sValue, TYPE_TIME);
                 goto finish;
@@ -73,7 +77,7 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
                     case OP_SUB:    //  SUB_DT_DT, SUB_DT_TIME
                         if(uType == TYPE_DT) {
                             if(Parameters->Size != 2)
-                                return ERROR_PARAMETER_COUNT;
+                                return RT_ERR_PARAMETER_COUNT;
                             sValue.Value.DateTime -= sIn.Value.DateTime;
                             value_cast(&sValue, TYPE_TIME);
                             goto finish;
@@ -95,7 +99,7 @@ _standard_time(int Operation, VALUE_TYPE Pri, VALUE_TYPE Sec, LL *Parameters, VA
                     case OP_SUB:    //  SUB_TOD_TIME, SUB_TOD_TOD
                         if(uType == TYPE_TOD) {
                             if(Parameters->Size != 2)
-                                return ERROR_PARAMETER_COUNT;
+                                return RT_ERR_PARAMETER_COUNT;
                             sValue.Value.DateTime -= sIn.Value.DateTime;
                             value_cast(&sValue, TYPE_TIME);
                             goto finish;
@@ -148,13 +152,13 @@ standard_concat_datetod(ECHIDNA *Context, const char *Name, LL *Parameters, VALU
     nIndex = 0;
 
     if(Parameters->Size != 2)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         switch(nIndex++) {
             case 0:
                 if(pParameter->Value.Type != TYPE_DATE)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
                 sResult.tm_year = sTime.tm_year;
                 sResult.tm_mon = sTime.tm_mon;
@@ -163,7 +167,7 @@ standard_concat_datetod(ECHIDNA *Context, const char *Name, LL *Parameters, VALU
 
             case 1:
                 if(pParameter->Value.Type != TYPE_TOD)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 gmtime_r((const time_t *) &pParameter->Value.Value.DateTime, &sTime);
                 sResult.tm_hour = sTime.tm_hour;
                 sResult.tm_min = sTime.tm_min;

@@ -119,7 +119,7 @@ error:
 PROTOBUF_FILE *
 protobuf_file_create(ECHIDNA *Context) {
     PROTOBUF_FILE *pFile;
-    int nResult;
+    int nResult = 0;
 
     if((pFile = calloc(1, sizeof(PROTOBUF_FILE))) == NULL)
         goto error;

@@ -24,7 +24,7 @@ runtime_function(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Resu
     assert(Context != NULL);
     block_initialise(&sBlock, Name);
     if((pPOU = tree_search(&Context->POU, &sBlock)) == NULL) 
-        return ERROR_INVALID_FUNCTION;
+        return RT_ERR_INVALID_FUNCTION;
 
     pContext = (RUNTIME_CONTEXT *) User;
     frame_store(pContext);
@@ -47,7 +47,7 @@ runtime_function_block(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instan
     assert(Context != NULL);
     block_initialise(&sBlock, Function->Name);
     if((pPOU = tree_search(&Context->POU, &sBlock)) == NULL)
-        return ERROR_INVALID_FUNCTION;
+        return RT_ERR_INVALID_FUNCTION;
 
     pContext = (RUNTIME_CONTEXT *) User;
     frame_store(pContext);
@@ -72,9 +72,9 @@ runtime_function_block(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instan
 
 void
 runtime_function_destroy(void *Arg) {
-    RUNTIME_FUNCTION *pFunction;
+    RT_FUNCTION *pFunction;
 
-    if((pFunction = (RUNTIME_FUNCTION *) Arg) == NULL)
+    if((pFunction = (RT_FUNCTION *) Arg) == NULL)
         return;
     ll_destroy(&pFunction->List, NULL);
     ll_destroy(&pFunction->Parameters, runtime_parameter_destroy);
@@ -82,13 +82,13 @@ runtime_function_destroy(void *Arg) {
 }
 
 
-RUNTIME_FUNCTION *
+RT_FUNCTION *
 runtime_function_new(VALUE_TYPE Type, UNIT *POU, uint32_t PC) {
-    RUNTIME_FUNCTION *pFunction;
+    RT_FUNCTION *pFunction;
 
     assert(POU != NULL);
     errno = 0;
-    if((pFunction = calloc(1, sizeof(RUNTIME_FUNCTION))) == NULL) {
+    if((pFunction = calloc(1, sizeof(RT_FUNCTION))) == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
         return NULL;
     }

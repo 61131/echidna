@@ -1,9 +1,13 @@
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include <time.h>
 #include <assert.h>
+#ifndef _MSC_VER
+#include <strings.h>
 #include <sys/time.h>
+#else
+#include <Windows.h>
+#endif
 
 #include <echidna.h>
 #include <function.h>
@@ -31,7 +35,7 @@ enum {
 int
 _standard_rtc(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void *User) {
     VALUE sFields[4];
-    struct timespec sTime;
+    struct timespec sTime = { 0 };
     int nResult;
 
     if((nResult = parameter_read_values(Context, Function, Instance, sFields)) != 0)
@@ -40,11 +44,19 @@ _standard_rtc(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *Instance, void 
     if(sFields[FIELD_IN].Value.B1 & ~sFields[FIELD_Q].Value.B1) {
         sTime.tv_sec = sFields[FIELD_PDT].Value.DateTime;
         sTime.tv_nsec = 0;
+#ifndef _MSC_VER
         clock_settime(CLOCK_REALTIME, &sTime);
+#else
+        /* todo C.D. No solution yet for windows port */
+#endif
     }
     value_assign(&sFields[FIELD_Q], TYPE_BOOL, sFields[FIELD_IN].Value.B1);
 
+#ifndef _MSC_VER
     clock_gettime(CLOCK_REALTIME, &sTime);
+#else
+    /* todo C.D. No solution yet for windows port */
+#endif
     value_assign(&sFields[FIELD_CDT], TYPE_DT, sTime.tv_sec);
 
     return parameter_write_values(Context, Function, Instance, sFields);

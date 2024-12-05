@@ -212,7 +212,9 @@ _bytecode_generate(ECHIDNA *Context, char *Config, char *Resource, char *Name, T
                         break;
 
                     default:
+#ifndef JSON_DISABLED
                         json_token_dump(pToken);
+#endif
                         assert(0);
                 }
             }
@@ -402,7 +404,9 @@ _bytecode_generate_function( ECHIDNA *Context, char *pConfig, char *pResource, c
 
     if( pList->List.Size == 0 )
         return 0;
+#ifndef JSON_DISABLED
 //json_token_dump( ( TOKEN * ) pList );
+#endif
 
     /*
         The following code structure incorporates a for-loop within the iteration of 
@@ -480,12 +484,14 @@ _bytecode_generate_label(size_t Arg, TREE *Scope, char *Name, ...) {
     }
 
     if(Arg > 2) {
+        uint32_t* Position;
         uCount = (pLabel->Count + 1) * sizeof(uint32_t);
-        if((pLabel->Position = realloc(pLabel->Position, uCount)) == NULL) {
+        Position = realloc(pLabel->Position, uCount);
+        if(Position == NULL) {
             bytecode_label_destroy(pLabel);
             return NULL;
         }
-
+        pLabel->Position = Position;
         va_start(sArg, Name);
         pLabel->Position[pLabel->Count++] = (uint32_t) va_arg(sArg, int);
         va_end(sArg);

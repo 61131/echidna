@@ -17,7 +17,7 @@ standard_and(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if(sValue.Type == TYPE_NONE) {
             if((pParameter->Value.Type & ANY_BIT) == 0)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sValue, &pParameter->Value);
             continue;
         }
@@ -46,7 +46,7 @@ standard_and(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -67,7 +67,7 @@ standard_or(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if(sValue.Type == TYPE_NONE) {
             if((pParameter->Value.Type & ANY_BIT) == 0)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sValue, &pParameter->Value);
             continue;
         }
@@ -96,7 +96,7 @@ standard_or(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, v
 
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -117,7 +117,7 @@ standard_xor(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if(sValue.Type == TYPE_NONE) {
             if((pParameter->Value.Type & ANY_BIT) == 0)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sValue, &pParameter->Value);
             continue;
         }
@@ -146,7 +146,7 @@ standard_xor(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 

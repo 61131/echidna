@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#ifndef _MSC_VER
 #include <unistd.h>
 #include <syslog.h>
-
+#endif
 #include <log.h>
 
 
@@ -25,15 +26,18 @@ log_message(int Priority, const char *Format, ...) {
         //pFile = (log_level <= LOG_ERR) ? stderr : stdout;
         pFile = stderr;
         va_start(sArg, Format);
+#ifndef _MSC_VER
         if(/* isatty(fileno(pFile)) */ 1) {
+#endif
             fprintf(pFile, "%s: ", _Level[Priority]);
             vfprintf(pFile, Format, sArg);
             fprintf(pFile, "\n");
             fflush(pFile);
+#ifndef _MSC_VER
         }
         else
             vsyslog(Priority, Format, sArg);
-
+#endif
         va_end(sArg);
     }
     if(Priority == LOG_EMERG) 

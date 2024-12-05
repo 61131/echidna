@@ -6,7 +6,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <time.h>
 #include <limits.h>
@@ -731,7 +735,10 @@ signed_integer: '+' integer {
             $$ = $integer;
         }
     | '-' integer {
-            $integer->Value.Value.S64 *= -1ULL;
+            /* todo C.D. In "$integer->Value.Value.S64 *= -1ULL;" ULL is removed due to the error:
+             error C4146: unary minus operator applied to unsigned type, result still unsigned
+            */
+            $integer->Value.Value.S64 *= -1;
             $$ = $integer;
         }
     | integer;
@@ -1497,7 +1504,10 @@ real_type_name: REAL {
             $$ = $REAL;
         }
     | LREAL {
-            value_assign(&$LREAL->Value, TYPE_LREAL, 0.0d);
+            /* todo C.D. In "value_assign(&$LREAL->Value, TYPE_LREAL, 0.0d);" d has been removed due to the error
+            error C2059: syntax error: 'bad suffix on number'
+            */
+            value_assign(&$LREAL->Value, TYPE_LREAL, 0.0);
             $$ = $LREAL;
         };
     
@@ -5568,9 +5578,9 @@ il_simple_operation: il_simple_operator {
         }
     | _il_expr_function il_operand_list {
             PARSE *pParse;
-            TOKEN_LIST *pList;
+            TOKEN_LIST *pList = NULL;
             TOKEN *pToken;
-            int nId;
+            int nId = 0;
 
             /*
                 The handling of _il_expr_function tokens is challenging as these may be interpreted 
@@ -6285,7 +6295,7 @@ yyfunction_create(const char *Name, TOKEN_LIST *Parameters) {
     FUNCTION_BLOCK_FIELD *pField;
     TOKEN *pToken;
     TOKEN_LIST *pStack[3];
-    VALUE_TYPE uType;
+    VALUE_TYPE uType = 0;
     size_t uSize;
     int nSize, nStack;
 
@@ -6325,16 +6335,21 @@ yyfunction_create(const char *Name, TOKEN_LIST *Parameters) {
                 case identifier:
                 case _variable_name:
                 default:
-                    uSize = ((pBlock->Count + 1) * sizeof(FUNCTION_BLOCK_FIELD));
-                    if((pBlock->Fields = realloc(pBlock->Fields, uSize)) == NULL)
-                        goto error;
-                    pField = &pBlock->Fields[pBlock->Count++];
-                    if((pField->Name = strdup(pToken->Name)) == NULL)
-                        goto error;
-                    pField->Type = (pToken->Value.Type | uType);
-                    pField->Meta = (pToken->Value.Meta) ? strdup(pToken->Value.Meta) : NULL;
-                    pField->Offset = 0;
-                    break;
+                    {
+                        FUNCTION_BLOCK_FIELD * Fields;
+                        uSize = ((pBlock->Count + 1) * sizeof(FUNCTION_BLOCK_FIELD));
+                        Fields = realloc(pBlock->Fields, uSize);
+                        if(Fields == NULL)
+                            goto error;
+                        pBlock->Fields = Fields;
+                        pField = &pBlock->Fields[pBlock->Count++];
+                        if((pField->Name = strdup(pToken->Name)) == NULL)
+                            goto error;
+                        pField->Type = (pToken->Value.Type | uType);
+                        pField->Meta = (pToken->Value.Meta) ? strdup(pToken->Value.Meta) : NULL;
+                        pField->Offset = 0;
+                        break;
+                    }
             }
         }
     }
@@ -6393,7 +6408,11 @@ yyliteralzero(TOKEN *Token) {
 
 
 void
+#ifdef _MSC_VER
+yyerror(ECHIDNA *Context, const char *Str) {
+#else
 yyerror(__attribute__((unused)) ECHIDNA *Context, __attribute__((unused)) const char *Str) {
+#endif
 }
 
 #if 0

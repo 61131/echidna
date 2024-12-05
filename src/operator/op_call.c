@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -19,17 +23,17 @@
 
 #include <json.h>
 
-static void _operator_call_debug(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, int Error);
+static void _operator_call_debug(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance, int Error);
 
-static int _operator_call_function(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, VALUE *Result);
+static int _operator_call_function(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance, VALUE *Result);
 
-static int _operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance);
+static int _operator_call_function_block(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance);
 
 static SYMBOL * _operator_call_read_symbol(SYMBOLS *Symbols, char *Instance, size_t Index);
 
 
 static void 
-_operator_call_debug(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, int Error) {
+_operator_call_debug(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance, int Error) {
     ECHIDNA *pContext;
     RUNTIME *pRun;
     FUNCTION_REGISTER *pFunction;
@@ -79,7 +83,7 @@ _operator_call_debug(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, int E
 
 
 static int
-_operator_call_function(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, VALUE *Result) {
+_operator_call_function(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance, VALUE *Result) {
     ECHIDNA *pContext;
     FUNCTION_REGISTER *pFunction;
     FUNCTIONS *pFunctions;
@@ -95,7 +99,7 @@ _operator_call_function(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, VA
 
     assert(Instance->Type == TYPE_FUNCTION);
     if(Instance->Id >= pFunctions->Count)
-        return ERROR_INVALID_FUNCTION;
+        return RT_ERR_INVALID_FUNCTION;
 
     pFunction = pFunctions->Function[Instance->Id];
     pUser = pFunction->Context;
@@ -108,7 +112,7 @@ _operator_call_function(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance, VA
 
 
 int 
-_operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instance) {
+_operator_call_function_block(RUNTIME_CONTEXT *Context, RT_FUNCTION *Instance) {
     ECHIDNA *pContext;
     _FUNCTION_BLOCK *pBlock;
     FUNCTION_BLOCK_FIELD *pField;
@@ -130,7 +134,7 @@ _operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instan
 
     assert(Instance->Type == TYPE_FUNCTION_BLOCK);
     if(Instance->Id >= pSymbols->Count)
-        return ERROR_INVALID_SYMBOL;
+        return RT_ERR_INVALID_SYMBOL;
 
     pSymbol = pSymbols->Symbol[Instance->Id];
     assert(pSymbol != NULL);
@@ -172,18 +176,18 @@ _operator_call_function_block(RUNTIME_CONTEXT *Context, RUNTIME_FUNCTION *Instan
                     break;
             }
             if(uIndex >= pBlock->Count)
-                return ERROR_PARAMETER_UNKNOWN;
+                return RT_ERR_PARAMETER_UNKNOWN;
         }
         else 
             uIndex = uOrder++;
 
         if(uIndex >= pBlock->Count)
-            return ERROR_PARAMETER_COUNT;
+            return RT_ERR_PARAMETER_COUNT;
 
         pField = &pBlock->Fields[uIndex];
         assert(pField != NULL);
         if((pField->Type & pParameter->Value.Type) != pParameter->Value.Type)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         /* if((pField->Type & TYPE_INPUT) == 0)
             continue; */
 
@@ -219,7 +223,7 @@ operator_call(RUNTIME_CONTEXT *Context) {
     FRAME *pFrame;
     LL_ITER sIter;
     RUNTIME *pRun;
-    RUNTIME_FUNCTION *pInstance;
+    RT_FUNCTION *pInstance;
     RUNTIME_PARAMETER *pParameter;
     SYMBOL *pSymbol;
     VALUE sResult;

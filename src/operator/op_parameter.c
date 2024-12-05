@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -50,7 +54,7 @@ operator_parameter(RUNTIME_CONTEXT *Context) {
             return nResult;
 
         if(uId >= pContext->Symbols.Count) {
-            pFrame->ER = ERROR_INVALID_SYMBOL;
+            pFrame->ER = RT_ERR_INVALID_SYMBOL;
             Context->State = STATE_ERROR;
             return EINVAL;
         }

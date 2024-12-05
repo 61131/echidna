@@ -1,5 +1,9 @@
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -43,7 +47,7 @@ standard_limit(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
                 case 1:     value_copy(&sIn, &pParameter->Value); break;
                 case 2:     value_copy(&sMax, &pParameter->Value); break;
                 default:
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
             }
         }
     }
@@ -51,12 +55,12 @@ standard_limit(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
     if((sIn.Type == TYPE_NONE) ||
             (sMax.Type == TYPE_NONE) ||
             (sMin.Type == TYPE_NONE))
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     /* assert(sIn.Type == sMax.Type); */
     /* assert(sMax.Type == sMin.Type); */
     if((value_cast(&sMax, sIn.Type) != 0) ||
             (value_cast(&sMin, sIn.Type) != 0))
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
 
     switch(sIn.Type) {
         case TYPE_LREAL:
@@ -159,7 +163,7 @@ standard_limit(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result
 
         case TYPE_BOOL:
         default:
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
     }
 
     operand_subrange(&sIn, &sIn);
@@ -184,7 +188,7 @@ standard_max(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             continue;
         }
         if(sValue.Type != pParameter->Value.Type)
-            return ERROR_PARAMETER_MISMATCH;
+            return RT_ERR_PARAMETER_MISMATCH;
         switch(sValue.Type) {
             case TYPE_LREAL:
                 if(pParameter->Value.Value.Double > sValue.Value.Double)
@@ -258,7 +262,7 @@ standard_max(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
             case TYPE_BOOL:
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -284,7 +288,7 @@ standard_min(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
             continue;
         }
         if(sValue.Type != pParameter->Value.Type)
-            return ERROR_PARAMETER_MISMATCH;
+            return RT_ERR_PARAMETER_MISMATCH;
         switch(sValue.Type) {
             case TYPE_LREAL:
                 if(pParameter->Value.Value.Double < sValue.Value.Double)
@@ -358,7 +362,7 @@ standard_min(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
             case TYPE_BOOL:
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -383,7 +387,7 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     value_initialise(&sValue);
 
     if(!Name)
-        return ERROR_INTERNAL;
+        return RT_ERR_INTERNAL;
 
     strcpy(sName, Name);
     if((pSelect = strchr(sName, '_')) != NULL) {
@@ -394,7 +398,7 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
         */
 
         if((pValue = strchr(++pSelect, '_')) == NULL)
-            return ERROR_INVALID_FUNCTION;
+            return RT_ERR_INVALID_FUNCTION;
         *pValue++ = '\0';
         value_strtotype(&sSelect, pSelect);
         value_strtotype(&sValue, pValue);
@@ -410,9 +414,9 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 (strcasecmp(pParameter->Name, "K") == 0)) {
             if((sSelect.Type != TYPE_NONE) &&
                     (pParameter->Value.Type != sSelect.Type))
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             if((pParameter->Value.Type & ANY_INT) == 0)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sK, &pParameter->Value);
             value_cast(&sK, TYPE_ULINT);
             ++uParameter;
@@ -420,7 +424,7 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
         }
         else if(sK.Type == TYPE_NONE) {
             if((pParameter->Value.Type & TYPE_INT) == 0)
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
             value_copy(&sK, &pParameter->Value);
             value_cast(&sK, TYPE_ULINT);
             ++uParameter;
@@ -429,7 +433,7 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
         if((sValue.Type != TYPE_NONE) &&
                 (pParameter->Value.Type != sValue.Type))
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(uParameter++ < sK.Value.U64)
             continue;
 
@@ -438,7 +442,7 @@ standard_mux(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     }
 
     if(Result->Type == TYPE_NONE)
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
 
     return 0;
 }
@@ -477,14 +481,14 @@ standard_sel(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 case 1:     value_copy(&sIn0, &pParameter->Value); break;
                 case 2:     value_copy(&sIn1, &pParameter->Value); break;
                 default:
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
             }
         }
     }
 
     if((sIn0.Type == TYPE_NONE) ||
             (sIn1.Type == TYPE_NONE))
-        return ERROR_PARAMETER_COUNT;
+        return RT_ERR_PARAMETER_COUNT;
     /* assert(sIn0.Type == sIn1.Type); */
     cast_ulint(&sSelect);
     if(sSelect.Value.U64 == 0)

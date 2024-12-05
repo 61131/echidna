@@ -1,6 +1,10 @@
 #include <stdint.h>
 #include <stdarg.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -37,7 +41,7 @@ _frame_function(RUNTIME_CONTEXT *Context) {
     FRAME *pCurrent, *pPrevious;
     LL_ITER sIter;
     RUNTIME *pRun;
-    RUNTIME_FUNCTION *pFunction;
+    RT_FUNCTION *pFunction;
     RUNTIME_PARAMETER *pParameter;
     SYMBOL *pLocal, *pSymbol;
     UNIT *pPOU;
@@ -125,7 +129,7 @@ _frame_function_block(RUNTIME_CONTEXT *Context) {
     FUNCTION_BLOCK_FIELD *pField;
     FUNCTION_REGISTER *pFunction;
     RUNTIME *pRun;
-    RUNTIME_FUNCTION *pInstance;
+    RT_FUNCTION *pInstance;
     SYMBOL *pSymbol1, *pSymbol2;
     UNIT *pPOU;
     size_t uIndex, uOffset;
@@ -140,9 +144,9 @@ _frame_function_block(RUNTIME_CONTEXT *Context) {
     pInstance = pPrevious->Function;
     assert(pInstance != NULL);
     if(pInstance->Type != TYPE_FUNCTION_BLOCK)
-        return ERROR_INTERNAL;
+        return RT_ERR_INTERNAL;
     if(pInstance->Id >= pContext->Symbols.Count)
-        return ERROR_INVALID_SYMBOL;
+        return RT_ERR_INVALID_SYMBOL;
 
     pSymbol1 = pContext->Symbols.Symbol[pInstance->Id];
     assert(pSymbol1 != NULL);
@@ -278,7 +282,7 @@ _frame_push(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
     assert(Context != NULL);
     if(Context->Stack.Depth == FRAME_MAX) {
         pFrame = frame_current(Context);
-        pFrame->ER = ERROR_STACK_OVERFLOW;
+        pFrame->ER = RT_ERR_STACK_OVERFLOW;
         Context->State = STATE_ERROR;
         return ENOMEM;
     }
@@ -307,7 +311,7 @@ _frame_push(size_t Arg, RUNTIME_CONTEXT *Context, ...) {
             while((pParameter = ll_iterate(pParameters)) != NULL) {
                 if(((pCopy = parameter_new(pParameter)) == NULL) ||
                         (ll_insert(&pFrame->Parameters, pCopy) != 0)) {
-                    pFrame->ER = ERROR_INTERNAL_ALLOCATION;
+                    pFrame->ER = RT_ERR_INTERNAL_ALLOCATION;
                     Context->State = STATE_ERROR;
                     nResult = errno;
                     break;

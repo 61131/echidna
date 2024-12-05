@@ -2,8 +2,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <unistd.h>
 #include <libgen.h>
+#else
+#include "deps.h"
+#endif
 #include <limits.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -113,8 +117,11 @@ _hex_read(HEX *Hex) {
         uType = HEX2(sBuffer + 6);
 
         if((nCount = (uLength << 1) + 2) > nBuffer) {
-            if((pBuffer = realloc(pBuffer, nCount)) == NULL) 
+            char* pTemp;
+            pTemp = realloc(pBuffer, nCount);
+            if(pTemp == NULL)
                 goto finish;
+            pBuffer = pTemp;
             nBuffer = nCount;
         }
         if(fread(pBuffer, 1, nCount, Hex->File) != nCount) 

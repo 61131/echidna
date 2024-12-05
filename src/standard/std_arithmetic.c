@@ -1,4 +1,8 @@
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <float.h>
 #include <math.h>
 
@@ -23,7 +27,7 @@ standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if((pParameter->Value.Type & ANY_MAGNITUDE) == 0) 
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -76,7 +80,7 @@ standard_add(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -97,7 +101,7 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -172,7 +176,7 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -182,7 +186,7 @@ standard_div(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
 error:
     log_error("Invalid divide by zero operation");
-    return ERROR_DIVIDE_ZERO;
+    return RT_ERR_DIVIDE_ZERO;
 }
 
 
@@ -204,12 +208,12 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
         if(pParameter->Name) {
             if(strcasecmp(pParameter->Name, "IN1") == 0) {
                 if((pParameter->Value.Type & ANY_REAL) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sBase, &pParameter->Value);
             }
             else if(strcasecmp(pParameter->Name, "IN2") == 0) {
                 if((pParameter->Value.Type & ANY_NUM) == 0)
-                    return ERROR_PARAMETER_TYPE;
+                    return RT_ERR_PARAMETER_TYPE;
                 value_copy(&sExponent, &pParameter->Value);
             }
         }
@@ -217,18 +221,18 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
             switch(uParameter++) {
                 case 0:
                     if((pParameter->Value.Type & ANY_REAL) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sBase, &pParameter->Value);
                     break;
 
                 case 1:
                     if((pParameter->Value.Type & ANY_NUM) == 0)
-                        return ERROR_PARAMETER_TYPE;
+                        return RT_ERR_PARAMETER_TYPE;
                     value_copy(&sExponent, &pParameter->Value);
                     break;
 
                 default:
-                    return ERROR_PARAMETER_COUNT;
+                    return RT_ERR_PARAMETER_COUNT;
             }
         }
     }
@@ -236,7 +240,7 @@ standard_expt(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result,
     uType = sBase.Type;
     if((cast_lreal(&sBase) != 0) ||
             (cast_lreal(&sExponent) != 0))
-        return ERROR_PARAMETER_TYPE;
+        return RT_ERR_PARAMETER_TYPE;
     dValue = pow(sBase.Value.Double, sExponent.Value.Double);
     value_assign(Result, uType, dValue);
 
@@ -255,7 +259,7 @@ standard_mod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if((pParameter->Value.Type & ANY_INT) == 0)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -312,7 +316,7 @@ standard_mod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -322,7 +326,7 @@ standard_mod(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
 
 error:
     log_error("Invalid modulus by zero operation");
-    return ERROR_MODULUS_ZERO;
+    return RT_ERR_MODULUS_ZERO;
 }
 
 
@@ -337,7 +341,7 @@ standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -390,7 +394,7 @@ standard_mul(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 
@@ -411,7 +415,7 @@ standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
     ll_reset(Parameters);
     while((pParameter = ll_iterate(Parameters)) != NULL) {
         if((pParameter->Value.Type & ANY_MAGNITUDE) == 0)
-            return ERROR_PARAMETER_TYPE;
+            return RT_ERR_PARAMETER_TYPE;
         if(sValue.Type == TYPE_NONE) {
             value_copy(&sValue, &pParameter->Value);
             continue;
@@ -464,7 +468,7 @@ standard_sub(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, 
                 break;
 
             default:
-                return ERROR_PARAMETER_TYPE;
+                return RT_ERR_PARAMETER_TYPE;
         }
     }
 

@@ -8,6 +8,9 @@
 
 #include <macros.h>
 
+#ifdef _MSC_VER
+#define ssize_t ptrdiff_t
+#endif
 
 #define BLOCK_BLK_SIZE          (1024)
 

@@ -18,7 +18,11 @@
 
 %{
 #include <stdio.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 
 #include <grammar.h>
 #include <lexer.h>

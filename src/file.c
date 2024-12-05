@@ -1,8 +1,12 @@
 #include <stdint.h>
 #include <stdlib.h>
+#ifndef _MSC_VER
 #include <unistd.h>
-#include <errno.h>
 #include <libgen.h>
+#else
+#include "deps.h"
+#endif
+#include <errno.h>
 #include <sys/stat.h>
 
 #include <block.h>

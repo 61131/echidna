@@ -4,6 +4,7 @@
 
 #include <ll.h>
 
+#include "lock.h"
 
 static LLE * _ll_new_element(LL *List);
 
@@ -42,14 +43,16 @@ _ll_copy(size_t Arg, LL *List, ...) {
                 (pList->Head == NULL))
             continue;
 
-        if((nResult = pthread_rwlock_rdlock(&pList->Lock)) != 0)
+        if((nResult = lock_rd(pList->Lock)) != 0)
             goto error;
+
         for(pData = ll_iterate_first(&sIter, pList);
                 pData;
                 pData = ll_iterate_next(&sIter))
             ll_insert(List, pData);
 
-        pthread_rwlock_unlock(&pList->Lock);
+
+        lock_unlock(pList->Lock);
     }
     va_end(sArg);
     nResult = 0;
@@ -80,8 +83,8 @@ _ll_delete(size_t Arg, LLE *Element, ...) {
         pValue = NULL;
 
     pList = Element->List;
-    if(((nResult = pthread_rwlock_wrlock(&pList->Lock)) != 0) &&
-            (nResult != EDEADLK))
+
+    if((nResult = lock_wr(pList->Lock)) != 0)
         return;
 
     pDestroy = pList->Destroy;
@@ -99,7 +102,7 @@ _ll_delete(size_t Arg, LLE *Element, ...) {
     assert(pList->Size > 0);
     --pList->Size;
 
-    pthread_rwlock_unlock(&pList->Lock);
+    lock_unlock(pList->Lock);
 
     if(pValue != NULL)
         *pValue = Element->Data;
@@ -124,23 +127,21 @@ _ll_destroy(size_t Arg, LL *List, ...) {
         va_end(sArg);
     }
 
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK))
-        return;
+    if ((nResult = lock_wr(List->Lock)) != 0)
+      return;
 
-    for(pElement = List->Head; pElement; pElement = pNext) {
-        pNext = pElement->Next;
-        if(pDestroy) {
-            (pDestroy)(pElement->Data);
-        }
-        free(pElement);
+    for (pElement = List->Head; pElement; pElement = pNext) {
+      pNext = pElement->Next;
+      if (pDestroy) {
+        (pDestroy)(pElement->Data);
+      }
+      free(pElement);
     }
     List->Head = List->Tail = List->Item = NULL;
     List->Size = 0;
-
-    pthread_rwlock_unlock(&List->Lock);
-    pthread_rwlock_destroy(&List->Lock);
-
+    lock_unlock(List->Lock);
+    lock_exit(List->Lock);
+    List->Lock = NULL;
     if(List->Alloc) 
         free(List);
 }
@@ -149,15 +150,16 @@ _ll_destroy(size_t Arg, LL *List, ...) {
 int
 _ll_initialise(size_t Arg, LL *List, ...) {
     va_list sArg;
-    int nResult;
 
     List->Head = List->Tail = NULL;
     List->Item = NULL;
     List->Size = 0;
     List->Alloc = 0;
 
-    if((nResult = pthread_rwlock_init(&List->Lock, NULL)) != 0)
-        return nResult;
+    List->Lock = lock_init();
+    if(!List->Lock)
+        return ENOMEM;
+
     if(Arg > 1) {
         va_start(sArg, List);
         List->Destroy = va_arg(sArg, LL_DESTROY);
@@ -178,8 +180,7 @@ _ll_merge(size_t Arg, LL *List, ...) {
         return -1;
     }
 
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK))
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
 
     va_start(sArg, List);
@@ -187,8 +188,8 @@ _ll_merge(size_t Arg, LL *List, ...) {
         if((pList = (LL *) va_arg(sArg, LL *)) == NULL)
             continue;
 
-        if(((nResult = pthread_rwlock_wrlock(&pList->Lock)) != 0) &&
-                (nResult != EDEADLK))
+
+        if((nResult = lock_wr(pList->Lock)) != 0)
             goto error;
 
         if(List->Head == NULL) {
@@ -211,14 +212,16 @@ _ll_merge(size_t Arg, LL *List, ...) {
         pList->Head = pList->Tail = pList->Item = NULL;
         pList->Size = 0;
 
-        pthread_rwlock_unlock(&pList->Lock);
+        lock_unlock(pList->Lock);
+
         ll_destroy(pList);
     }
     va_end(sArg);
     nResult = 0;
 
 error:
-    pthread_rwlock_unlock(&List->Lock);
+    lock_unlock(List->Lock);
+
     return nResult;
 }
 
@@ -234,10 +237,9 @@ ll_insert_head(LL *List, void *Data) {
     LLE *pElement;
     int nResult;
 
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK)) 
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
-        
+
     if((pElement = _ll_new_element(List)) == NULL) {
         nResult = -1;
         goto error;
@@ -257,7 +259,8 @@ ll_insert_head(LL *List, void *Data) {
     nResult = 0;
 
 error:
-    pthread_rwlock_unlock(&List->Lock);
+    lock_unlock(List->Lock);
+
     return nResult;
 }
 
@@ -267,10 +270,9 @@ ll_insert_tail(LL *List, void *Data) {
     LLE *pElement;
     int nResult;
 
-    if(((nResult = pthread_rwlock_wrlock(&List->Lock)) != 0) &&
-            (nResult != EDEADLK)) 
+    if((nResult = lock_wr(List->Lock)) != 0)
         return nResult;
-        
+
     if((pElement = _ll_new_element(List)) == NULL) {
         nResult = -1;
         goto error;
@@ -290,7 +292,7 @@ ll_insert_tail(LL *List, void *Data) {
     nResult = 0;
 
 error:
-    pthread_rwlock_unlock(&List->Lock);
+    lock_unlock(List->Lock);
     return nResult;
 }
 

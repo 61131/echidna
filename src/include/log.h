@@ -4,8 +4,20 @@
 
 /* Re-use log levels from syslog.h */
 
+#ifdef _MSC_VER
+typedef enum {
+  LOG_EMERG,
+  LOG_ALERT,
+  LOG_CRIT,
+  LOG_ERR,
+  LOG_WARNING,
+  LOG_NOTICE,
+  LOG_INFO, 
+  LOG_DEBUG,
+}log_e;
+#else
 #include <syslog.h>
-
+#endif
 
 #define LOG_NONE                (-1)
 

@@ -8,9 +8,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <unistd.h>
-#include <limits.h>
 #include <dirent.h>
+#else
+#include "deps.h"
+#include <direct.h>
+#endif
+#include <limits.h>
 #include <errno.h>
 #include <assert.h>
 #include <fcntl.h>
@@ -125,6 +130,7 @@ _echidna_arguments(ECHIDNA *Context, int Count, char **Arg) {
 
 static int
 _echidna_daemon(ECHIDNA *Context) {
+#ifndef _MSC_VER
     int nFd, nIndex;
 
     if((Context->Option & OPTION_DAEMON) == 0)
@@ -156,7 +162,7 @@ _echidna_daemon(ECHIDNA *Context) {
     if((dup2(nFd, STDOUT_FILENO) != STDOUT_FILENO) ||
             (dup2(nFd, STDERR_FILENO) != STDERR_FILENO))
         _exit(1);
-
+#endif
     return 0;
 }
 
@@ -172,7 +178,7 @@ _echidna_destroy_configuration(void *Arg) {
 
 static int
 _echidna_open_directory(ECHIDNA *Context, char *Path) {
-    struct dirent **pEntry;
+    struct dirent **pEntry = NULL;
     struct stat sInfo;
     char sPath[PATH_MAX];
     int nCount, nIndex, nResult;

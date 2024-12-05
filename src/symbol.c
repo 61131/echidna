@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <limits.h>
 #include <assert.h>
@@ -86,7 +90,7 @@ _symbol_calculate_offset(ECHIDNA *Context) {
 static int
 _symbol_calculate_size(ECHIDNA *Context) {
     SYMBOLS *pSymbols;
-    SYMBOL *pSymbol;
+    SYMBOL *pSymbol = NULL;
     SYMBOL_STACK *pStack, sStack[SYMBOL_STACK_MAX];
     uint32_t uIndex, uSize;
     int nIndex, nStack;
@@ -746,6 +750,7 @@ symbol_insert(ECHIDNA *Context, char *Config, char *Resource, char *POU, char *N
     VALUE sValue;
     char sName[SYMBOL_NAME_MAX];
     size_t uIndex, uBytes;
+    SYMBOL** pNew;
 
     assert(Context != NULL);
     assert(Name != NULL);
@@ -808,10 +813,12 @@ symbol_insert(ECHIDNA *Context, char *Config, char *Resource, char *POU, char *N
     uBytes = ((pSymbols->Count + 1) * sizeof(SYMBOL *));
 
     errno = 0;
-    if((pSymbols->Symbol = realloc(pSymbols->Symbol, uBytes)) == NULL) {
+    pNew = realloc(pSymbols->Symbol, uBytes);
+    if(pNew == NULL) {
         log_critical("Failed to allocate memory: %s", strerror(errno));
         goto error;
     }
+    pSymbols->Symbol = pNew;
     pSymbols->Symbol[pSymbols->Count++] = pSymbol;
     qsort(pSymbols->Symbol, pSymbols->Count, sizeof(SYMBOL *), _symbol_compare_symbol);
 
@@ -878,7 +885,7 @@ symbol_table_build(ECHIDNA *Context) {
             if(pToken->Id != nId[nStack])
                 continue;
             if(nStack < (nSize - 1)) {
-                assert(pToken->Type = TYPE_LIST);
+                assert(pToken->Type == TYPE_LIST);
                 pStack[++nStack] = (TOKEN_LIST *) pToken;
                 token_list_reset(pStack[nStack++]);
                 break;

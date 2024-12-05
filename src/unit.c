@@ -63,9 +63,12 @@ UNIT *
 unit_create(char *Config, char *Resource, char *Name) {
     UNIT *pPOU;
 
-    if((pPOU = unit_new()) != NULL)
-        unit_initialise(pPOU, Config, Resource, Name);
-    pPOU->Alloc = 1;
+    pPOU = unit_new();
+    if (pPOU != NULL)
+    {
+      unit_initialise(pPOU, Config, Resource, Name);
+      pPOU->Alloc = 1;
+    }
     return pPOU;
 }
 

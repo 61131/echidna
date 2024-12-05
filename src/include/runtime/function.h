@@ -12,7 +12,7 @@
 
 typedef struct _ECHIDNA ECHIDNA;
 
-typedef struct _RUNTIME_FUNCTION RUNTIME_FUNCTION;
+typedef struct _RT_FUNCTION RT_FUNCTION;
 
 
 int runtime_function(ECHIDNA *Context, const char *Name, LL *Parameters, VALUE *Result, void *User);
@@ -21,7 +21,7 @@ int runtime_function_block(ECHIDNA *Context, _FUNCTION_BLOCK *Function, char *In
 
 void runtime_function_destroy(void *Arg);
 
-RUNTIME_FUNCTION * runtime_function_new(VALUE_TYPE Type, UNIT *POU, uint32_t PC);
+RT_FUNCTION * runtime_function_new(VALUE_TYPE Type, UNIT *POU, uint32_t PC);
 
 
 #endif  //  _RUNTIME_FUNCTION_H

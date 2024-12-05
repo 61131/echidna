@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#else
+#include "deps.h"
+#endif
 #include <errno.h>
 #include <assert.h>
 
@@ -10,6 +14,19 @@
 #include <ll.h>
 #include <log.h>
 
+/* As type is not shared with another module and there is a type conflict with
+ * msvc, definition has been moved here */
+typedef struct _CALLBACK {
+
+  CALLBACK_TYPE Type;
+
+  char* Name;
+
+  CALLBACK_CALLBACK Function;
+
+  void* User;
+}
+CALLBACK;
 
 int 
 _callback_register(size_t Arg, ECHIDNA *Context, CALLBACK_TYPE Type, ...) {
